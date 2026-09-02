@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Payment notice",
+    "description": "<h4>Intended Use</h4>The intended use of this API is to register the payment for a given appointment for the given patient. <h4>Specific Rules and Limitations</h4>Rule: The only status that can be set is PAID. One may not use any other status in this API.<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This API accept only CARD and INVOICE as payment type. <br> Limitation: Before register payment contact should registered for arrival and need to properly setup self-service to handle the payment.<h4>Message Description </h4>The message sent includes the contact, payment status and which payment method was used. <br/><br/>Note: There is a header parameter as a patient but it is not a mandatory one possible to register payment without this header parameter.\n<h4>Rules table</h4>| Type | Information ||------ | ----------- ||Rule:| The only status that can be set is PAID. One may not use any other status in this API. This API accepts only CARD and INVOICE as payment type. |Limitation: | Before registering a payment, a contact should be registered as arrived and self-service funcitonality needs to be properly configured in COSMIC.|\n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Feb 2022</td>\n    <td>Initial version</td>\n  </tr>\n</table>",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/paymentnotice"
+    }
+  ],
+  "paths": {},
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

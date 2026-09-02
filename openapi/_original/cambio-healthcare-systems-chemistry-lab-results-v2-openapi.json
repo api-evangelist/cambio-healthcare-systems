@@ -1,0 +1,38 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Chemistry lab results",
+    "description": "<h4>Intended Use</h4>The intended use of this API is to retrieve chemistry lab results for a given patient. The result may be filtered using a specific time interval.<br></br>The intended use for reading data with this API is in first hand that the API is applied for direct access and should not be used to transfer data between caregivers. If it should be used for \"data copying\" between care providers, patient consent must be handled outside the API. <h4>Specific Rules and Limitations</h4>The consumer of the API is responsible for making sure data retrieved is filtered in compliance with laws and regulations prior to presenting it to any end-users.<br></br>The parameters AccessZones represent the PDL Care Unit (Vårdenhet) and CareProvider represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL. <h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Mar 2022</td>\n    <td>Updated major version due to performance impovements</td>\n  </tr>\n</table>\n<h4>Message Description </h4>The result includes a list of chemistry lab result reports. The reports include test results as well as information about the patient, care provider and more.</br> ChemistryReportEHRExtract.accessZoneUnit should be used as the PDL care unit and ChemistryReportEHRExtract.headCareProviderUnit should be used as the PDL care provider",
+    "contact": {},
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/chemistrylabreports"
+    }
+  ],
+  "paths": {},
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

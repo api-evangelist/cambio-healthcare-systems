@@ -1,0 +1,2492 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Medication prescriptions",
+    "description": "<h4>Intended use</h4>The intended use of this API is to retrieve all prescriptions for the given patient. The result can be filtered by using a time interval. <br></br>The intended use for reading data with this API is in first hand that the API is applied for direct access and should not be used to transfer data between caregivers. If it should be used for \"data copying\" between care providers, patient consent must be handled outside the API.\n<h4>Specific Rules and Limitations</h4>The consumer of the API is responsible for making sure data retrieved is filtered in compliance with laws and regulations prior to presenting it to any end-users.<br></br>The parameters AccessZones represent the PDL Care Unit (Vårdenhet) and CareProvider represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL.\n <h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Mar 2022</td>\n    <td>Updated major version due to performance impovements</td>\n  </tr>\n</table>\n<h4>Message description</h4>The query result is a list of prescriptions.</br> PrescriptionEHRExtract.accessZoneUnit should be used as the PDL care unit and PrescriptionEHRExtract.headCareProviderUnit should be used as the PDL care provider.",
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/medications"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "getPrescriptionInfo-v2",
+        "summary": "Get all prescriptions",
+        "description": "Get all prescriptions for the given patient. The result can be filtered by using a time interval. \n<p>\nOAuth <code>scope</code> for access : <code>user/Medication.read</code> or <code>patient/Medication.read</code>",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrescriptionEHRExtractsArray"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fromDateTime",
+            "in": "query",
+            "description": "Time interval start, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toDateTime",
+            "in": "query",
+            "description": "Time interval end, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "Patient's identifier/Personnumber",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "PrescriptionEHRExtracts": {
+        "title": "PrescriptionEHRExtracts",
+        "description": "List of PrescriptionEHRExtracts",
+        "type": "object",
+        "properties": {
+          "prescriptionEHRExtract": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PrescriptionEHRExtract"
+            }
+          }
+        }
+      },
+      "PrescriptionEHRExtract": {
+        "title": "PrescriptionEHRExtract",
+        "description": "Object that holds a prescription and related/referencing other data models",
+        "type": "object",
+        "properties": {
+          "ehrId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "ehrSystem": {
+            "$ref": "#/components/schemas/II"
+          },
+          "timeCreated": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "prescription": {
+            "$ref": "#/components/schemas/Prescription"
+          },
+          "patient": {
+            "$ref": "#/components/schemas/Patient"
+          },
+          "units": {
+            "$ref": "#/components/schemas/Units"
+          },
+          "creationUnit": {
+            "$ref": "#/components/schemas/Unit"
+          },
+          "responsibleUnit": {
+            "$ref": "#/components/schemas/Unit"
+          },
+          "accessZoneUnit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Unit"
+              }
+            ],
+            "description": "PDL care unit"
+          },
+          "headCareProviderUnit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Unit"
+              }
+            ],
+            "description": "PDL care provider"
+          },
+          "careProviders": {
+            "$ref": "#/components/schemas/PICareProviders"
+          },
+          "hCMContact": {
+            "$ref": "#/components/schemas/Contact"
+          }
+        }
+      },
+      "Prescription": {
+        "title": "Prescription",
+        "description": "The data model which represents a prescription of a patient",
+        "type": "object",
+        "properties": {
+          "rcId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/II"
+              }
+            ],
+            "description": "Business identifier of the Prescription"
+          },
+          "accordingToSchedule": {
+            "type": "boolean",
+            "description": "If the prescription has more than two doses, or unstructured doses"
+          },
+          "actualTerminateDate": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ],
+            "description": "Prescription end date"
+          },
+          "replacedByLatest": {
+            "type": "boolean",
+            "description": "When editing a prescription and when there can be overlapping prescriptions then this flag is used to mention that"
+          },
+          "prescriptionVersionDateTime": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ],
+            "description": "The prescription last updated time"
+          },
+          "prescriptionPatientInstruction": {
+            "type": "string",
+            "description": "If any instructions for the patient"
+          },
+          "prescriptionCaregiverInstruction": {
+            "type": "string",
+            "description": "If any instructions for the care giver"
+          },
+          "extendedMedicationMiningData": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "prescriptionReason": {
+            "type": "string",
+            "description": "The reason 'code' for prescribing the prescription(which comes from the SIL)"
+          },
+          "prescriptionReasonText": {
+            "type": "string",
+            "description": "The reason 'description' for prescribing the prescription(which comes from the SIL)"
+          },
+          "treatmentGoal": {
+            "type": "string",
+            "description": "The goal of the prescription. What is expected by prescribing the drug"
+          },
+          "treatmentIntent": {
+            "type": "string",
+            "description": "Intent of the treatment"
+          },
+          "prescriptionType": {
+            "type": "string",
+            "description": "Types of medication",
+            "example": "pills and misc/ injection/ infusion/ inhalation/ transfusion/ enteral nutrition"
+          },
+          "medicationType": {
+            "type": "string",
+            "description": "Types of medication- pills and misc/ injection/ infusion/ inhalation/ transfusion/ enteral nutrition."
+          },
+          "routeDetail": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/RouteDetail"
+              }
+            ],
+            "description": "How the medication is administered",
+            "example": "Oral,Inhale"
+          },
+          "medicationTreatmentId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/II"
+              }
+            ],
+            "description": "COSMIC internal medication treatment id"
+          },
+          "medicationTreatmentStatusDetail": {
+            "$ref": "#/components/schemas/MedicationTreatmentStatusDetail"
+          },
+          "mainProductTreatment": {
+            "$ref": "#/components/schemas/ProductInformation"
+          },
+          "medicationActive": {
+            "type": "boolean",
+            "description": "Whether the medication is active or not"
+          },
+          "followUpDateTime": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ],
+            "description": "A follow-up appointment required on this date"
+          },
+          "prescriptionCancelComment": {
+            "type": "string",
+            "description": "The comment when cancelling the prescription(If the prescription is cancelled)"
+          },
+          "prescriptionStartDateTime": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ],
+            "description": "The prescription start date time"
+          },
+          "prescriptionEndDateTime": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ],
+            "description": "The prescription end date time"
+          },
+          "prescriptionDosages": {
+            "$ref": "#/components/schemas/PrescriptionDosage"
+          },
+          "medicationChoice": {
+            "$ref": "#/components/schemas/CD"
+          },
+          "prescriptionDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PrescriptionDetail"
+            }
+          },
+          "prescriptionDrugExtemporeDescription": {
+            "type": "string"
+          },
+          "medicationPurpose": {
+            "type": "string",
+            "description": "The purpose 'code' of the prescription"
+          },
+          "medicationPurposeText": {
+            "type": "string",
+            "description": "The purpose 'description' of the prescription"
+          },
+          "medicationIndication": {
+            "type": "string",
+            "description": "The reason 'code' for the Choosing the Medication"
+          },
+          "medicationIndicationText": {
+            "type": "string",
+            "description": "The reason 'description' for the Choosing the Medication"
+          },
+          "medicationTarget": {
+            "type": "string",
+            "description": "From where are referring this"
+          },
+          "medicationTargetText": {
+            "type": "string"
+          },
+          "medicationAdministrationMethod": {
+            "type": "string",
+            "description": "The way the medication should be administered",
+            "example": "Oral"
+          },
+          "mixingInstruction": {
+            "type": "string",
+            "description": "Instructions for mixing the medication(when applicable)"
+          },
+          "mixtures": {
+            "$ref": "#/components/schemas/MixturesType"
+          }
+        }
+      },
+      "RouteDetail": {
+        "title": "RouteDetail",
+        "description": "Data model for keeping the information related to the way medication should be administered",
+        "type": "object",
+        "properties": {
+          "byWith": {
+            "type": "string",
+            "description": "The instrument/device by which the drug is administered"
+          },
+          "location": {
+            "type": "string",
+            "description": "The location at which the drug is administered"
+          },
+          "routeCode": {
+            "type": "string",
+            "description": "The code for representing the route"
+          },
+          "name": {
+            "type": "string",
+            "description": "The description/name of the route"
+          },
+          "abbreviation": {
+            "type": "string"
+          },
+          "routeLicensed": {
+            "type": "boolean",
+            "description": "The routes that a given drug is approved to be used by"
+          }
+        }
+      },
+      "MedicationTreatmentStatusDetail": {
+        "title": "MedicationTreatmentStatusDetail",
+        "description": "The information model for representing medication treatment status",
+        "type": "object",
+        "properties": {
+          "treatmentStatus": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PAUSED",
+              "ENDED",
+              "DISCONTINUED",
+              "UNPLANNED",
+              "DELETED",
+              "PLANNED",
+              "INVALIDATED",
+              "FUTURE_PAUSED",
+              "FUTURE_PLANNED",
+              "FUTURE_DISCONTINUED",
+              "FUTURE_REACTIVATED",
+              "UNPLANED_FUTURE_DISCONTINUED"
+            ]
+          },
+          "effectiveDateTime": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ],
+            "description": "The timestamp which the status is effective from"
+          }
+        }
+      },
+      "ProductInformation": {
+        "title": "ProductInformation",
+        "description": "The data model for representing the product/drug which is prescribed as a part of the prescription",
+        "type": "object",
+        "properties": {
+          "prescriptionProductTradeName": {
+            "type": "string",
+            "description": "Trade name of the drug/product"
+          },
+          "prescriptionProductDrugFormTextSv": {
+            "type": "string",
+            "description": "The full text description of the drug/product form",
+            "example": "tablet"
+          },
+          "prescriptionProductNplID": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/II"
+              }
+            ],
+            "description": "Business identifier of the drug/product"
+          },
+          "prescriptionProductAtcCode": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CD"
+              }
+            ],
+            "description": "The ATC code of the drug/product when it is applicable"
+          },
+          "prescriptionProductStrengthNumeric": {
+            "type": "string",
+            "description": "The strength of the drug/product"
+          },
+          "prescriptionProductStrengthNumericUnit": {
+            "type": "string",
+            "description": "The strength unit/Unit of measure"
+          },
+          "mainSubstance": {
+            "type": "string",
+            "description": "Main substance of the drug/product"
+          }
+        }
+      },
+      "PrescriptionDosage": {
+        "title": "PrescriptionDosage",
+        "description": "The data model for representing a drug dosage",
+        "type": "object",
+        "properties": {
+          "whenNeeded": {
+            "type": "boolean",
+            "description": "the value will be 'true' if the drug has to be taken only when needed"
+          },
+          "dosagePlugin": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DosagePlugin"
+            }
+          }
+        }
+      },
+      "PrescriptionDetail": {
+        "title": "PrescriptionDetail",
+        "description": "A data model for agregating Drug/Product and mixing details",
+        "type": "object",
+        "properties": {
+          "productInformation": {
+            "$ref": "#/components/schemas/ProductInformation"
+          },
+          "mixingDetail": {
+            "$ref": "#/components/schemas/MixingDetail"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "Main",
+              "Additive",
+              "Diluent"
+            ]
+          }
+        }
+      },
+      "MixingDetail": {
+        "title": "MixingDetail",
+        "description": "A data model for representing information related to the way drugs should be mixed",
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "example": "25"
+          },
+          "amountUnit": {
+            "type": "string",
+            "example": "ml"
+          },
+          "concentrationValue": {
+            "type": "number",
+            "description": "Numeric magnitude of the Final Concentration"
+          },
+          "finalConcentrationText": {
+            "type": "string",
+            "description": "The additive/dilute concentration text"
+          }
+        }
+      },
+      "MixturesType": {
+        "title": "MixturesType",
+        "type": "object",
+        "properties": {
+          "mixture": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MixtureType"
+            }
+          }
+        }
+      },
+      "MixtureType": {
+        "title": "MixtureType",
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string",
+            "description": "Dilueted / mixed product name"
+          },
+          "strength": {
+            "type": "string",
+            "description": "Strength of the diluted product or mixed product"
+          },
+          "amount": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        }
+      },
+      "DosagePlugin": {
+        "title": "DosagePlugin",
+        "description": "Information related to COSMIC drug dosage plugin",
+        "type": "object",
+        "properties": {
+          "dripDosage": {
+            "$ref": "#/components/schemas/DripDosageType"
+          },
+          "multiDosage": {
+            "$ref": "#/components/schemas/MultiDosageType"
+          },
+          "freeTextDosage": {
+            "$ref": "#/components/schemas/FreeTextDosageType"
+          },
+          "normalDosage": {
+            "$ref": "#/components/schemas/NormalDosageType"
+          },
+          "occasionDosage": {
+            "$ref": "#/components/schemas/OccasionDosageType"
+          },
+          "onceDosage": {
+            "$ref": "#/components/schemas/OnceDosageType"
+          },
+          "periodicDosage": {
+            "$ref": "#/components/schemas/PeriodicDosageType"
+          },
+          "weeklyDosage": {
+            "$ref": "#/components/schemas/WeeklyDosageType"
+          },
+          "iX3Dosage": {
+            "$ref": "#/components/schemas/IX3DosageType"
+          }
+        }
+      },
+      "DripDosageType": {
+        "title": "DripDosageType",
+        "description": "The data model for re-presenting the drip dosages",
+        "type": "object",
+        "properties": {
+          "amount": {
+            "$ref": "#/components/schemas/DDAmount"
+          },
+          "volume": {
+            "$ref": "#/components/schemas/DDVolume"
+          },
+          "concentration": {
+            "$ref": "#/components/schemas/DDConcentration"
+          },
+          "duration": {
+            "$ref": "#/components/schemas/DDDuration"
+          },
+          "iteration": {
+            "$ref": "#/components/schemas/DDIteration"
+          },
+          "speeds": {
+            "$ref": "#/components/schemas/Speeds"
+          },
+          "dosageText": {
+            "type": "string",
+            "description": "The textual presentation of the drip dosage"
+          }
+        }
+      },
+      "DDAmount": {
+        "title": "DDAmount",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Amount"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measure"
+          }
+        }
+      },
+      "DDVolume": {
+        "title": "DDVolume",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Volume"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measure"
+          }
+        }
+      },
+      "DDConcentration": {
+        "title": "DDConcentration",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Concentration"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measure"
+          }
+        }
+      },
+      "DDDuration": {
+        "title": "DDDuration",
+        "description": "Drip dosage duration",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "description": "Drip dosage duration"
+          },
+          "timeUnit": {
+            "$ref": "#/components/schemas/DoseTimeUnitType"
+          }
+        }
+      },
+      "DDIteration": {
+        "title": "DDIteration",
+        "description": "Drug dosage interaction",
+        "type": "object",
+        "properties": {
+          "dailyReoccurence": {
+            "$ref": "#/components/schemas/DailyReoccurence"
+          },
+          "specifiedTimes": {
+            "$ref": "#/components/schemas/SpecifiedTimes"
+          },
+          "timesADay": {
+            "$ref": "#/components/schemas/TimesADay"
+          },
+          "continuous": {
+            "type": "string"
+          }
+        }
+      },
+      "DailyReoccurence": {
+        "title": "DailyReoccurence",
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Amount"
+          }
+        }
+      },
+      "SpecifiedTimes": {
+        "title": "SpecifiedTimes",
+        "description": "The specified time of the dosage",
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "TimesADay": {
+        "title": "TimesADay",
+        "description": "Data model for re-presenting the dose information 'how many times a day'",
+        "type": "object",
+        "properties": {
+          "startTime": {
+            "type": "string",
+            "description": "The dosage start time"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32",
+            "description": "How many times a day"
+          }
+        }
+      },
+      "Speeds": {
+        "title": "Speeds",
+        "description": "a data model used in drip dosages to specify different speeds of a drip",
+        "type": "object",
+        "properties": {
+          "speed": {
+            "type": "number",
+            "description": "Drip speed"
+          },
+          "minSpeed": {
+            "type": "number",
+            "description": "Minimum drip speed"
+          },
+          "maxSpeed": {
+            "type": "number",
+            "description": "Maximum drip speed"
+          },
+          "amountUnit": {
+            "type": "string",
+            "description": "Unit of measure"
+          },
+          "timeUnit": {
+            "$ref": "#/components/schemas/DoseTimeUnitType"
+          }
+        }
+      },
+      "MultiDosageType": {
+        "title": "MultiDosageType",
+        "description": "The data model for representing multiple dosages",
+        "type": "object",
+        "properties": {
+          "dosage": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dosage"
+            }
+          }
+        }
+      },
+      "Dosage": {
+        "title": "Dosage",
+        "type": "object",
+        "description": "The data model for representing Dosage",
+        "properties": {
+          "startTime": {
+            "$ref": "#/components/schemas/StartTime"
+          },
+          "startDateTime": {
+            "type": "string",
+            "description": "The start date time"
+          },
+          "durationTime": {
+            "$ref": "#/components/schemas/DurationTime"
+          },
+          "durationDateTime": {
+            "$ref": "#/components/schemas/DateTimeDuration"
+          },
+          "dosePlugin": {
+            "$ref": "#/components/schemas/DosePlugin"
+          }
+        }
+      },
+      "StartTime": {
+        "title": "StartTime",
+        "description": "The start time of the dosage",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DoseTimeUnitType"
+          }
+        }
+      },
+      "DurationTime": {
+        "title": "DurationTime",
+        "description": "The dosage duration",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string",
+            "description": "The time unit",
+            "enum": [
+              "Minutes",
+              "Hours",
+              "Days",
+              "Weeks",
+              "Unlimited"
+            ]
+          }
+        }
+      },
+      "DateTimeDuration": {
+        "title": "DateTimeDuration",
+        "description": "The date time of the duration",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "unlimited": {
+            "type": "boolean",
+            "description": "Whether the duration doesnt have an end time or not"
+          }
+        }
+      },
+      "DosePlugin": {
+        "title": "DosePlugin",
+        "description": "COSMIC Internal dose plugin for handling different types of dosages",
+        "type": "object",
+        "properties": {
+          "freeTextDosage": {
+            "$ref": "#/components/schemas/FreeTextDosageType"
+          },
+          "normalDosage": {
+            "$ref": "#/components/schemas/NormalDosageType"
+          },
+          "occasionDosage": {
+            "$ref": "#/components/schemas/OccasionDosageType"
+          },
+          "onceDosage": {
+            "$ref": "#/components/schemas/OnceDosageType"
+          },
+          "periodicDosage": {
+            "$ref": "#/components/schemas/PeriodicDosageType"
+          },
+          "weeklyDosage": {
+            "$ref": "#/components/schemas/WeeklyDosageType"
+          }
+        }
+      },
+      "FreeTextDosageType": {
+        "title": "FreeTextDosageType",
+        "description": "The data model used to represent free text type/unstructured dosages",
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Dosage text"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Units of measure"
+          },
+          "motivation": {
+            "type": "string",
+            "description": "Motivation for issuing a free text type dosage"
+          },
+          "dosageText": {
+            "type": "string"
+          }
+        }
+      },
+      "NormalDosageType": {
+        "title": "NormalDosageType",
+        "description": "The data model used to represent normal dosages",
+        "type": "object",
+        "properties": {
+          "minDose": {
+            "type": "number",
+            "description": "Minimum dose"
+          },
+          "maxDose": {
+            "type": "number",
+            "description": "Maximum dose"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Dose unit"
+          },
+          "time": {
+            "$ref": "#/components/schemas/Time"
+          },
+          "whenNeeded": {
+            "$ref": "#/components/schemas/WhenNeeded"
+          },
+          "dosageText": {
+            "type": "string",
+            "description": "Textual form of the dosage"
+          }
+        }
+      },
+      "Time": {
+        "title": "Time",
+        "type": "object",
+        "properties": {
+          "timesPerDay": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Number of times per day"
+          },
+          "times": {
+            "$ref": "#/components/schemas/Times"
+          }
+        }
+      },
+      "Times": {
+        "title": "Times",
+        "description": "Array of Times",
+        "type": "object",
+        "properties": {
+          "time": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DoseTimeOfDayType"
+            }
+          }
+        }
+      },
+      "WhenNeeded": {
+        "title": "WhenNeeded",
+        "type": "object",
+        "properties": {
+          "maxDose": {
+            "$ref": "#/components/schemas/MaxDose"
+          },
+          "minimumIntervalBetweenDosages": {
+            "$ref": "#/components/schemas/MinimumIntervalBetweenDosages"
+          }
+        }
+      },
+      "MaxDose": {
+        "title": "MaxDose",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "description": "Maximum dose"
+          },
+          "doseRestriction": {
+            "type": "string",
+            "description": "Maximum dose PerDay or PerDosage",
+            "enum": [
+              "PerDay",
+              "PerDosage"
+            ]
+          }
+        }
+      },
+      "MinimumIntervalBetweenDosages": {
+        "title": "MinimumIntervalBetweenDosages",
+        "description": "If there is a sequence of dosages, minimum time gap between dosages",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DoseTimeUnitType"
+          }
+        }
+      },
+      "OccasionDosageType": {
+        "title": "OccasionDosageType",
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string"
+          },
+          "dosages": {
+            "$ref": "#/components/schemas/Dosages"
+          },
+          "dosageText": {
+            "type": "string"
+          }
+        }
+      },
+      "Dosages": {
+        "title": "Dosages",
+        "description": "A model for agregating different types of Occation dosage types",
+        "type": "object",
+        "properties": {
+          "occasionPerDayDosages": {
+            "$ref": "#/components/schemas/OccasionPerDayDosages"
+          },
+          "timeOfDayDosages": {
+            "$ref": "#/components/schemas/TimeOfDayDosages"
+          },
+          "specifiedTimeDosages": {
+            "$ref": "#/components/schemas/SpecifiedTimeDosages"
+          }
+        }
+      },
+      "OccasionPerDayDosages": {
+        "title": "OccasionPerDayDosages",
+        "description": "Array of OccasionPerDayDose",
+        "type": "object",
+        "properties": {
+          "occasionPerDayDose": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OccasionPerDayDose"
+            }
+          }
+        }
+      },
+      "OccasionPerDayDose": {
+        "title": "OccasionPerDayDose",
+        "type": "object",
+        "properties": {
+          "minDose": {
+            "type": "number",
+            "description": "Minimum dose"
+          },
+          "maxDose": {
+            "type": "number",
+            "description": "Maximum dose"
+          },
+          "doseOrder": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Order of dose"
+          }
+        }
+      },
+      "TimeOfDayDosages": {
+        "title": "TimeOfDayDosages",
+        "description": "Array of TimeOfDayDose",
+        "type": "object",
+        "properties": {
+          "timeOfDayDose": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimeOfDayDose"
+            }
+          }
+        }
+      },
+      "TimeOfDayDose": {
+        "title": "TimeOfDayDose",
+        "type": "object",
+        "properties": {
+          "minDose": {
+            "type": "number",
+            "description": "Minimum dose"
+          },
+          "maxDose": {
+            "type": "number",
+            "description": "Maximum dose"
+          },
+          "time": {
+            "$ref": "#/components/schemas/DoseTimeOfDayType"
+          }
+        }
+      },
+      "SpecifiedTimeDosages": {
+        "title": "SpecifiedTimeDosages",
+        "description": "Array of SpecifiedTimeDose",
+        "type": "object",
+        "properties": {
+          "specifiedTimeDose": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpecifiedTimeDose"
+            }
+          }
+        }
+      },
+      "SpecifiedTimeDose": {
+        "title": "SpecifiedTimeDose",
+        "description": "A dosage with a specific time",
+        "type": "object",
+        "properties": {
+          "minDose": {
+            "type": "number",
+            "description": "Minimum dose"
+          },
+          "maxDose": {
+            "type": "number",
+            "description": "Maximum dose"
+          },
+          "time": {
+            "type": "string",
+            "description": "Exact time of the dose"
+          }
+        }
+      },
+      "OnceDosageType": {
+        "title": "OnceDosageType",
+        "description": "A dosage which has to be given only once",
+        "type": "object",
+        "properties": {
+          "minDose": {
+            "type": "number"
+          },
+          "maxDose": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "dateTime": {
+            "type": "string"
+          },
+          "dosageText": {
+            "type": "string"
+          }
+        }
+      },
+      "PeriodicDosageType": {
+        "title": "PeriodicDosageType",
+        "description": "A dosage with a time period",
+        "type": "object",
+        "properties": {
+          "minDose": {
+            "type": "number",
+            "description": "Minimum dose"
+          },
+          "maxDose": {
+            "type": "number",
+            "description": "Maximum dose"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measure"
+          },
+          "intervalTime": {
+            "$ref": "#/components/schemas/IntervalTime"
+          },
+          "dosageText": {
+            "type": "string",
+            "description": "Textual presentation of the dosage"
+          }
+        }
+      },
+      "IntervalTime": {
+        "title": "IntervalTime",
+        "description": "Time interval of a dosage",
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "$ref": "#/components/schemas/DoseTimeUnitType"
+          }
+        }
+      },
+      "WeeklyDosageType": {
+        "title": "WeeklyDosageType",
+        "description": "Weekly dosage model",
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "string"
+          },
+          "weeks": {
+            "$ref": "#/components/schemas/Weeks"
+          },
+          "dosageText": {
+            "type": "string",
+            "description": "Textual presentation of the dosage"
+          }
+        }
+      },
+      "Weeks": {
+        "title": "Weeks",
+        "description": "An array of Week",
+        "type": "object",
+        "properties": {
+          "week": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Week"
+            }
+          }
+        }
+      },
+      "Week": {
+        "title": "Week",
+        "description": "An array of Doses for a week",
+        "type": "object",
+        "properties": {
+          "doses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Doses"
+            }
+          }
+        }
+      },
+      "Doses": {
+        "title": "Doses",
+        "description": "An array of Dose",
+        "type": "object",
+        "properties": {
+          "dose": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dose"
+            }
+          }
+        }
+      },
+      "Dose": {
+        "title": "Dose",
+        "description": "The data model for representing the dose",
+        "type": "object",
+        "properties": {
+          "dose": {
+            "type": "number",
+            "description": "Dose"
+          },
+          "dayofweek": {
+            "$ref": "#/components/schemas/DoseWeekDayType"
+          },
+          "timeofday": {
+            "$ref": "#/components/schemas/DoseTimeOfDayType"
+          }
+        }
+      },
+      "IX3DosageType": {
+        "title": "IX3DosageType",
+        "description": "An internal dosage type model",
+        "type": "object",
+        "properties": {
+          "conditional": {
+            "type": "boolean",
+            "description": "A conditional without any dose amount information. Mainly based on some test results"
+          },
+          "conditionalText": {
+            "type": "string"
+          },
+          "dosageType": {
+            "type": "string"
+          },
+          "doseDistributionType": {
+            "type": "string",
+            "enum": [
+              "SAME_DOSE_EACH_OCCASION",
+              "DIFFERENT_DOSE_SEPARATE_OCCASION",
+              "CONTINUOUS_DOSE",
+              "PERIODIC",
+              "NONE"
+            ]
+          },
+          "doseDuration": {
+            "$ref": "#/components/schemas/Duration"
+          },
+          "infusionDuration": {
+            "$ref": "#/components/schemas/Duration"
+          },
+          "doseStart": {
+            "$ref": "#/components/schemas/DoseStart"
+          },
+          "doseEnd": {
+            "$ref": "#/components/schemas/DoseEnd"
+          },
+          "doseInstance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DoseInstance"
+            }
+          },
+          "continuous": {
+            "type": "boolean"
+          },
+          "dosageText": {
+            "type": "string"
+          },
+          "dosageShortText": {
+            "type": "string"
+          },
+          "dosageOrder": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "extraDose": {
+            "type": "boolean"
+          },
+          "noOfAdminTimes": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rate": {
+            "type": "number"
+          },
+          "wholeWhenNeeded": {
+            "type": "boolean"
+          },
+          "repetitionLength": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "Duration": {
+        "title": "Duration",
+        "description": "A model for representing a duration",
+        "type": "object",
+        "properties": {
+          "length": {
+            "type": "string",
+            "description": "Value/length of the duration"
+          },
+          "timeType": {
+            "type": "string",
+            "description": "Time type enum",
+            "enum": [
+              "MINUTE",
+              "HOUR",
+              "DAY",
+              "WEEK",
+              "MONTH",
+              "YEAR",
+              "ADMIN_OCCASION",
+              "UNLIMITED"
+            ]
+          }
+        }
+      },
+      "DoseStart": {
+        "title": "DoseStart",
+        "description": "When the dose is started",
+        "type": "object",
+        "properties": {
+          "doseStartType": {
+            "type": "string",
+            "enum": [
+              "AFTER_PREVIOUS",
+              "DATE",
+              "UNKNOWN",
+              "IMMEDIATE_AFTER_PREVIOUS_DOSAGE"
+            ]
+          },
+          "startDuration": {
+            "$ref": "#/components/schemas/Duration"
+          },
+          "startDate": {
+            "$ref": "#/components/schemas/TS"
+          }
+        }
+      },
+      "DoseEnd": {
+        "title": "DoseEnd",
+        "description": "When the dose is ended",
+        "type": "object",
+        "properties": {
+          "doseEndType": {
+            "type": "string",
+            "enum": [
+              "DURATION",
+              "DATE",
+              "UNLIMITED"
+            ]
+          },
+          "endDuration": {
+            "$ref": "#/components/schemas/Duration"
+          },
+          "endDate": {
+            "$ref": "#/components/schemas/TS"
+          }
+        }
+      },
+      "DoseInstance": {
+        "title": "DoseInstance",
+        "description": "A model for re-presenting a dose instance",
+        "type": "object",
+        "properties": {
+          "conditional": {
+            "type": "boolean"
+          },
+          "daysFromDosageStart": {
+            "type": "integer",
+            "description": "Number of days from the dosage start date",
+            "format": "int32"
+          },
+          "namedTime": {
+            "$ref": "#/components/schemas/DoseTimeOfDayType"
+          },
+          "doseOrder": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Order of the dosage"
+          },
+          "doseTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "maxQty": {
+            "type": "string",
+            "description": "Max dose"
+          },
+          "minQty": {
+            "type": "string",
+            "description": "Minimum dose"
+          },
+          "oneOff": {
+            "type": "boolean",
+            "description": "True when the dose instance is used as One-off"
+          },
+          "oneOffTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "ONE_OFF",
+              "WHEN_NEEDED_ONE_OFF",
+              "WHEN_NEEDED_WITHOUT_TIME",
+              "EXTRA_DOSE"
+            ]
+          }
+        }
+      },
+      "DoseTimeUnitType": {
+        "title": "DoseTimeUnitType",
+        "description": "Dose time units",
+        "example": "Minutes",
+        "type": "string",
+        "enum": [
+          "Minutes",
+          "Hours",
+          "Days",
+          "weeks"
+        ]
+      },
+      "DoseTimeOfDayType": {
+        "title": "DoseTimeOfDayType",
+        "description": "When the time of the day which the dose should be given",
+        "example": "Morning",
+        "type": "string",
+        "enum": [
+          "Morning",
+          "Lunch",
+          "Noon",
+          "Evening",
+          "Night"
+        ]
+      },
+      "DoseWeekDayType": {
+        "title": "DoseWeekDayType",
+        "description": "A model for re-presenting Week days",
+        "example": "Monday",
+        "type": "string",
+        "enum": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+          "None"
+        ]
+      },
+      "Patient": {
+        "title": "Patient",
+        "description": "Data model for representing the patient of the contact",
+        "type": "object",
+        "properties": {
+          "patientId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "patientProtectedId": {
+            "type": "boolean",
+            "description": "Whether the patient has a protected id or not"
+          },
+          "patientInternalID": {
+            "type": "string",
+            "description": "COSMIC internal id of the patient"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "birthDate": {
+            "$ref": "#/components/schemas/TSDATE"
+          },
+          "patientSecrecyGroup": {
+            "$ref": "#/components/schemas/SecrecyGroups"
+          },
+          "patientNameData": {
+            "$ref": "#/components/schemas/PatientName"
+          }
+        }
+      },
+      "PatientName": {
+        "title": "PatientName",
+        "description": "Data model for patient's name",
+        "type": "object",
+        "properties": {
+          "patientFamilyName": {
+            "type": "string",
+            "description": "Family name of the patient"
+          },
+          "patientMiddleName": {
+            "type": "string",
+            "description": "Middle name of the patient"
+          },
+          "patientGivenName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "patientNames": {
+            "$ref": "#/components/schemas/PatientNames"
+          }
+        }
+      },
+      "PatientNames": {
+        "title": "PatientNames",
+        "description": "Array of names of the patient",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Units": {
+        "title": "Units",
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Unit"
+            }
+          }
+        }
+      },
+      "Unit": {
+        "title": "Unit",
+        "description": "The data model for representing a unit",
+        "type": "object",
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitInternalID": {
+            "type": "string",
+            "description": "Cosmic internal id of the unit"
+          },
+          "unitName": {
+            "type": "string",
+            "description": "Name of the unit"
+          },
+          "unitHeadCareProviderUnitID": {
+            "type": "string",
+            "description": "HealthCareProvider Unit id"
+          },
+          "accessZones": {
+            "$ref": "#/components/schemas/AccessZones"
+          },
+          "unitSecrecyGroups": {
+            "$ref": "#/components/schemas/SecrecyGroups"
+          },
+          "phoneNumbers": {
+            "$ref": "#/components/schemas/PhoneNumbers"
+          },
+          "emailAddresses": {
+            "$ref": "#/components/schemas/EmailAddresses"
+          },
+          "unitAddresses": {
+            "$ref": "#/components/schemas/UnitAddresses"
+          }
+        }
+      },
+      "PICareProviders": {
+        "title": "PICareProviders",
+        "description": "List of care providers",
+        "type": "object",
+        "properties": {
+          "careProviders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareProviders"
+            }
+          }
+        }
+      },
+      "CareProviders": {
+        "title": "CareProviders",
+        "description": "Represents list of CareProviders",
+        "type": "object",
+        "properties": {
+          "careProvider": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareProvider"
+            }
+          }
+        }
+      },
+      "CareProvider": {
+        "title": "CareProvider",
+        "description": "Represents a care provider",
+        "type": "object",
+        "properties": {
+          "careProviderType": {
+            "type": "string",
+            "description": "Represents a care provider type"
+          },
+          "careProviderID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderInternalID": {
+            "type": "string",
+            "description": "COSMIC internal id of the care provider"
+          },
+          "cosmicUserID": {
+            "type": "string",
+            "description": "COSMIC user if of the care provider"
+          },
+          "careProviderName": {
+            "type": "string",
+            "description": "Name of the care provider"
+          },
+          "careProviderPosition": {
+            "$ref": "#/components/schemas/CareProviderPosition"
+          },
+          "careProviderUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          }
+        }
+      },
+      "Contact": {
+        "title": "Contact",
+        "description": "The data model for representing a contact/visit",
+        "type": "object",
+        "properties": {
+          "rcId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "contactType": {
+            "type": "string",
+            "description": "Type of the contact"
+          },
+          "contactStatus": {
+            "type": "string",
+            "description": "Status of the contact"
+          },
+          "contactBegin": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "contactEnd": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "contactSecrecyLevels": {
+            "$ref": "#/components/schemas/SecrecyLevels"
+          }
+        }
+      },
+      "II": {
+        "title": "II",
+        "description": "Instance identifier(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "type": "string",
+            "enum": [
+              "NI",
+              "INV",
+              "OTH",
+              "NINF",
+              "PINF",
+              "UNC",
+              "DER",
+              "UNK",
+              "ASKU",
+              "NAV",
+              "QS",
+              "NASK",
+              "TRC",
+              "MSK",
+              "NA"
+            ]
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "type": "string",
+            "enum": [
+              "A",
+              "AU",
+              "U",
+              "R",
+              "I",
+              "D",
+              "K"
+            ]
+          },
+          "value": {
+            "type": "string"
+          },
+          "root": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "identifierName": {
+            "type": "string"
+          },
+          "displayable": {
+            "type": "boolean"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          },
+          "reliability": {
+            "$ref": "#/components/schemas/Reliability"
+          }
+        }
+      },
+      "TSDATE": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "objectType": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/TS"
+          }
+        ],
+        "discriminator": "objectType"
+      },
+      "TS": {
+        "description": "Point in time(ISO 21090)",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/QTY"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "QTY": {
+        "description": "Quantity(ISO 21090)",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "expression": {
+                "$ref": "#/components/schemas/ED"
+              },
+              "originalText": {
+                "$ref": "#/components/schemas/EDTEXT"
+              },
+              "uncertainty": {
+                "$ref": "#/components/schemas/QTY"
+              },
+              "uncertaintyType": {
+                "type": "string",
+                "enum": [
+                  "U",
+                  "N",
+                  "LN",
+                  "G",
+                  "E",
+                  "X_2",
+                  "T",
+                  "F",
+                  "B"
+                ]
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ]
+      },
+      "EDTEXT": {
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "objectType": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/ED"
+          }
+        ],
+        "discriminator": "objectType"
+      },
+      "ED": {
+        "description": "Encapsulated data(ISO 21090)",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "data": {
+                "type": "string"
+              },
+              "xml": {
+                "type": "string"
+              },
+              "reference": {
+                "$ref": "#/components/schemas/TELURL"
+              },
+              "integrityCheck": {
+                "type": "array",
+                "items": {
+                  "type": "integer"
+                }
+              },
+              "thumbnail": {
+                "$ref": "#/components/schemas/ED"
+              },
+              "description": {
+                "$ref": "#/components/schemas/ST"
+              },
+              "translation": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ED"
+                }
+              },
+              "value": {
+                "type": "string"
+              },
+              "mediaType": {
+                "type": "string"
+              },
+              "charset": {
+                "type": "string"
+              },
+              "language": {
+                "type": "string"
+              },
+              "compression": {
+                "type": "string",
+                "enum": [
+                  "DF",
+                  "GZ",
+                  "ZL",
+                  "Z",
+                  "BZ",
+                  "Z_7"
+                ]
+              },
+              "integrityCheckAlgorithm": {
+                "type": "string",
+                "enum": [
+                  "SHA_1",
+                  "SHA_256"
+                ]
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ]
+      },
+      "ST": {
+        "description": "Character string(ISO 21090)",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "translation": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/STNT"
+                }
+              },
+              "value": {
+                "type": "string"
+              },
+              "language": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ]
+      },
+      "STNT": {
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "objectType": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/ST"
+          }
+        ],
+        "discriminator": "objectType"
+      },
+      "TEL": {
+        "description": "Telecommunication address(ISO 21090)",
+        "title": "TEL",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "type": "string",
+            "enum": [
+              "NI",
+              "INV",
+              "OTH",
+              "NINF",
+              "PINF",
+              "UNC",
+              "DER",
+              "UNK",
+              "ASKU",
+              "NAV",
+              "QS",
+              "NASK",
+              "TRC",
+              "MSK",
+              "NA"
+            ]
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "type": "string",
+            "enum": [
+              "A",
+              "AU",
+              "U",
+              "R",
+              "I",
+              "D",
+              "K"
+            ]
+          },
+          "useablePeriod": {
+            "$ref": "#/components/schemas/QSETTS"
+          },
+          "value": {
+            "type": "string"
+          },
+          "use": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TELUSE"
+            }
+          }
+        }
+      },
+      "TELURL": {
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "objectType": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/TEL"
+          }
+        ],
+        "discriminator": "objectType"
+      },
+      "TELUSE": {
+        "title": "TELUSE",
+        "description": "Use of telecommunication address(ISO 21090)",
+        "example": "H",
+        "type": "string",
+        "enum": [
+          "H",
+          "HP",
+          "HV",
+          "WP",
+          "DIR",
+          "PUB",
+          "BAD",
+          "TMP",
+          "AS",
+          "EC",
+          "MC",
+          "PG"
+        ]
+      },
+      "QSETTS": {
+        "title": "QSETTS",
+        "description": "Time period(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "type": "string",
+            "enum": [
+              "NI",
+              "INV",
+              "OTH",
+              "NINF",
+              "PINF",
+              "UNC",
+              "DER",
+              "UNK",
+              "ASKU",
+              "NAV",
+              "QS",
+              "NASK",
+              "TRC",
+              "MSK",
+              "NA"
+            ]
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "type": "string",
+            "enum": [
+              "A",
+              "AU",
+              "U",
+              "R",
+              "I",
+              "D",
+              "K"
+            ]
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/EDTEXT"
+          }
+        }
+      },
+      "ANY": {
+        "title": "ANY",
+        "description": "Abstract data type that is effectively instantiated by any of the other data types(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "type": "string",
+            "enum": [
+              "NI",
+              "INV",
+              "OTH",
+              "NINF",
+              "PINF",
+              "UNC",
+              "DER",
+              "UNK",
+              "ASKU",
+              "NAV",
+              "QS",
+              "NASK",
+              "TRC",
+              "MSK",
+              "NA"
+            ]
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "type": "string",
+            "enum": [
+              "A",
+              "AU",
+              "U",
+              "R",
+              "I",
+              "D",
+              "K"
+            ]
+          }
+        }
+      },
+      "AccessZones": {
+        "title": "AccessZones",
+        "description": "PDL access zones",
+        "type": "object",
+        "properties": {
+          "accessZoneID": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/II"
+            }
+          }
+        }
+      },
+      "SimpleUnit": {
+        "title": "SimpleUnit",
+        "description": "A lite model for a unit",
+        "type": "object",
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "CareProviderPosition": {
+        "title": "CareProviderPosition",
+        "description": "The data model for care provider position",
+        "type": "object",
+        "properties": {
+          "careProviderPositionID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderPositionName": {
+            "type": "string"
+          }
+        }
+      },
+      "PhoneNumbers": {
+        "title": "PhoneNumbers",
+        "description": "Represents list of phone numbers",
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Phone"
+            }
+          }
+        }
+      },
+      "EmailAddresses": {
+        "title": "EmailAddresses",
+        "description": "Represents list of email addresses",
+        "type": "object",
+        "properties": {
+          "Email": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Email"
+            }
+          }
+        }
+      },
+      "UnitAddresses": {
+        "title": "UnitAddresses",
+        "description": "Represents list of unit addresses",
+        "type": "object",
+        "properties": {
+          "unitAddress": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitAddress"
+            }
+          }
+        }
+      },
+      "Phone": {
+        "title": "Phone",
+        "description": "The data model for phone number of a care provider or a unit",
+        "type": "object",
+        "properties": {
+          "phoneType": {
+            "type": "string",
+            "description": "Phone number type",
+            "example": "Direkttelefon"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The actual phone number",
+            "example": "023-49 17 44"
+          },
+          "phoneComment": {
+            "type": "string",
+            "description": "A comment"
+          }
+        }
+      },
+      "Email": {
+        "title": "Email",
+        "description": "Email address of a care provider or a unit",
+        "type": "object",
+        "properties": {
+          "EmailType": {
+            "type": "string",
+            "description": "Email address type"
+          },
+          "EmailAddress": {
+            "type": "string",
+            "description": "Email address",
+            "example": "karl@abc.com"
+          },
+          "EmailComment": {
+            "type": "string",
+            "description": "A comment"
+          }
+        }
+      },
+      "UnitAddress": {
+        "title": "UnitAddress",
+        "description": "The data model for representing an address of a unit",
+        "type": "object",
+        "properties": {
+          "unitAddressType": {
+            "type": "string",
+            "description": "Address type",
+            "example": "Besöksadress"
+          },
+          "unitAddressAddress": {
+            "type": "string",
+            "description": "Address lines",
+            "example": "Myntgatan 8"
+          },
+          "unitAddressPostcode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "583 36"
+          },
+          "unitAddressCity": {
+            "type": "string",
+            "description": "City",
+            "example": "Linkoping"
+          },
+          "unitAddressCounty": {
+            "type": "string",
+            "description": "County",
+            "example": "Östergötland"
+          },
+          "unitAddressCountry": {
+            "type": "string",
+            "description": "Country",
+            "example": "Sverige"
+          },
+          "unitAddressGeographicalPlace": {
+            "type": "string"
+          },
+          "unitAddressComment": {
+            "type": "string",
+            "description": "A comment"
+          }
+        }
+      },
+      "SecrecyGroups": {
+        "title": "SecrecyGroups",
+        "description": "A model for representing secrecy groups",
+        "type": "object",
+        "properties": {
+          "group": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Name of the group",
+              "example": "Psykiatriska kliniken"
+            }
+          }
+        }
+      },
+      "SecrecyLevels": {
+        "title": "SecrecyLevels",
+        "description": "The model for representing secrecy levels",
+        "type": "object",
+        "properties": {
+          "secrecyLevel": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Name of the secrecy level",
+              "example": "Sensitive"
+            }
+          }
+        }
+      },
+      "CD": {
+        "title": "CD",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "type": "string",
+            "enum": [
+              "NI",
+              "INV",
+              "OTH",
+              "NINF",
+              "PINF",
+              "UNC",
+              "DER",
+              "UNK",
+              "ASKU",
+              "NAV",
+              "QS",
+              "NASK",
+              "TRC",
+              "MSK",
+              "NA"
+            ]
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "type": "string",
+            "enum": [
+              "A",
+              "AU",
+              "U",
+              "R",
+              "I",
+              "D",
+              "K"
+            ]
+          },
+          "displayName": {
+            "$ref": "#/components/schemas/ST"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/EDTEXT"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CD"
+            }
+          },
+          "source": {
+            "$ref": "#/components/schemas/XReference"
+          },
+          "code": {
+            "type": "string"
+          },
+          "codeSystem": {
+            "type": "string"
+          },
+          "codeSystemName": {
+            "type": "string"
+          },
+          "codeSystemVersion": {
+            "type": "string"
+          },
+          "valueSet": {
+            "type": "string"
+          },
+          "valueSetVersion": {
+            "type": "string"
+          },
+          "codingRationale": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CodingRationale"
+            }
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "XReference": {
+        "title": "XReference",
+        "type": "object",
+        "properties": {
+          "xref": {
+            "type": "string"
+          }
+        }
+      },
+      "CodingRationale": {
+        "title": "CodingRationale",
+        "example": "O",
+        "type": "string",
+        "enum": [
+          "O",
+          "P",
+          "R"
+        ]
+      },
+      "Reliability": {
+        "title": "Reliability",
+        "example": "ISS",
+        "type": "string",
+        "enum": [
+          "ISS",
+          "VER",
+          "UNV"
+        ]
+      },
+      "Scope": {
+        "title": "Scope",
+        "example": "BUSN",
+        "type": "string",
+        "enum": [
+          "BUSN",
+          "OBJ",
+          "VER",
+          "VW"
+        ]
+      },
+      "PrescriptionEHRExtractsArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PrescriptionEHRExtracts"
+        }
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

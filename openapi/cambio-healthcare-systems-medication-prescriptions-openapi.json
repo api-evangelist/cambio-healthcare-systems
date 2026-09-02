@@ -1,0 +1,1930 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Medication prescriptions",
+    "description": "Medication prescriptions of a patient\n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>1.0.0</td>\n    <td>R8.3.05</td>\n    <td>Feb 2022</td>\n    <td>Initial version, deprecated</td>\n  </tr>\n</table>",
+    "version": "deprecated"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/open/api/medications"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "getPrescriptionInfo",
+        "summary": "Get Prescriptions",
+        "description": "Get all prescriptions for the given patient. The result can be filtered by using a time interval.  <p><a  target=\"_blank\" href=\"/openidconnectprofile\">OAuth</a> <code>scope</code> for access : <code>user/MedicationPrescription-read</code></p>",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrescriptionInfoResponse"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fromDateTime",
+            "in": "query",
+            "description": "Time interval start, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toDateTime",
+            "in": "query",
+            "description": "Time interval end, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "Patient's personal number.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "PrescriptionInfoResponse": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PrescriptionEHRExtracts"
+        }
+      },
+      "PrescriptionEHRExtracts": {
+        "type": "object",
+        "properties": {
+          "PrescriptionEHRExtract": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PrescriptionEHRExtract"
+            }
+          },
+          "XSDVersion": {
+            "$ref": "#/components/schemas/XSDVersion"
+          }
+        }
+      },
+      "PrescriptionEHRExtract": {
+        "type": "object",
+        "properties": {
+          "ehr_id": {
+            "$ref": "#/components/schemas/II"
+          },
+          "ehr_system": {
+            "$ref": "#/components/schemas/II"
+          },
+          "time_created": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "Prescription": {
+            "$ref": "#/components/schemas/Prescription"
+          },
+          "Patient": {
+            "$ref": "#/components/schemas/Patient"
+          },
+          "Units": {
+            "$ref": "#/components/schemas/Units"
+          },
+          "CreationUnit": {
+            "$ref": "#/components/schemas/Unit"
+          },
+          "ResponsibleUnit": {
+            "$ref": "#/components/schemas/Unit"
+          },
+          "AccessZoneUnit": {
+            "$ref": "#/components/schemas/Unit"
+          },
+          "HeadCareproviderUnit": {
+            "$ref": "#/components/schemas/Unit"
+          },
+          "CareProviders": {
+            "$ref": "#/components/schemas/PICareProviders"
+          },
+          "HCMContact": {
+            "$ref": "#/components/schemas/Contact"
+          }
+        }
+      },
+      "Prescription": {
+        "type": "object",
+        "properties": {
+          "rc_id": {
+            "$ref": "#/components/schemas/II"
+          },
+          "AccordingToSchedule": {
+            "type": "boolean"
+          },
+          "ActualTerminateDate": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "ReplacedByLatest": {
+            "type": "boolean"
+          },
+          "PrescriptionVersionDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "PrescriptionPatientInstruction": {
+            "type": "string"
+          },
+          "PrescriptionCaregiverInstruction": {
+            "type": "string"
+          },
+          "ExtendedMedicationMiningData": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "PrescriptionReason": {
+            "type": "string"
+          },
+          "PrescriptionReasonText": {
+            "type": "string"
+          },
+          "TreatmentGoal": {
+            "type": "string"
+          },
+          "PrescriptionType": {
+            "type": "string"
+          },
+          "MedicationType": {
+            "type": "string"
+          },
+          "RouteDetail": {
+            "$ref": "#/components/schemas/RouteDetail"
+          },
+          "MedicationTreatmentId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "MedicationTreatmentStatusDetail": {
+            "$ref": "#/components/schemas/MedicationTreatementStatusDetail"
+          },
+          "MainProductTreatment": {
+            "$ref": "#/components/schemas/ProductInformation"
+          },
+          "MedicationActive": {
+            "type": "boolean"
+          },
+          "FollowUpDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "PrescriptionCancelComment": {
+            "type": "string"
+          },
+          "PrescriptionStartDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "PrescriptionEndDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "PrescriptionDosages": {
+            "$ref": "#/components/schemas/PrescriptionDosage"
+          },
+          "MedicationChoice": {
+            "$ref": "#/components/schemas/CD"
+          },
+          "PrescriptionDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PrescriptionDetail"
+            }
+          },
+          "PrescriptionDrugExtemporeDescription": {
+            "type": "string"
+          },
+          "MedicationPurpose": {
+            "type": "string"
+          },
+          "MedicationPurposeText": {
+            "type": "string"
+          },
+          "MedicationIndication": {
+            "type": "string"
+          },
+          "MedicationIndicationText": {
+            "type": "string"
+          },
+          "MedicationTarget": {
+            "type": "string"
+          },
+          "MedicationTargetText": {
+            "type": "string"
+          },
+          "MedicationAdministrationMethod": {
+            "type": "string"
+          },
+          "MixingInstruction": {
+            "type": "string"
+          },
+          "Mixtures": {
+            "$ref": "#/components/schemas/MixturesType"
+          }
+        }
+      },
+      "RouteDetail": {
+        "type": "object",
+        "properties": {
+          "byWith": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "routeCode": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "abbreviation": {
+            "type": "string"
+          },
+          "routeLicensed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MedicationTreatementStatusDetail": {
+        "type": "object",
+        "properties": {
+          "TreatmentStatus": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PAUSED",
+              "ENDED",
+              "DISCONTINUED",
+              "UNPLANNED",
+              "DELETED",
+              "PLANNED",
+              "INVALIDATED",
+              "FUTURE_PAUSED",
+              "FUTURE_PLANNED",
+              "FUTURE_DISCONTINUED",
+              "FUTURE_REACTIVATED",
+              "UNPLANED_FUTURE_DISCONTINUED"
+            ]
+          },
+          "EffectiveDateTime": {
+            "$ref": "#/components/schemas/TS"
+          }
+        }
+      },
+      "ProductInformation": {
+        "type": "object",
+        "properties": {
+          "PrescriptionProductTradeName": {
+            "type": "string"
+          },
+          "PrescriptionProductDrugFormTextSv": {
+            "type": "string"
+          },
+          "PrescriptionProductNplID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "PrescriptionProductAtcCode": {
+            "$ref": "#/components/schemas/CD"
+          },
+          "PrescriptionProductStrengthNumeric": {
+            "type": "string"
+          },
+          "PrescriptionProductStrengthNumericUnit": {
+            "type": "string"
+          },
+          "MainSubstance": {
+            "type": "string"
+          }
+        }
+      },
+      "PrescriptionDosage": {
+        "type": "object",
+        "properties": {
+          "WhenNeeded": {
+            "type": "boolean"
+          },
+          "DosagePlugin": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DosagePlugin"
+            }
+          }
+        }
+      },
+      "PrescriptionDetail": {
+        "type": "object",
+        "properties": {
+          "ProductInformation": {
+            "$ref": "#/components/schemas/ProductInformation"
+          },
+          "MixingDetail": {
+            "$ref": "#/components/schemas/MixingDetail"
+          },
+          "Type": {
+            "type": "string",
+            "enum": [
+              "Main",
+              "Additive",
+              "Diluent"
+            ]
+          }
+        }
+      },
+      "MixingDetail": {
+        "type": "object",
+        "properties": {
+          "Amount": {
+            "type": "number"
+          },
+          "AmountUnit": {
+            "type": "string"
+          },
+          "ConcentrationValue": {
+            "type": "number"
+          },
+          "FinalConcentrationText": {
+            "type": "string"
+          }
+        }
+      },
+      "MixturesType": {
+        "type": "object",
+        "properties": {
+          "Mixture": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MixtureType"
+            }
+          }
+        }
+      },
+      "MixtureType": {
+        "type": "object",
+        "properties": {
+          "Type": {
+            "type": "string"
+          },
+          "Name": {
+            "type": "string"
+          },
+          "Strength": {
+            "type": "string"
+          },
+          "Amount": {
+            "type": "string"
+          },
+          "Text": {
+            "type": "string"
+          }
+        }
+      },
+      "DosagePlugin": {
+        "type": "object",
+        "properties": {
+          "DripDosage": {
+            "$ref": "#/components/schemas/DripDosageType"
+          },
+          "MultiDosage": {
+            "$ref": "#/components/schemas/MultiDosageType"
+          },
+          "FreeTextDosage": {
+            "$ref": "#/components/schemas/FreeTextDosageType"
+          },
+          "NormalDosage": {
+            "$ref": "#/components/schemas/NormalDosageType"
+          },
+          "OccasionDosage": {
+            "$ref": "#/components/schemas/OccasionDosageType"
+          },
+          "OnceDosage": {
+            "$ref": "#/components/schemas/OnceDosageType"
+          },
+          "PeriodicDosage": {
+            "$ref": "#/components/schemas/PeriodicDosageType"
+          },
+          "WeeklyDosage": {
+            "$ref": "#/components/schemas/WeeklyDosageType"
+          },
+          "IX3Dosage": {
+            "$ref": "#/components/schemas/IX3DosageType"
+          }
+        }
+      },
+      "DripDosageType": {
+        "type": "object",
+        "properties": {
+          "Amount": {
+            "$ref": "#/components/schemas/DDAmount"
+          },
+          "Volume": {
+            "$ref": "#/components/schemas/DDVolume"
+          },
+          "Concentration": {
+            "$ref": "#/components/schemas/DDConcentration"
+          },
+          "Duration": {
+            "$ref": "#/components/schemas/DDDuration"
+          },
+          "Iteration": {
+            "$ref": "#/components/schemas/DDIteration"
+          },
+          "Speeds": {
+            "$ref": "#/components/schemas/Speeds"
+          },
+          "DosageText": {
+            "type": "string"
+          }
+        }
+      },
+      "DDAmount": {
+        "type": "object",
+        "properties": {
+          "$self": {
+            "type": "number"
+          },
+          "Unit": {
+            "type": "string"
+          }
+        }
+      },
+      "DDVolume": {
+        "type": "object",
+        "properties": {
+          "$self": {
+            "type": "number"
+          },
+          "Unit": {
+            "type": "string"
+          }
+        }
+      },
+      "DDConcentration": {
+        "type": "object",
+        "properties": {
+          "$self": {
+            "type": "number"
+          },
+          "Unit": {
+            "type": "string"
+          }
+        }
+      },
+      "DDDuration": {
+        "type": "object",
+        "properties": {
+          "$self": {
+            "type": "integer"
+          },
+          "TimeUnit": {
+            "$ref": "#/components/schemas/DoseTimeUnitType"
+          }
+        }
+      },
+      "DDIteration": {
+        "type": "object",
+        "properties": {
+          "DailyReoccurence": {
+            "$ref": "#/components/schemas/DailyReoccurence"
+          },
+          "SpecifiedTimes": {
+            "$ref": "#/components/schemas/SpecifiedTimes"
+          },
+          "TimesADay": {
+            "$ref": "#/components/schemas/TimesADay"
+          },
+          "Continuous": {
+            "type": "string"
+          }
+        }
+      },
+      "DailyReoccurence": {
+        "type": "object",
+        "properties": {
+          "Amount": {
+            "type": "integer"
+          }
+        }
+      },
+      "SpecifiedTimes": {
+        "type": "object",
+        "properties": {
+          "Time": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "TimesADay": {
+        "type": "object",
+        "properties": {
+          "StartTime": {
+            "type": "string"
+          },
+          "Amount": {
+            "type": "integer"
+          }
+        }
+      },
+      "Speeds": {
+        "type": "object",
+        "properties": {
+          "Speed": {
+            "type": "number"
+          },
+          "MinSpeed": {
+            "type": "number"
+          },
+          "MaxSpeed": {
+            "type": "number"
+          },
+          "AmountUnit": {
+            "type": "string"
+          },
+          "TimeUnit": {
+            "$ref": "#/components/schemas/DoseTimeUnitType"
+          }
+        }
+      },
+      "MultiDosageType": {
+        "type": "object",
+        "properties": {
+          "Dosage": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dosage"
+            }
+          }
+        }
+      },
+      "Dosage": {
+        "type": "object",
+        "properties": {
+          "StartTime": {
+            "$ref": "#/components/schemas/StartTime"
+          },
+          "StartDateTime": {
+            "type": "string"
+          },
+          "DurationTime": {
+            "$ref": "#/components/schemas/DurationTime"
+          },
+          "DurationDateTime": {
+            "$ref": "#/components/schemas/DateTimeDuration"
+          },
+          "DosePlugin": {
+            "$ref": "#/components/schemas/DosePlugin"
+          }
+        }
+      },
+      "StartTime": {
+        "type": "object",
+        "properties": {
+          "$self": {
+            "type": "integer"
+          },
+          "Type": {
+            "$ref": "#/components/schemas/DoseTimeUnitType"
+          }
+        }
+      },
+      "DurationTime": {
+        "type": "object",
+        "properties": {
+          "$self": {
+            "type": "integer"
+          },
+          "Type": {
+            "type": "string",
+            "enum": [
+              "Minutes",
+              "Hours",
+              "Days",
+              "Weeks",
+              "Unlimited"
+            ]
+          }
+        }
+      },
+      "DateTimeDuration": {
+        "type": "object",
+        "properties": {
+          "$self": {
+            "type": "string"
+          },
+          "Unlimited": {
+            "type": "boolean"
+          }
+        }
+      },
+      "DosePlugin": {
+        "type": "object",
+        "properties": {
+          "FreeTextDosage": {
+            "$ref": "#/components/schemas/FreeTextDosageType"
+          },
+          "NormalDosage": {
+            "$ref": "#/components/schemas/NormalDosageType"
+          },
+          "OccasionDosage": {
+            "$ref": "#/components/schemas/OccasionDosageType"
+          },
+          "OnceDosage": {
+            "$ref": "#/components/schemas/OnceDosageType"
+          },
+          "PeriodicDosage": {
+            "$ref": "#/components/schemas/PeriodicDosageType"
+          },
+          "WeeklyDosage": {
+            "$ref": "#/components/schemas/WeeklyDosageType"
+          }
+        }
+      },
+      "FreeTextDosageType": {
+        "type": "object",
+        "properties": {
+          "Text": {
+            "type": "string"
+          },
+          "Unit": {
+            "type": "string"
+          },
+          "Motivation": {
+            "type": "string"
+          },
+          "DosageText": {
+            "type": "string"
+          }
+        }
+      },
+      "NormalDosageType": {
+        "type": "object",
+        "properties": {
+          "MinDose": {
+            "type": "number"
+          },
+          "MaxDose": {
+            "type": "number"
+          },
+          "Unit": {
+            "type": "string"
+          },
+          "Time": {
+            "$ref": "#/components/schemas/Time"
+          },
+          "WhenNeeded": {
+            "$ref": "#/components/schemas/WhenNeeded"
+          },
+          "DosageText": {
+            "type": "string"
+          }
+        }
+      },
+      "Time": {
+        "type": "object",
+        "properties": {
+          "TimesPerDay": {
+            "type": "integer"
+          },
+          "Times": {
+            "$ref": "#/components/schemas/Times"
+          }
+        }
+      },
+      "Times": {
+        "type": "object",
+        "properties": {
+          "Time": {
+            "$ref": "#/components/schemas/DoseTimeOfDayType"
+          }
+        }
+      },
+      "WhenNeeded": {
+        "type": "object",
+        "properties": {
+          "MaxDose": {
+            "$ref": "#/components/schemas/MaxDose"
+          },
+          "MinimumIntervalBetweenDosages": {
+            "$ref": "#/components/schemas/MinimumIntervalBetweenDosages"
+          }
+        }
+      },
+      "MaxDose": {
+        "type": "object",
+        "properties": {
+          "$self": {
+            "type": "number"
+          },
+          "DoseRestriction": {
+            "type": "string",
+            "enum": [
+              "PerDay",
+              "PerDosage"
+            ]
+          }
+        }
+      },
+      "MinimumIntervalBetweenDosages": {
+        "type": "object",
+        "properties": {
+          "$self": {
+            "type": "number"
+          },
+          "Type": {
+            "$ref": "#/components/schemas/DoseTimeUnitType"
+          }
+        }
+      },
+      "OccasionDosageType": {
+        "type": "object",
+        "properties": {
+          "Unit": {
+            "type": "string"
+          },
+          "Dosages": {
+            "$ref": "#/components/schemas/Dosages"
+          },
+          "DosageText": {
+            "type": "string"
+          }
+        }
+      },
+      "Dosages": {
+        "type": "object",
+        "properties": {
+          "OccasionPerDayDosages": {
+            "$ref": "#/components/schemas/OccasionPerDayDosages"
+          },
+          "TimeOfDayDosages": {
+            "$ref": "#/components/schemas/TimeOfDayDosages"
+          },
+          "SpecifiedTimeDosages": {
+            "$ref": "#/components/schemas/SpecifiedTimeDosages"
+          }
+        }
+      },
+      "OccasionPerDayDosages": {
+        "type": "object",
+        "properties": {
+          "OccasionPerDayDose": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OccasionPerDayDose"
+            }
+          }
+        }
+      },
+      "OccasionPerDayDose": {
+        "type": "object",
+        "properties": {
+          "MinDose": {
+            "type": "number"
+          },
+          "MaxDose": {
+            "type": "number"
+          },
+          "DoseOrder": {
+            "type": "integer"
+          }
+        }
+      },
+      "TimeOfDayDosages": {
+        "type": "object",
+        "properties": {
+          "TimeOfDayDose": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimeOfDayDose"
+            }
+          }
+        }
+      },
+      "TimeOfDayDose": {
+        "type": "object",
+        "properties": {
+          "MinDose": {
+            "type": "number"
+          },
+          "MaxDose": {
+            "type": "number"
+          },
+          "Time": {
+            "$ref": "#/components/schemas/DoseTimeOfDayType"
+          }
+        }
+      },
+      "SpecifiedTimeDosages": {
+        "type": "object",
+        "properties": {
+          "SpecifiedTimeDose": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpecifiedTimeDose"
+            }
+          }
+        }
+      },
+      "SpecifiedTimeDose": {
+        "type": "object",
+        "properties": {
+          "MinDose": {
+            "type": "number"
+          },
+          "MaxDose": {
+            "type": "number"
+          },
+          "Time": {
+            "type": "string"
+          }
+        }
+      },
+      "OnceDosageType": {
+        "type": "object",
+        "properties": {
+          "minDose": {
+            "type": "number"
+          },
+          "maxDose": {
+            "type": "number"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "dateTime": {
+            "type": "string"
+          },
+          "dosageText": {
+            "type": "string"
+          }
+        }
+      },
+      "PeriodicDosageType": {
+        "type": "object",
+        "properties": {
+          "MinDose": {
+            "type": "number"
+          },
+          "MaxDose": {
+            "type": "number"
+          },
+          "Unit": {
+            "type": "string"
+          },
+          "IntervalTime": {
+            "$ref": "#/components/schemas/IntervalTime"
+          },
+          "DosageText": {
+            "type": "string"
+          }
+        }
+      },
+      "IntervalTime": {
+        "type": "object",
+        "properties": {
+          "$self": {
+            "type": "integer"
+          },
+          "Type": {
+            "$ref": "#/components/schemas/DoseTimeUnitType"
+          }
+        }
+      },
+      "WeeklyDosageType": {
+        "type": "object",
+        "properties": {
+          "Unit": {
+            "type": "string"
+          },
+          "Weeks": {
+            "$ref": "#/components/schemas/Weeks"
+          },
+          "DosageText": {
+            "type": "string"
+          }
+        }
+      },
+      "Weeks": {
+        "type": "object",
+        "properties": {
+          "Week": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Week"
+            }
+          }
+        }
+      },
+      "Week": {
+        "type": "object",
+        "properties": {
+          "Doses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Doses"
+            }
+          }
+        }
+      },
+      "Doses": {
+        "type": "object",
+        "properties": {
+          "Dose": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dose"
+            }
+          }
+        }
+      },
+      "Dose": {
+        "type": "object",
+        "properties": {
+          "Dose": {
+            "type": "number"
+          },
+          "Dayofweek": {
+            "$ref": "#/components/schemas/DoseWeekDayType"
+          },
+          "timeofday": {
+            "$ref": "#/components/schemas/DoseTimeOfDayType"
+          }
+        }
+      },
+      "IX3DosageType": {
+        "type": "object",
+        "properties": {
+          "Conditional": {
+            "type": "boolean"
+          },
+          "ConditionalText": {
+            "type": "string"
+          },
+          "DosageType": {
+            "type": "string"
+          },
+          "DoseDistributionType": {
+            "type": "string",
+            "enum": [
+              "SAME_DOSE_EACH_OCCASION",
+              "DIFFERENT_DOSE_SEPARATE_OCCASION",
+              "CONTINUOUS_DOSE",
+              "PERIODIC",
+              "NONE"
+            ]
+          },
+          "DoseDuration": {
+            "$ref": "#/components/schemas/Duration"
+          },
+          "InfusionDuration": {
+            "$ref": "#/components/schemas/Duration"
+          },
+          "DoseStart": {
+            "$ref": "#/components/schemas/DoseStart"
+          },
+          "DoseEnd": {
+            "$ref": "#/components/schemas/DoseEnd"
+          },
+          "DoseInstance": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DoseInstance"
+            }
+          },
+          "Continuous": {
+            "type": "boolean"
+          },
+          "DosageText": {
+            "type": "string"
+          },
+          "DosageShortText": {
+            "type": "string"
+          },
+          "DosageOrder": {
+            "type": "integer"
+          },
+          "ExtraDose": {
+            "type": "boolean"
+          },
+          "NoOfAdminTimes": {
+            "type": "integer"
+          },
+          "Rate": {
+            "type": "number"
+          },
+          "WholeWhenNeeded": {
+            "type": "boolean"
+          },
+          "RepetitionLength": {
+            "type": "integer"
+          }
+        }
+      },
+      "Duration": {
+        "type": "object",
+        "properties": {
+          "length": {
+            "type": "string"
+          },
+          "TimeType": {
+            "type": "string",
+            "enum": [
+              "MINUTE",
+              "HOUR",
+              "DAY",
+              "WEEK",
+              "MONTH",
+              "YEAR",
+              "ADMIN_OCCASION",
+              "UNLIMITED"
+            ]
+          }
+        }
+      },
+      "DoseStart": {
+        "type": "object",
+        "properties": {
+          "DoseStartType": {
+            "type": "string",
+            "enum": [
+              "AFTER_PREVIOUS",
+              "DATE",
+              "UNKNOWN",
+              "IMMEDIATE_AFTER_PREVIOUS_DOSAGE"
+            ]
+          },
+          "StartDuration": {
+            "$ref": "#/components/schemas/Duration"
+          },
+          "StartDate": {
+            "$ref": "#/components/schemas/TS"
+          }
+        }
+      },
+      "DoseEnd": {
+        "type": "object",
+        "properties": {
+          "DoseEndType": {
+            "type": "string",
+            "enum": [
+              "DURATION",
+              "DATE",
+              "UNLIMITED"
+            ]
+          },
+          "EndDuration": {
+            "$ref": "#/components/schemas/Duration"
+          },
+          "EndDate": {
+            "$ref": "#/components/schemas/TS"
+          }
+        }
+      },
+      "DoseInstance": {
+        "type": "object",
+        "properties": {
+          "Conditional": {
+            "type": "boolean"
+          },
+          "DaysFromDosageStart": {
+            "type": "integer"
+          },
+          "NamedTime": {
+            "$ref": "#/components/schemas/DoseTimeOfDayType"
+          },
+          "DoseOrder": {
+            "type": "integer"
+          },
+          "DoseTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "MaxQty": {
+            "type": "string"
+          },
+          "MinQty": {
+            "type": "string"
+          },
+          "OneOff": {
+            "type": "boolean"
+          },
+          "OneOffTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "Type": {
+            "type": "string",
+            "enum": [
+              "NORMAL",
+              "ONE_OFF",
+              "WHEN_NEEDED_ONE_OFF",
+              "WHEN_NEEDED_WITHOUT_TIME",
+              "EXTRA_DOSE"
+            ]
+          }
+        }
+      },
+      "DoseTimeUnitType": {
+        "type": "string",
+        "enum": [
+          "Minutes",
+          "Hours",
+          "Days",
+          "weeks"
+        ]
+      },
+      "DoseTimeOfDayType": {
+        "type": "string",
+        "enum": [
+          "Morning",
+          "Lunch",
+          "Noon",
+          "Evening",
+          "Night"
+        ]
+      },
+      "DoseWeekDayType": {
+        "type": "string",
+        "enum": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
+          "None"
+        ]
+      },
+      "CD": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "displayName": {
+            "$ref": "#/components/schemas/ST"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/EDTEXT"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CD"
+            }
+          },
+          "source": {
+            "$ref": "#/components/schemas/XReference"
+          },
+          "code": {
+            "type": "string"
+          },
+          "codeSystem": {
+            "type": "string"
+          },
+          "codeSystemName": {
+            "type": "string"
+          },
+          "codeSystemVersion": {
+            "type": "string"
+          },
+          "valueSet": {
+            "type": "string"
+          },
+          "valueSetVersion": {
+            "type": "string"
+          },
+          "codingRationale": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "O",
+                "P",
+                "R"
+              ]
+            }
+          },
+          "id": {
+            "type": "string"
+          }
+        }
+      },
+      "XReference": {
+        "type": "object",
+        "properties": {
+          "xref": {
+            "type": "string"
+          }
+        }
+      },
+      "Patient": {
+        "type": "object",
+        "properties": {
+          "PatientId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "PatientProtectedId": {
+            "type": "boolean"
+          },
+          "PatientInternalID": {
+            "type": "string"
+          },
+          "Gender": {
+            "type": "string"
+          },
+          "BirthDate": {
+            "$ref": "#/components/schemas/TSDATE"
+          },
+          "PatientSecrecyGroup": {
+            "$ref": "#/components/schemas/PatientSecrecyGroup"
+          },
+          "PatientNameData": {
+            "$ref": "#/components/schemas/PatientName"
+          }
+        }
+      },
+      "PatientSecrecyGroup": {
+        "type": "object",
+        "properties": {
+          "Group": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PatientName": {
+        "type": "object",
+        "properties": {
+          "PatientFamilyName": {
+            "type": "string"
+          },
+          "PatientMiddleName": {
+            "type": "string"
+          },
+          "PatientGivenName": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "PatientNames": {
+            "$ref": "#/components/schemas/PatientNames"
+          }
+        }
+      },
+      "PatientNames": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Units": {
+        "type": "object",
+        "properties": {
+          "UnitData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitAll"
+            }
+          }
+        }
+      },
+      "UnitAll": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Unit"
+          }
+        ],
+        "properties": {
+          "UnitName": {
+            "type": "string"
+          },
+          "UnitHeadCareProviderUnitID": {
+            "type": "string"
+          },
+          "AccessZones": {
+            "$ref": "#/components/schemas/AccessZones"
+          },
+          "UnitSecrecyGroups": {
+            "$ref": "#/components/schemas/UnitSecrecyGroups"
+          },
+          "PhoneNumbers": {
+            "$ref": "#/components/schemas/PhoneNumbers"
+          },
+          "EmailAddresses": {
+            "$ref": "#/components/schemas/EmailAddresses"
+          },
+          "UnitAddresses": {
+            "$ref": "#/components/schemas/UnitAddresses"
+          }
+        }
+      },
+      "Unit": {
+        "type": "object",
+        "properties": {
+          "UnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitInternalID": {
+            "type": "string"
+          }
+        }
+      },
+      "UnitSecrecyGroups": {
+        "type": "object",
+        "properties": {
+          "Group": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AccessZones": {
+        "type": "object",
+        "properties": {
+          "AccessZoneID": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/II"
+            }
+          }
+        }
+      },
+      "PhoneNumbers": {
+        "type": "object",
+        "properties": {
+          "PhoneData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Phone"
+            }
+          }
+        }
+      },
+      "Phone": {
+        "type": "object",
+        "properties": {
+          "PhoneType": {
+            "type": "string"
+          },
+          "PhoneNumber": {
+            "type": "string"
+          },
+          "PhoneComment": {
+            "type": "string"
+          }
+        }
+      },
+      "EmailAddresses": {
+        "type": "object",
+        "properties": {
+          "EmailData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Email"
+            }
+          }
+        }
+      },
+      "Email": {
+        "type": "object",
+        "properties": {
+          "EmailType": {
+            "type": "string"
+          },
+          "EmailAddress": {
+            "type": "string"
+          },
+          "EmailComment": {
+            "type": "string"
+          }
+        }
+      },
+      "UnitAddresses": {
+        "type": "object",
+        "properties": {
+          "UnitAddressData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitAddress"
+            }
+          }
+        }
+      },
+      "UnitAddress": {
+        "type": "object",
+        "properties": {
+          "UnitAddressType": {
+            "type": "string"
+          },
+          "UnitAddressAddress": {
+            "type": "string"
+          },
+          "UnitAddressPostcode": {
+            "type": "string"
+          },
+          "UnitAddressCity": {
+            "type": "string"
+          },
+          "UnitAddressCounty": {
+            "type": "string"
+          },
+          "UnitAddressCountry": {
+            "type": "string"
+          },
+          "UnitAddressGeographicalPlace": {
+            "type": "string"
+          },
+          "UnitAddressComment": {
+            "type": "string"
+          }
+        }
+      },
+      "CareProviderUnit": {
+        "type": "object",
+        "properties": {
+          "UnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "PICareProviders": {
+        "type": "object",
+        "properties": {
+          "CareProviders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareProviders"
+            }
+          }
+        }
+      },
+      "CareProviders": {
+        "type": "object",
+        "properties": {
+          "CareProvider": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareProvider"
+            }
+          }
+        }
+      },
+      "CareProvider": {
+        "type": "object",
+        "properties": {
+          "CareProviderType": {
+            "type": "string"
+          },
+          "CareProviderID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "CareProviderInternalID": {
+            "type": "string"
+          },
+          "CosmicUserID": {
+            "type": "string"
+          },
+          "CareProviderName": {
+            "type": "string"
+          },
+          "CareProviderPosition": {
+            "$ref": "#/components/schemas/CareProviderPosition"
+          },
+          "CareProviderUnit": {
+            "$ref": "#/components/schemas/CareProviderUnit"
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "rc_id": {
+            "$ref": "#/components/schemas/II"
+          },
+          "ContactType": {
+            "type": "string"
+          },
+          "ContactStatus": {
+            "type": "string"
+          },
+          "ContactBegin": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "ContactEnd": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "ContactSecrecyLevels": {
+            "$ref": "#/components/schemas/ContactSecrecyLevels"
+          }
+        }
+      },
+      "ContactSecrecyLevels": {
+        "type": "object",
+        "properties": {
+          "SecrecyLevel": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CareProviderPosition": {
+        "type": "object",
+        "properties": {
+          "CareProviderPositionID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "CareProviderPositionName": {
+            "type": "string"
+          }
+        }
+      },
+      "XSDVersion": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number"
+          }
+        }
+      },
+      "II": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "$self": {
+            "type": "string"
+          },
+          "root": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "identifierName": {
+            "type": "string"
+          },
+          "displayable": {
+            "type": "boolean"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "BUSN",
+              "OBJ",
+              "VER",
+              "VW"
+            ]
+          },
+          "reliability": {
+            "type": "string",
+            "enum": [
+              "ISS",
+              "VER",
+              "UNV"
+            ]
+          }
+        }
+      },
+      "TSDATE": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TS"
+          }
+        ]
+      },
+      "TS": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/QTY"
+          }
+        ],
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "ED": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "xml": {
+            "type": "string"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/TELURL"
+          },
+          "integrityCheck": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "thumbnail": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "description": {
+            "$ref": "#/components/schemas/ST"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ED"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "compression": {
+            "type": "string",
+            "enum": [
+              "DF",
+              "GZ",
+              "ZL",
+              "Z",
+              "BZ",
+              "Z_7"
+            ]
+          },
+          "integrityCheckAlgorithm": {
+            "type": "string",
+            "enum": [
+              "SHA_1",
+              "SHA_256"
+            ]
+          }
+        }
+      },
+      "TELURL": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TEL"
+          }
+        ]
+      },
+      "TEL": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "useablePeriod": {
+            "$ref": "#/components/schemas/QSETTS"
+          },
+          "value": {
+            "type": "string"
+          },
+          "use": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "H",
+                "HP",
+                "HV",
+                "WP",
+                "DIR",
+                "PUB",
+                "BAD",
+                "TMP",
+                "AS",
+                "EC",
+                "MC",
+                "PG"
+              ]
+            }
+          }
+        }
+      },
+      "QSETTS": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "originalText": {
+            "$ref": "#/components/schemas/EDTEXT"
+          }
+        }
+      },
+      "EDTEXT": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ED"
+          }
+        ]
+      },
+      "ST": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/STNT"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        }
+      },
+      "STNT": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ST"
+          }
+        ]
+      },
+      "QTY": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "expression": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/EDTEXT"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/QTY"
+          },
+          "uncertaintyType": {
+            "type": "string",
+            "enum": [
+              "U",
+              "N",
+              "LN",
+              "G",
+              "E",
+              "X_2",
+              "T",
+              "F",
+              "B"
+            ]
+          }
+        }
+      },
+      "ANY": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HXIT"
+          },
+          {
+            "properties": {
+              "nullFlavor": {
+                "type": "string",
+                "enum": [
+                  "NI",
+                  "INV",
+                  "OTH",
+                  "NINF",
+                  "PINF",
+                  "UNC",
+                  "DER",
+                  "UNK",
+                  "ASKU",
+                  "NAV",
+                  "QS",
+                  "NASK",
+                  "TRC",
+                  "MSK",
+                  "NA"
+                ]
+              },
+              "flavorId": {
+                "type": "string"
+              },
+              "updateMode": {
+                "type": "string",
+                "enum": [
+                  "A",
+                  "AU",
+                  "U",
+                  "R",
+                  "I",
+                  "D",
+                  "K"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HXIT": {
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

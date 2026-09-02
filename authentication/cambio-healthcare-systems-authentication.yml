@@ -1,0 +1,72 @@
+generated: '2026-09-02'
+method: searched
+source: https://developer.openservices.cambio.se/getting-started
+docs: https://developer.openservices.cambio.se/getting-started
+note: 'Cambio Open Services requires TWO credentials on every call: an Azure API Management subscription key (the
+  "API key" shown in the COS portal profile, sent as Ocp-Apim-Subscription-Key or the subscription-key query parameter)
+  AND an OAuth 2.0 bearer access token issued by the Cambio Keycloak realm at https://api.openservices.cambio.se/auth/realms/COS.
+  The OpenAPI documents exported by the portal only declare the APIM subscription key; the OAuth layer is documented
+  on the Getting started page and in the OpenID Connect discovery document captured under well-known/.'
+summary:
+  types:
+  - apiKey
+  - oauth2
+  - openIdConnect
+  api_key_in:
+  - header
+  - query
+  oauth_grant_types:
+  - authorization_code
+  - client_credentials
+  token_endpoint_auth_methods:
+  - private_key_jwt
+  - client_secret_basic
+  - client_secret_post
+  - tls_client_auth
+  - client_secret_jwt
+  pkce:
+  - plain
+  - S256
+  mtls_supported: true
+schemes:
+- name: apiKeyHeader
+  type: apiKey
+  in: header
+  parameter: Ocp-Apim-Subscription-Key
+  description: Azure API Management subscription key, issued per COS product subscription and shown in the developer-portal
+    profile as Primary/Secondary Key.
+  source: openapi/ (all 19 exported specs)
+- name: apiKeyQuery
+  type: apiKey
+  in: query
+  parameter: subscription-key
+  description: Same APIM subscription key passed as a query parameter instead of a header.
+  source: openapi/ (all 19 exported specs)
+- name: oauth2
+  type: oauth2
+  flows:
+  - authorizationCode
+  - clientCredentials
+  authorization_endpoint: https://api.openservices.cambio.se/auth/realms/COS/protocol/openid-connect/auth
+  token_endpoint: https://api.openservices.cambio.se/auth/realms/COS/protocol/openid-connect/token
+  jwks_uri: https://api.openservices.cambio.se/auth/realms/COS/protocol/openid-connect/certs
+  introspection_endpoint: https://api.openservices.cambio.se/auth/realms/COS/protocol/openid-connect/token/introspect
+  revocation_endpoint: https://api.openservices.cambio.se/auth/realms/COS/protocol/openid-connect/revoke
+  description: Cambio Open Services authorization server (Keycloak realm COS). Client-id and client secret are emailed
+    after a product subscription is approved. Access is scoped with SMART-on-FHIR style scopes.
+  source: https://api.openservices.cambio.se/auth/realms/COS/.well-known/openid-configuration
+- name: openIdConnect
+  type: openIdConnect
+  openIdConnectUrl: https://api.openservices.cambio.se/auth/realms/COS/.well-known/openid-configuration
+  issuer: https://api.openservices.cambio.se/auth/realms/COS
+  source: probed 2026-09-02, HTTP 200
+onboarding:
+  signup: https://developer.openservices.cambio.se/signup
+  steps:
+  - Sign up at the COS developer portal
+  - Subscribe to the "Cambio Open Services" product (approval required)
+  - Receive client-id and client secret by email
+  - Read the API key (Primary/Secondary) from the portal profile
+  - Request an access token from the Keycloak token endpoint, then call the API with both the token and the subscription
+    key
+  approval_required: true

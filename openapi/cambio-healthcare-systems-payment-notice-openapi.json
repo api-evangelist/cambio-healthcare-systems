@@ -1,0 +1,233 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Payment notice",
+    "description": "<h4>Intended Use</h4>The intended use of this API is to register the payment for a given appointment for the given patient. <h4>Specific Rules and Limitations</h4>Rule: The only status that can be set is PAID. One may not use any other status in this API.<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This API accept only CARD and INVOICE as payment type. <br> Limitation: Before register payment contact should registered for arrival and need to properly setup self-service to handle the payment.<h4>Message Description </h4>The message sent includes the contact, payment status and which payment method was used. <br/><br/>Note: There is a header parameter as a patient but it is not a mandatory one possible to register payment without this header parameter.\n<h4>Rules table</h4>| Type | Information ||------ | ----------- ||Rule:| The only status that can be set is PAID. One may not use any other status in this API. This API accepts only CARD and INVOICE as payment type. |Limitation: | Before registering a payment, a contact should be registered as arrived and self-service funcitonality needs to be properly configured in COSMIC.|\n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Feb 2022</td>\n    <td>Initial version</td>\n  </tr>\n</table>",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/paymentnotice"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "operationId": "register-payment",
+        "summary": "Register payment",
+        "description": "Register payment for a given appointment for a given patient. This API can only be used to set payment status to PAID.\n<p>\n<a target=\"_blank\" href=\"/openidconnectprofile\">OAuth</a> <code>scope</code> for access : <code>user/PaymentNotice.write</code></p>,",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentNoticeResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": [
+                      {
+                        "ResultCode": "OK",
+                        "Comment": "string",
+                        "Any": [
+                          {}
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid access token. The client must request a new token from the authorization server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "statusCode": 401,
+                      "message": "Invalid access token."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient OAuth2 scope for access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "statusCode": 403,
+                      "message": "Insufficient scope."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests in a given amount of time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "statusCode": 429,
+                      "message": "Rate limit is exceeded. Try again in 5 seconds."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "The patient number when acting as a care giver or partner.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Paymentnotice"
+              },
+              "examples": {
+                "default": {
+                  "value": {
+                    "status": "PAID",
+                    "contactId": "string",
+                    "paymentType": "CARD"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "PaymentNoticeResponse": {
+        "description": "List of payments",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SetPaymentResponse"
+        }
+      },
+      "SetPaymentResponse": {
+        "properties": {
+          "ResultCode": {
+            "type": "string",
+            "enum": [
+              "OK",
+              "ERROR",
+              "INFO"
+            ]
+          },
+          "Comment": {
+            "type": "string"
+          },
+          "Any": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Generic error response for all systems and applications errors.",
+        "properties": {
+          "error": {
+            "description": "Error reason in text.",
+            "type": "string"
+          },
+          "path": {
+            "description": "Path to requested resource.",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status.",
+            "type": "integer"
+          },
+          "timestamp": {
+            "description": "Timestamp (milliseconds since epoch).",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "Paymentnotice": {
+        "type": "object",
+        "required": [
+          "contactId",
+          "status",
+          "paymentType"
+        ],
+        "properties": {
+          "status": {
+            "description": "Status of the payment",
+            "type": "string",
+            "enum": [
+              "PAID"
+            ]
+          },
+          "contactId": {
+            "description": "Id of the appointment that should be set as paid.",
+            "type": "string"
+          },
+          "paymentType": {
+            "description": "Type of payment",
+            "type": "string",
+            "enum": [
+              "CARD",
+              "INVOICE"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

@@ -1,0 +1,101 @@
+generated: '2026-09-02'
+method: searched
+source: https://developer.openservices.cambio.se/getting-started + https://developer.openservices.cambio.se/error-handling
+  + openapi/
+auth:
+  style: dual — Azure APIM subscription key (Ocp-Apim-Subscription-Key header or subscription-key query) PLUS an
+    OAuth 2.0 bearer token from the COS Keycloak realm
+  ref: authentication/cambio-healthcare-systems-authentication.yml
+patient_context:
+  style: request header
+  header: patient
+  description: Almost every COSMIC REST read takes the patient identifier in a required "patient" request header
+    rather than in the path, so the same "/" operation is re-targeted per patient.
+  source: openapi/ (get-contacts-v2, get-diagnoses-v2, get-journal-notes-v2, get-patient-information-v2 and others)
+pagination:
+  style: none-documented
+  params: []
+  response_fields: []
+  note: No page/offset/cursor parameters appear in any of the 24 published operations. A "pagination" scope IS advertised
+    in the OIDC discovery document, which suggests a gated or forthcoming capability, but nothing public documents
+    its parameters.
+filtering:
+  style: time-window query parameters
+  params:
+  - fromDateTime
+  - toDateTime
+  format: '1970-01-01T01:00:00'
+  note: The standard filter across care contacts, diagnoses, journal notes, lab results and attention signals.
+idempotency:
+  supported: na
+  header: null
+  note: No idempotency key is documented for any of the four write operations (update-appointment PUT, register-payment
+    POST, create-referral POST, fhir-post/fhir-put). The PUT operations are naturally idempotent by HTTP semantics;
+    the POSTs are not, and Cambio publishes no de-duplication key.
+versioning:
+  style: APIM version set in the URL
+  ref: lifecycle/cambio-healthcare-systems-lifecycle.yml
+errors:
+  envelope: ErrorResponse {error, path, status, timestamp}
+  media_type: application/json
+  rfc9457: false
+  ref: errors/cambio-healthcare-systems-problem-types.yml
+rate_limit_signaling:
+  status_on_exhaustion: 429
+  headers: []
+  note: 429 is documented on 15 of 24 operations. No X-RateLimit-*/RateLimit-*/Retry-After header is documented,
+    and the numeric limit is not published.
+  ref: rate-limits/cambio-healthcare-systems-rate-limits.yml
+request_id:
+  supported: unknown
+  note: No correlation/request-id header is documented on the public portal.
+metadata:
+  supported: false
+field_expansion:
+  supported: false
+reversibility:
+  grade: documented
+  write_surface: true
+  note: 'Cambio publishes four write paths and no reversal endpoint for any of them. The clinical model itself is
+    the reversal mechanism: the services page states that "all information updated or written to the COSMIC database
+    will be version handled", so a write is superseded rather than deleted, and FHIR Provenance is a create-only
+    resource in the CapabilityStatement. No cancel, void, refund, undo or restore operation exists, and no window
+    is stated anywhere on the public portal — so this is graded documented, not verified.'
+  operations:
+  - operation: update-appointment
+    method: PUT
+    api: Booked appointments
+    reversal: re-PUT the prior state
+    reversal_operation: update-appointment
+    window: null
+    note: A full-replacement PUT; reverting means writing the previous representation back. COSMIC version-handles
+      the change but publishes no window or history-read endpoint here.
+  - operation: register-payment
+    method: POST
+    api: Payment notice
+    reversal: null
+    reversal_operation: null
+    window: null
+    note: No void/reverse operation is published. FHIR PaymentNotice is not exposed for update in the CapabilityStatement.
+  - operation: create-referral
+    method: POST
+    api: Referral requests
+    reversal: null
+    reversal_operation: null
+    window: null
+    note: No cancel operation is published on the REST surface. The FHIR ServiceRequest resource supports read/search/create
+      but NOT update or delete in the CapabilityStatement, so a referral cannot be withdrawn through Open Services.
+  - operation: fhir-post / fhir-put
+    method: POST/PUT
+    api: FHIR R4
+    reversal: FHIR update (PUT) where the resource declares an update interaction
+    reversal_operation: fhir-put
+    window: null
+    note: The CapabilityStatement declares NO delete interaction on any of the 24 resource types, so nothing written
+      through the FHIR server can be removed — only superseded where update is allowed (Organization, Patient, Practitioner,
+      Appointment, Bundle, Encounter, MedicationDispense).
+  source: https://developer.openservices.cambio.se/services + fhir/cambio-healthcare-systems-capabilitystatement.json
+dry_run_mode:
+  supported: false
+  note: No dry-run/preview/validate mode is documented. The sandbox is the rehearsal surface instead.
+  ref: sandbox/cambio-healthcare-systems-sandbox.yml

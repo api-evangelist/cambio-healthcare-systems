@@ -1,0 +1,71 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "FHIR R4 Public Profiles",
+    "description": "The Cambio FHIR R4 Public Profiles are available at Simplifier.\nPlease look in the implementation guide for available resources: https://fhir.openservices.cambio.se/site/index.html\n",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/fhir"
+    }
+  ],
+  "paths": {
+    "/*": {
+      "get": {
+        "operationId": "fhir-get",
+        "summary": "FHIR GET",
+        "description": "*RESOURCE*\n\nAdd the FHIR resource subpath as the * param (e.g. Questionnaire/_search). \nCheck the implementation guide for available resources https://fhir.openservices.cambio.se/site/index.html\n\n*PARAMETERS*\n\nAdd query params as needed (e.g. code = 1.2.752.116.2.1.1|371526002,1.2.752.116.2.1.1|448826009)\n\n*AUTHORIZATION*\n\nIn the OAuth2 section below, use client credentials to generate a valid token and then press Send.",
+        "responses": {
+          "200": {
+            "description": "null"
+          }
+        }
+      },
+      "post": {
+        "operationId": "fhir-post",
+        "summary": "FHIR POST",
+        "description": "*RESOURCE*\n\nAdd the FHIR resource subpath as the * param (e.g. Questionnaire). \nCheck the implementation guide for available resources https://fhir.openservices.cambio.se/site/index.html\n\n*PARAMETERS*\n\nAdd query params as needed (e.g. code = 1.2.752.116.2.1.1|371526002,1.2.752.116.2.1.1|448826009)\n\n*AUTHORIZATION*\n\nIn the OAuth2 section below, use client credentials to generate a valid token and then press Send.",
+        "responses": {
+          "200": {
+            "description": "null"
+          }
+        }
+      },
+      "put": {
+        "operationId": "fhir-put",
+        "summary": "FHIR PUT",
+        "description": "*RESOURCE*\n\nAdd the FHIR resource subpath as the * param (e.g. Questionnaire). \nCheck the implementation guide for available resources https://fhir.openservices.cambio.se/site/index.html\n\n*PARAMETERS*\n\nAdd query params as needed (e.g. code = 1.2.752.116.2.1.1|371526002,1.2.752.116.2.1.1|448826009)\n\n*AUTHORIZATION*\n\nIn the OAuth2 section below, use client credentials to generate a valid token and then press Send.",
+        "responses": {
+          "200": {
+            "description": "null"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {}
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

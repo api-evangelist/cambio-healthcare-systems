@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Video meetings",
+    "description": "<u>Note: Deprecated - Will be removed in COSMIC 4.1.0</u><br/>\nBooked appointments supporting remote participation through video.\n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Feb 2022</td>\n    <td>Initial version</td>\n  </tr>\n</table>",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/open/api/videomeetings"
+    }
+  ],
+  "paths": {},
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

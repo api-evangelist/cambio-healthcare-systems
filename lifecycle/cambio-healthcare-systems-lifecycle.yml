@@ -1,0 +1,76 @@
+generated: '2026-09-02'
+method: searched
+source: https://developer.openservices.cambio.se/apis + Azure API Management api-version metadata
+note: Cambio versions Open Services APIs with APIM version sets. Five REST APIs currently carry a version set with
+  a literal "deprecated" version alongside a "v2" successor, which is an unusually explicit, machine-readable deprecation
+  signal — the old and new contracts share a base path and are told apart by the version segment. Cambio publishes
+  no status page and no dated Sunset/Deprecation header policy that this pass could find.
+versioning:
+  style: version-set (Azure API Management)
+  current: v2 for the five re-issued APIs; 1.0 for the rest
+  in_url: true
+  note: The APIM version identifier is literally "deprecated" or "v2" on the versioned APIs.
+deprecation:
+  policy_published: true
+  policy_url: https://developer.openservices.cambio.se/apis
+  mechanism: A parallel API version labelled "deprecated" is kept published beside its v2 successor in the developer
+    portal.
+  sunset_header: false
+  deprecation_header: false
+  note: No RFC 8594 Sunset header, no dated retirement calendar and no removal dates were found on the public portal.
+status_page:
+  present: false
+  probed:
+  - url: https://status.cambio.se
+    status: DNS NXDOMAIN
+  - url: https://status.openservices.cambio.se
+    status: DNS NXDOMAIN
+sla:
+  published: false
+  note: No public SLA; COS access is contractual, approved per subscription.
+changelog:
+  url: https://developer.openservices.cambio.se/api-changelog
+  status: 200
+  note: Page exists and is linked from the portal navigation, but its body is rendered client-side by the Azure
+    API Management portal SPA and returned no entries to an anonymous HTTP fetch.
+deprecated_apis:
+- api: Chemistry lab results
+  spec: openapi/cambio-healthcare-systems-chemistry-lab-results-openapi.json
+  version: deprecated
+  operations:
+  - get-chemistry-lab-results
+- api: Diagnosis
+  spec: openapi/cambio-healthcare-systems-diagnosis-openapi.json
+  version: deprecated
+  operations:
+  - get-diagnoses
+- api: Journal notes
+  spec: openapi/cambio-healthcare-systems-journal-notes-openapi.json
+  version: deprecated
+  operations:
+  - get-journal-notes
+- api: Medication prescriptions
+  spec: openapi/cambio-healthcare-systems-medication-prescriptions-openapi.json
+  version: deprecated
+  operations:
+  - getPrescriptionInfo
+- api: Patient information
+  spec: openapi/cambio-healthcare-systems-patient-information-openapi.json
+  version: deprecated
+  operations:
+  - get-patient-information
+current_apis_sample:
+- Attention signal
+- Authorizer - OpenId Connect
+- Booked appointments
+- Care contacts
+- Care contacts
+- Chemistry lab results
+- Diagnosis
+- FHIR R4 Public Profiles
+- Journal notes
+- Medication prescriptions
+- Patient information
+- Payment notice
+- Referral requests
+- Video meetings

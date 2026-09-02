@@ -1,0 +1,61 @@
+generated: '2026-09-02'
+method: searched
+source: https://developer.openservices.cambio.se/test-data
+docs:
+- https://developer.openservices.cambio.se/test-data
+- https://developer.openservices.cambio.se/getting-started
+- https://developer.openservices.cambio.se/postman-guide
+note: The COS Sandbox is a complete COSMIC installation loaded with synthetic Swedish test data, reachable at the
+  same api.openservices.cambio.se host once a subscription is approved. Cambio publishes the synthetic personal
+  identity numbers and a test clinician account verbatim on the test-data page; they are reproduced here exactly
+  as published and are fictional.
+environments:
+- name: sandbox
+  base_url: https://api.openservices.cambio.se
+  description: Complete COSMIC installation with the available COS APIs and synthetic but realistic test data.
+  access: Requires an approved subscription to the Cambio Open Services product; the same API key + OAuth client
+    credentials as production.
+test_mode:
+  separate_keys: false
+  note: No test-vs-live key prefix is published. Environment separation is by subscription/tenancy, not by key prefix.
+test_subjects:
+- name: Richard Lindeskog
+  identifier: 19460907-3277
+  type: adult
+- name: Bianca Fredriksson
+  identifier: 19800107-2381
+  type: adult
+- name: Lars Bjork
+  identifier: 19490214-2696
+  type: adult
+- name: Kim Sundstrom
+  identifier: 19770220-2396
+  type: adult
+- name: Leah Nordberg
+  identifier: 20210317-2389
+  type: child
+test_users:
+- role: physician
+  name: Evelina Eklind
+  username: UTBLakare13
+  hsa_id: SE20260202-EXTERNTEST
+data_characteristics:
+- Minimum and maximum values so consumers can explore thresholds
+- Swedish special characters (A-ring, A-umlaut, O-umlaut) to exercise encoding
+- Records dated from 2022-01-01 onward — set the date filter accordingly
+reset_policy:
+  documented: false
+  note: Cambio states that other sandbox users may add records but the predefined test data remains intact. No reset
+    cadence is published.
+time_simulation:
+  supported: false
+fixture_tooling:
+  postman_guide: https://developer.openservices.cambio.se/postman-guide
+  downloadable_collection: false
+  note: The Postman guide walks through building a token collection and request collections by hand; no importable
+    collection or environment file is offered.
+console:
+  present: true
+  url: https://developer.openservices.cambio.se/api-details
+  note: The Azure API Management developer portal ships a built-in try-it console on each API detail page (requires
+    sign-in and a subscription key).

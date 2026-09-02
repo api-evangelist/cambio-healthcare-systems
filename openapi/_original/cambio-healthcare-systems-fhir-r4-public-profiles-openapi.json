@@ -1,0 +1,37 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "FHIR R4 Public Profiles",
+    "description": "The Cambio FHIR R4 Public Profiles are available at Simplifier.\nPlease look in the implementation guide for available resources: https://fhir.openservices.cambio.se/site/index.html\n",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/fhir"
+    }
+  ],
+  "paths": {},
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

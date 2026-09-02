@@ -1,0 +1,1151 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Diagnosis",
+    "description": "<h4>Intended Use</h4>The Diagnosis API is intended to be used for fetching all diagnoses for a specific patient within a specified time frame. <br></br>The intended use for reading data with this API is in first hand that the API is applied for direct access and should not be used to transfer data between caregivers. If it should be used for \"data copying\" between care providers, patient consent must be handled outside the API.\n<h4>Specific Rules and Limitations</h4>The consumer of the API is responsible for making sure data retrieved is filtered in compliance with laws and regulations prior to presenting it to any end-users.<br></br>The parameters AccessZones represent the PDL Care Unit (Vårdenhet) and CareProvider represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL.\n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Mar 2022</td>\n    <td>Updated major version due to performance impovements</td>\n  </tr>\n</table>\n<h4>Message Description </h4>The result returned is a list of diagnoses, please see the API definition file for the exact data structure.",
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/diagnosis"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "get-diagnoses-v2",
+        "summary": "Get Diagnoses",
+        "description": "Gets all diagnoses for the given patient. The result can be filtered by using a time interval. \n<p>\nOAuth <code>scope</code> for access : <code>user/Diagnosis.read</code>",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiagnosisEHRExtractsArray"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid access token. The client must request a new token from the authorization server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient OAuth2 scope for access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests in a given amount of time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fromDateTime",
+            "in": "query",
+            "description": "Time interval start, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toDateTime",
+            "in": "query",
+            "description": "Time interval end, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "Patient's personal number. YYYYMMDDNNNN.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "DiagnosisEHRExtracts": {
+        "title": "DiagnosisEHRExtracts",
+        "description": "List of diagnoses where every item in the list holds one(1) diagnosis.",
+        "type": "object",
+        "properties": {
+          "diagnosisEHRExtract": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisEHRExtract"
+            }
+          }
+        }
+      },
+      "DiagnosisEHRExtract": {
+        "title": "DiagnosisEHRExtract",
+        "description": "Object describing the contents of the diagnosis",
+        "type": "object",
+        "properties": {
+          "ehrId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "ehrSystem": {
+            "$ref": "#/components/schemas/II"
+          },
+          "timeCreated": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "diagnosisMetaData": {
+            "type": "object",
+            "properties": {
+              "NoteId": {
+                "$ref": "#/components/schemas/II"
+              },
+              "JournalNoteReferenceId": {
+                "$ref": "#/components/schemas/II"
+              },
+              "DiagnosisVersionDateTime": {
+                "$ref": "#/components/schemas/TS"
+              },
+              "DiagnosisTemplateName": {
+                "type": "string"
+              },
+              "DiagnosisTemplateSecrecyLevels": {
+                "$ref": "#/components/schemas/SecrecyLevels"
+              },
+              "DiagnosisTypeOfNote": {
+                "type": "string"
+              },
+              "DiagnosisNoteDate": {
+                "$ref": "#/components/schemas/TS"
+              },
+              "DiagnosisSignDateTime": {
+                "$ref": "#/components/schemas/TS"
+              },
+              "DiagnosisSecrecyLevels": {
+                "$ref": "#/components/schemas/SecrecyLevels"
+              },
+              "DiagnosisActive": {
+                "type": "boolean"
+              },
+              "DiagnosisInactiveReason": {
+                "type": "string"
+              }
+            }
+          },
+          "patient": {
+            "$ref": "#/components/schemas/Patient"
+          },
+          "units": {
+            "$ref": "#/components/schemas/Units"
+          },
+          "careUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "responsibleUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "accessZoneUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "headCareProviderUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "careProviders": {
+            "$ref": "#/components/schemas/CareProviders"
+          },
+          "hCMContact": {
+            "$ref": "#/components/schemas/HCMContact"
+          },
+          "diagnoses": {
+            "$ref": "#/components/schemas/Diagnoses"
+          }
+        }
+      },
+      "Diagnoses": {
+        "title": "Diagnoses",
+        "type": "object",
+        "properties": {
+          "diagnosis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Diagnosis"
+            }
+          },
+          "action": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Action"
+            }
+          }
+        }
+      },
+      "Diagnosis": {
+        "title": "Diagnosis",
+        "type": "object",
+        "properties": {
+          "rcId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "diagnosisCodeType": {
+            "type": "string"
+          },
+          "diagnosisTerminology": {
+            "type": "string"
+          },
+          "diagnosisCode": {
+            "type": "string"
+          },
+          "diagnosisDescription": {
+            "type": "string"
+          },
+          "diagnosisType": {
+            "type": "string"
+          },
+          "diagnosisChronic": {
+            "type": "boolean"
+          },
+          "diagnosisCauseOfDeath": {
+            "type": "string"
+          },
+          "diagnosis": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Diagnosis"
+            }
+          },
+          "action": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Action"
+            }
+          }
+        }
+      },
+      "Action": {
+        "title": "Action",
+        "type": "object",
+        "properties": {
+          "rcId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "actionTerminology": {
+            "type": "string"
+          },
+          "actionCode": {
+            "type": "string"
+          },
+          "actionDescription": {
+            "type": "string"
+          },
+          "actionSurgeryDateTime": {
+            "$ref": "#/components/schemas/TS"
+          }
+        }
+      },
+      "HCMContact": {
+        "title": "HCMContact",
+        "type": "object",
+        "properties": {
+          "targetId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "contactPerformingUnit": {
+            "type": "string"
+          },
+          "contactSecrecyLevels": {
+            "$ref": "#/components/schemas/SecrecyLevels"
+          },
+          "hCMContactInternalID": {
+            "type": "string"
+          },
+          "hCMContactBegin": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "hCMContactEnd": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "hCMContactStatus": {
+            "type": "string"
+          },
+          "hCMContactType": {
+            "type": "string"
+          }
+        }
+      },
+      "II": {
+        "title": "II",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "value": {
+            "type": "string"
+          },
+          "root": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "identifierName": {
+            "type": "string"
+          },
+          "displayable": {
+            "type": "boolean"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          },
+          "reliability": {
+            "$ref": "#/components/schemas/Reliability"
+          }
+        }
+      },
+      "TS": {
+        "title": "TS",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "expression": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/QTY"
+          },
+          "uncertaintyType": {
+            "$ref": "#/components/schemas/UncertaintyType"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "QTY": {
+        "title": "QTY",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "expression": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/QTY"
+          },
+          "uncertaintyType": {
+            "$ref": "#/components/schemas/UncertaintyType"
+          }
+        }
+      },
+      "ED": {
+        "title": "ED",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "data": {
+            "type": "string"
+          },
+          "xml": {
+            "type": "string"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/TEL"
+          },
+          "integrityCheck": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "thumbnail": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "description": {
+            "$ref": "#/components/schemas/ST"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ED"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "compression": {
+            "$ref": "#/components/schemas/Compression"
+          },
+          "integrityCheckAlgorithm": {
+            "$ref": "#/components/schemas/IntegrityCheckAlgorithm"
+          }
+        }
+      },
+      "ST": {
+        "title": "ST",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ST"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        }
+      },
+      "TEL": {
+        "title": "TEL",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "useablePeriod": {
+            "$ref": "#/components/schemas/QSETTS"
+          },
+          "value": {
+            "type": "string"
+          },
+          "use": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TELUSE"
+            }
+          }
+        }
+      },
+      "TELUSE": {
+        "title": "TELUSE",
+        "example": "H",
+        "type": "string",
+        "enum": [
+          "H",
+          "HP",
+          "HV",
+          "WP",
+          "DIR",
+          "PUB",
+          "BAD",
+          "TMP",
+          "AS",
+          "EC",
+          "MC",
+          "PG"
+        ]
+      },
+      "QSETTS": {
+        "title": "QSETTS",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          }
+        }
+      },
+      "ANY": {
+        "title": "ANY",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          }
+        }
+      },
+      "HXIT": {
+        "title": "HXIT",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          }
+        }
+      },
+      "Patient": {
+        "title": "Patient",
+        "type": "object",
+        "properties": {
+          "patientID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "patientInternalID": {
+            "type": "string"
+          },
+          "patientProtectedId": {
+            "type": "boolean"
+          },
+          "patientSecrecyGroups": {
+            "$ref": "#/components/schemas/SecrecyGroups"
+          },
+          "patientName": {
+            "$ref": "#/components/schemas/PatientName"
+          }
+        }
+      },
+      "PatientName": {
+        "title": "PatientName",
+        "type": "object",
+        "properties": {
+          "patientFamilyName": {
+            "type": "string"
+          },
+          "patientMiddleName": {
+            "type": "string"
+          },
+          "patientGivenName": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientGivenName"
+            }
+          }
+        }
+      },
+      "PatientGivenName": {
+        "title": "PatientGivenName",
+        "type": "object",
+        "properties": {
+          "qualifier": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "Units": {
+        "title": "Units",
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Unit"
+            }
+          }
+        }
+      },
+      "Unit": {
+        "title": "Unit",
+        "type": "object",
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitInternalID": {
+            "type": "string"
+          },
+          "unitName": {
+            "type": "string"
+          },
+          "unitSecrecyGroups": {
+            "$ref": "#/components/schemas/SecrecyGroups"
+          },
+          "headCareProviderUnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "accessZones": {
+            "$ref": "#/components/schemas/AccessZones"
+          },
+          "phoneNumbers": {
+            "$ref": "#/components/schemas/PhoneNumbers"
+          },
+          "emailAddresses": {
+            "$ref": "#/components/schemas/EmailAddresses"
+          },
+          "unitAddresses": {
+            "$ref": "#/components/schemas/UnitAddresses"
+          }
+        }
+      },
+      "AccessZones": {
+        "title": "AccessZones",
+        "type": "object",
+        "properties": {
+          "accessZoneID": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/II"
+            }
+          }
+        }
+      },
+      "SimpleUnit": {
+        "title": "SimpleUnit",
+        "type": "object",
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "CareProviders": {
+        "title": "CareProviders",
+        "type": "object",
+        "properties": {
+          "careProvider": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareProvider"
+            }
+          }
+        }
+      },
+      "CareProvider": {
+        "title": "CareProvider",
+        "type": "object",
+        "properties": {
+          "careProviderType": {
+            "type": "string"
+          },
+          "careProviderID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderInternalID": {
+            "type": "string"
+          },
+          "careProviderName": {
+            "type": "string"
+          },
+          "careProviderPosition": {
+            "$ref": "#/components/schemas/CareProviderPosition"
+          },
+          "careProviderUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          }
+        }
+      },
+      "CareProviderPosition": {
+        "title": "CareProviderPosition",
+        "type": "object",
+        "properties": {
+          "careProviderPositionID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderPositionName": {
+            "type": "string"
+          }
+        }
+      },
+      "PhoneNumbers": {
+        "title": "PhoneNumbers",
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Phone"
+            }
+          }
+        }
+      },
+      "EmailAddresses": {
+        "title": "EmailAddresses",
+        "type": "object",
+        "properties": {
+          "Email": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Email"
+            }
+          }
+        }
+      },
+      "UnitAddresses": {
+        "title": "UnitAddresses",
+        "type": "object",
+        "properties": {
+          "unitAddress": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitAddress"
+            }
+          }
+        }
+      },
+      "Phone": {
+        "title": "Phone",
+        "type": "object",
+        "properties": {
+          "phoneType": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "phoneComment": {
+            "type": "string"
+          }
+        }
+      },
+      "Email": {
+        "title": "Email",
+        "type": "object",
+        "properties": {
+          "EmailType": {
+            "type": "string"
+          },
+          "EmailAddress": {
+            "type": "string"
+          },
+          "EmailComment": {
+            "type": "string"
+          }
+        }
+      },
+      "UnitAddress": {
+        "title": "UnitAddress",
+        "type": "object",
+        "properties": {
+          "unitAddressType": {
+            "type": "string"
+          },
+          "unitAddressAddress": {
+            "type": "string"
+          },
+          "unitAddressPostcode": {
+            "type": "string"
+          },
+          "unitAddressCity": {
+            "type": "string"
+          },
+          "unitAddressCounty": {
+            "type": "string"
+          },
+          "unitAddressCountry": {
+            "type": "string"
+          },
+          "unitAddressGeographicalPlace": {
+            "type": "string"
+          },
+          "unitAddressComment": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "title": "ErrorResponse",
+        "description": "Generic error response for all systems and applications errors.",
+        "type": "object",
+        "properties": {
+          "error": {
+            "description": "Error reason in text.",
+            "type": "string"
+          },
+          "path": {
+            "description": "Path to requested resource.",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status.",
+            "type": "integer",
+            "format": "int32"
+          },
+          "timestamp": {
+            "description": "Timestamp (milliseconds since epoch).",
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SecrecyGroups": {
+        "title": "SecrecyGroups",
+        "type": "object",
+        "properties": {
+          "group": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SecrecyLevels": {
+        "title": "SecrecyLevels",
+        "type": "object",
+        "properties": {
+          "secrecyLevel": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "XSDVersion": {
+        "title": "XSDVersion",
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "Compression": {
+        "title": "Compression",
+        "example": "DF",
+        "type": "string",
+        "enum": [
+          "DF",
+          "GZ",
+          "ZL",
+          "Z",
+          "BZ",
+          "Z_7"
+        ]
+      },
+      "IntegrityCheckAlgorithm": {
+        "title": "IntegrityCheckAlgorithm",
+        "example": "SHA_1",
+        "type": "string",
+        "enum": [
+          "SHA_1",
+          "SHA_256"
+        ]
+      },
+      "NullFlavor": {
+        "title": "NullFlavor",
+        "example": "NI",
+        "type": "string",
+        "enum": [
+          "NI",
+          "INV",
+          "OTH",
+          "NINF",
+          "PINF",
+          "UNC",
+          "DER",
+          "UNK",
+          "ASKU",
+          "NAV",
+          "QS",
+          "NASK",
+          "TRC",
+          "MSK",
+          "NA"
+        ]
+      },
+      "Reliability": {
+        "title": "Reliability",
+        "example": "ISS",
+        "type": "string",
+        "enum": [
+          "ISS",
+          "VER",
+          "UNV"
+        ]
+      },
+      "Scope": {
+        "title": "Scope",
+        "example": "BUSN",
+        "type": "string",
+        "enum": [
+          "BUSN",
+          "OBJ",
+          "VER",
+          "VW"
+        ]
+      },
+      "UncertaintyType": {
+        "title": "UncertaintyType",
+        "example": "U",
+        "type": "string",
+        "enum": [
+          "U",
+          "N",
+          "LN",
+          "G",
+          "E",
+          "X_2",
+          "T",
+          "F",
+          "B"
+        ]
+      },
+      "UpdateMode": {
+        "title": "UpdateMode",
+        "example": "A",
+        "type": "string",
+        "enum": [
+          "A",
+          "AU",
+          "U",
+          "R",
+          "I",
+          "D",
+          "K"
+        ]
+      },
+      "DiagnosisEHRExtractsArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/DiagnosisEHRExtracts"
+        }
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

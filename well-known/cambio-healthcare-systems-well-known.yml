@@ -1,0 +1,55 @@
+generated: '2026-09-02'
+method: probed
+source: live probes of every apis.yml host and OpenAPI servers[] host, 2026-09-02
+note: 'One real document was served: the OpenID Connect discovery document for the Cambio Open Services Keycloak
+  realm, which sits BELOW the API gateway path (/auth/realms/COS/.well-known/openid-configuration) rather than at
+  the host root. Every root-level /.well-known/ path 404s on all three hosts; the developer portal and the corporate
+  site both return their normal HTML 404 page, and the API gateway returns an Azure API Management JSON 404.'
+hosts:
+- host: api.openservices.cambio.se
+  documents:
+  - path: /auth/realms/COS/.well-known/openid-configuration
+    status: 200
+    file: cambio-healthcare-systems-openid-configuration.json
+    content_type: application/json
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: developer.openservices.cambio.se
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /robots.txt
+    status: 404
+- host: www.cambiogroup.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /robots.txt
+    status: 200
+    note: served, but robots.txt is not a /.well-known document and earns no pointer
+- host: fhir.openservices.cambio.se
+  documents:
+  - path: /.well-known/security.txt
+    status: 404

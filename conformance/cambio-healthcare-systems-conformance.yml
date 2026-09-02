@@ -1,0 +1,131 @@
+generated: '2026-09-02'
+method: searched
+source: https://www.cambiogroup.com/compliance-eng/ + fhir/cambio-healthcare-systems-capabilitystatement.json +
+  well-known/cambio-healthcare-systems-openid-configuration.json
+standards:
+- id: hl7-fhir-r4
+  name: HL7 FHIR R4 (4.0.1)
+  conforms: true
+  domain_standard: true
+  evidence: 'CapabilityStatement declares fhirVersion 4.0.1, kind: instance, 24 resource types with 48 interactions,
+    implementation "FHIR based REST apis which has been developed using HAPI FHIR libraries". Published Implementation
+    Guide se.cambio.fhir 1.0.0 with 40+ COSMIC profiles.'
+  evidence_url: https://fhir.openservices.cambio.se/site/CapabilityStatement-CapabilityStatement.json
+- id: smart-on-fhir
+  name: SMART on FHIR scope syntax (v2 permission letters)
+  conforms: true
+  domain_standard: true
+  evidence: 710 of 723 advertised OAuth scopes use the <context>/<Resource>.<permissions> form across 36 resources
+    — e.g. user/Patient.rus, patient/Observation.cds, system/*.cruds — including the SMART v2 crud-s letters and
+    the legacy .read/.write forms.
+  evidence_url: https://api.openservices.cambio.se/auth/realms/COS/.well-known/openid-configuration
+- id: openehr
+  name: openEHR (archetypes, OPT templates, AQL)
+  conforms: true
+  domain_standard: true
+  evidence: 'The Cambio Platform hackathon repository ships openEHR templates in OPT format and stored AQL queries
+    used by the platform: clinical-resources/templates and clinical-resources/stored_queries.'
+  evidence_url: https://github.com/CambioHealthcare/cp-nordic-hackathon-2025
+- id: oauth2
+  name: OAuth 2.0
+  conforms: true
+  evidence: Authorization code and client credentials grants documented on the Getting started page; grant_types_supported
+    in the OIDC discovery document lists authorization_code, client_credentials, refresh_token, device_code and
+    CIBA.
+  evidence_url: https://developer.openservices.cambio.se/getting-started
+- id: oidc
+  name: OpenID Connect Discovery 1.0
+  conforms: true
+  evidence: A complete discovery document is served anonymously at the realm root (HTTP 200) with issuer, authorization/token/userinfo/jwks/introspection/revocation/registration
+    endpoints.
+  evidence_url: https://api.openservices.cambio.se/auth/realms/COS/.well-known/openid-configuration
+- id: oauth-mtls
+  name: RFC 8705 mutual-TLS client authentication
+  conforms: true
+  evidence: token_endpoint_auth_methods_supported includes tls_client_auth alongside private_key_jwt, client_secret_basic,
+    client_secret_post and client_secret_jwt.
+  evidence_url: https://api.openservices.cambio.se/auth/realms/COS/.well-known/openid-configuration
+- id: pkce
+  name: RFC 7636 PKCE
+  conforms: true
+  evidence: 'code_challenge_methods_supported: [plain, S256].'
+  evidence_url: https://api.openservices.cambio.se/auth/realms/COS/.well-known/openid-configuration
+- id: eu-mdr
+  name: EU Medical Device Regulation (MDR 2017/745), CE marked
+  conforms: true
+  evidence: '"Cambio''s medical health record system COSMIC and the Clinical Decision Support (CDS) are registered
+    and certified according to the MDR" — CE-marked, notified body BSI-2797.'
+  evidence_url: https://www.cambiogroup.com/compliance-eng/
+- id: iso-27001
+  name: ISO/IEC 27001 information security management
+  conforms: true
+  evidence: Named on the Cambio compliance page as part of the certified management system.
+  evidence_url: https://www.cambiogroup.com/compliance-eng/
+- id: iso-13485
+  name: ISO 13485 medical device quality management
+  conforms: true
+  evidence: Named on the Cambio compliance page.
+  evidence_url: https://www.cambiogroup.com/compliance-eng/
+- id: iso-9001
+  name: ISO 9001 quality management
+  conforms: true
+  evidence: Named on the Cambio compliance page.
+  evidence_url: https://www.cambiogroup.com/compliance-eng/
+- id: iso-14001
+  name: ISO 14001 environmental management
+  conforms: true
+  evidence: Named on the Cambio compliance page.
+  evidence_url: https://www.cambiogroup.com/compliance-eng/
+- id: iso-20000
+  name: ISO/IEC 20000 IT service management
+  conforms: true
+  evidence: Named on the Cambio compliance page.
+  evidence_url: https://www.cambiogroup.com/compliance-eng/
+- id: openapi
+  name: OpenAPI 3.0.1
+  conforms: true
+  evidence: All 19 APIs export as OpenAPI 3.0.1 from the provider developer portal.
+  evidence_url: https://developer.openservices.cambio.se/apis
+- id: rfc9457
+  name: RFC 9457 Problem Details
+  conforms: false
+  evidence: No application/problem+json media type in any spec; errors use a vendor ErrorResponse envelope {error,
+    path, status, timestamp}.
+  evidence_url: openapi/cambio-healthcare-systems-care-contacts-v2-openapi.json
+- id: pagination
+  name: Documented pagination
+  conforms: false
+  evidence: No page/offset/cursor parameter in any of the 24 published operations, although a "pagination" OAuth
+    scope is advertised.
+  evidence_url: openapi/
+- id: idempotency
+  name: Idempotency keys on unsafe writes
+  conforms: false
+  evidence: No idempotency key documented on any of the four write operations.
+  evidence_url: conventions/cambio-healthcare-systems-conventions.yml
+- id: asyncapi
+  name: AsyncAPI / published event surface
+  conforms: false
+  evidence: No AsyncAPI document, webhook catalogue, subscription resource or streaming endpoint found on any host;
+    /asyncapi.yaml 404s on both the portal and the gateway.
+  evidence_url: https://api.openservices.cambio.se/asyncapi.yaml
+- id: fapi
+  name: FAPI
+  conforms: false
+  evidence: Not claimed; not applicable to this sector.
+  evidence_url: null
+- id: scim
+  name: SCIM
+  conforms: false
+  evidence: No SCIM schema URN or /scim/v2 surface found.
+  evidence_url: null
+domain_standard_summary:
+  sector: healthcare / electronic health records
+  standards_declared_in_contract:
+  - HL7 FHIR R4 4.0.1
+  - SMART on FHIR scopes
+  - openEHR OPT/AQL
+  note: 'Cambio meets the domain-standard bar in the contract itself rather than in marketing prose: the FHIR CapabilityStatement
+    is a machine-readable declaration of FHIR R4 conformance, the OIDC discovery document carries SMART-on-FHIR
+    scope syntax, and the platform ships openEHR archetype templates. A buyer already speaking FHIR integrates with
+    COSMIC without a bespoke connector.'

@@ -1,0 +1,131 @@
+generated: '2026-09-02'
+method: searched
+source: https://developer.openservices.cambio.se/developer/apis?api-version=2022-04-01-preview (API descriptions
+  published by the portal)
+note: Cambio does not publish a single dated changelog feed — the /api-changelog page renders empty to an anonymous
+  fetch. Each API description instead carries an inline Versions table naming the COS release, the API version,
+  the MINIMUM COSMIC SERVER VERSION required, the month and what changed. That coupling of API version to on-premise
+  EHR version is the substantive release signal for an installed-base product, and it is captured verbatim below.
+scheme: per-API version table (COS version / API version / required COSMIC version)
+changelog_url: https://developer.openservices.cambio.se/api-changelog
+entry_count: 17
+entries:
+- api: Attention signal
+  api_id: attention-signal
+  cos_version: 3.0.0
+  api_version: 1.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version
+- api: Booked appointments
+  api_id: booked-appointments
+  cos_version: 3.0.0
+  api_version: 1.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version
+- api: Care contacts
+  api_id: care-contacts
+  cos_version: 3.0.0
+  api_version: 1.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version, deprecated
+- api: Care contacts
+  api_id: care-contacts-v2
+  cos_version: 3.0.0
+  api_version: 2.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Updated major version due to performance impovements
+- api: Chemistry lab results
+  api_id: chemistry-lab-results
+  cos_version: 3.0.0
+  api_version: 1.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version, deprecated
+- api: Chemistry lab results
+  api_id: chemistry-lab-results-v2
+  cos_version: 3.0.0
+  api_version: 2.0.0
+  required_cosmic_version: R8.3.05
+  date: Mar 2022
+  description: Updated major version due to performance impovements
+- api: Diagnosis
+  api_id: diagnosis
+  cos_version: 3.0.0
+  api_version: 1.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version, deprecated
+- api: Diagnosis
+  api_id: diagnosis-v2
+  cos_version: 3.0.0
+  api_version: 2.0.0
+  required_cosmic_version: R8.3.05
+  date: Mar 2022
+  description: Updated major version due to performance impovements
+- api: Journal notes
+  api_id: journal-notes
+  cos_version: 3.0.0
+  api_version: 1.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version, deprecated
+- api: Journal notes
+  api_id: journal-notes-v2
+  cos_version: 3.0.0
+  api_version: 2.0.0
+  required_cosmic_version: R8.3.05
+  date: Mar 2022
+  description: Updated major version due to performance impovements
+- api: Medication prescriptions
+  api_id: medication-prescriptions
+  cos_version: 3.0.0
+  api_version: 1.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version, deprecated
+- api: Medication prescriptions
+  api_id: medication-prescriptions-v2
+  cos_version: 3.0.0
+  api_version: 2.0.0
+  required_cosmic_version: R8.3.05
+  date: Mar 2022
+  description: Updated major version due to performance impovements
+- api: Patient information
+  api_id: patient-information
+  cos_version: 3.0.0
+  api_version: 1.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version, deprecated
+- api: Patient information
+  api_id: patient-information-v2
+  cos_version: 3.0.0
+  api_version: 2.0.0
+  required_cosmic_version: R8.3.05
+  date: Mar 2022
+  description: Updated major version due to performance impovements
+- api: Payment notice
+  api_id: payment-notice
+  cos_version: 3.0.0
+  api_version: 2.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version
+- api: Referral requests
+  api_id: referral-requests
+  cos_version: 3.0.0
+  api_version: 2.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version
+- api: Video meetings
+  api_id: video-meetings
+  cos_version: 3.0.0
+  api_version: 2.0.0
+  required_cosmic_version: R8.3.05
+  date: Feb 2022
+  description: Initial version

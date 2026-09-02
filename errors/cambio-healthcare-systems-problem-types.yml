@@ -1,0 +1,105 @@
+generated: '2026-09-02'
+method: derived
+source: openapi/ (24 operations across 19 specs) + https://developer.openservices.cambio.se/error-handling
+format: vendor-json
+note: 'Cambio Open Services does NOT use RFC 9457 application/problem+json. Every documented error returns application/json
+  with the vendor ErrorResponse envelope declared in the specs. The public error-handling page only states the 2xx/4xx/5xx
+  families and defers per-status detail to each API reference page, so the catalogue below is derived from the response
+  definitions the portal actually publishes. A client must be ready for THREE different error shapes depending on
+  which layer rejects the call: the APIM gateway envelope {statusCode, message}, the COSMIC application envelope
+  ErrorResponse, and a FHIR OperationOutcome on the FHIR surface. None of them is application/problem+json.'
+docs: https://developer.openservices.cambio.se/error-handling
+envelope:
+  media_type: application/json
+  schema: ErrorResponse
+  fields:
+  - name: error
+    type: string
+    description: Error reason in text.
+  - name: path
+    type: string
+    description: Path to requested resource.
+  - name: status
+    type: integer
+    description: HTTP status.
+  - name: timestamp
+    type: integer
+    description: Timestamp (milliseconds since epoch).
+problem_types:
+- status: 401
+  title: Invalid access token
+  occurrences: 16
+  detail: Invalid access token. The client must request a new token from the authorization server.
+  remediation: Request a fresh OAuth 2.0 access token from https://api.openservices.cambio.se/auth/realms/COS/protocol/openid-connect/token
+    and retry. Also confirm the Ocp-Apim-Subscription-Key header is present — a missing subscription key returns
+    its own 401 from the gateway.
+- status: 403
+  title: Insufficient OAuth2 scope
+  occurrences: 15
+  detail: Insufficient OAuth2 scope for access.
+  remediation: Request the SMART-on-FHIR scope the operation documents (see scopes/cambio-healthcare-systems-scopes.yml)
+    when acquiring the token.
+- status: 404
+  title: Not found
+  occurrences: 1
+  detail: Not found
+  remediation: Verify the resource identifier and the API path prefix.
+- status: 429
+  title: Call rate limit exceeded
+  occurrences: 15
+  detail: Too many requests in a given amount of time.
+  remediation: Back off and retry. The gateway is Azure API Management; the published limits are not stated in the
+    portal, so treat 429 as the authoritative signal.
+  retry_hint: Rate limit is exceeded. Try again in 5 seconds.
+  retry_after_seconds: 5
+  retry_hint_source: openapi/ 429 response example (Azure API Management gateway message)
+- status: 500
+  title: Unexpected error
+  occurrences: 1
+  detail: unexpected error
+  remediation: Retry; if it persists contact Cambio via the developer-portal help page.
+gateway_errors:
+- status: 401
+  source: probed
+  url: https://api.openservices.cambio.se/fhir/metadata
+  body: '{"statusCode": 401, "message": "Access denied due to missing subscription key. Make sure to include subscription
+    key when making requests to an API."}'
+  note: Azure API Management gateway envelope (statusCode/message), distinct from the application ErrorResponse
+    envelope.
+- status: 404
+  source: probed
+  url: https://api.openservices.cambio.se/openapi.json
+  body: '{"statusCode": 404, "message": "Resource not found" }'
+envelopes:
+- name: ErrorResponse
+  media_type: application/json
+  scope: COSMIC REST APIs (application layer)
+  fields:
+  - error
+  - path
+  - status
+  - timestamp
+- name: Azure API Management gateway error
+  media_type: application/json
+  scope: gateway layer, returned before the request reaches COSMIC
+  fields:
+  - statusCode
+  - message
+  examples:
+  - '{"statusCode": 401, "message": "Invalid access token."}'
+  - '{"statusCode": 403, "message": "Insufficient scope."}'
+  - '{"statusCode": 429, "message": "Rate limit is exceeded. Try again in 5 seconds."}'
+- name: FHIR OperationOutcome
+  media_type: application/fhir+json
+  scope: FHIR R4 API
+  fields:
+  - resourceType
+  - id
+  - text
+  - issue[].severity
+  - issue[].code
+  - issue[].details.text
+  - issue[].diagnostics
+  examples:
+  - '{"resourceType":"OperationOutcome","id":101,"issue":[{"severity":"error","code":"forbidden","details":{"text":"The
+    authorization token was invalid"},"diagnostics":"TokenError"}]}'

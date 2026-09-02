@@ -1,0 +1,59 @@
+# Cambio Healthcare Systems
+
+> Cambio Healthcare Systems is a Swedish health-IT company (founded 1993, Linkoping; HQ Stockholm) behind Cambio COSMIC, an electronic health record and clinical decision support platform used across Swedish regions, Denmark and the UK. Cambio Open Services (COS) is its public B2B API programme: 19 REST APIs plus an HL7 FHIR R4 server, fronted by Azure API Management at api.openservices.cambio.se.
+
+Access is business-to-business and approval-gated. Every call needs TWO credentials: an Azure API Management subscription key (header `Ocp-Apim-Subscription-Key`, or `subscription-key` query parameter) AND an OAuth 2.0 bearer token from the Cambio Keycloak realm. Almost every COSMIC read takes the patient identifier in a required `patient` request HEADER, not in the path.
+
+## Developer entry points
+- [Developer portal](https://developer.openservices.cambio.se/): Cambio Open Services home.
+- [Getting started](https://developer.openservices.cambio.se/getting-started): authentication, base URLs, signup flow.
+- [REST API list](https://developer.openservices.cambio.se/apis): all 19 REST APIs with try-it consoles.
+- [FHIR Implementation Guide](https://fhir.openservices.cambio.se/site/index.html): se.cambio.fhir 1.0.0, FHIR R4 (4.0.1), 40+ COSMIC profiles.
+- [CapabilityStatement (JSON)](https://fhir.openservices.cambio.se/site/CapabilityStatement-CapabilityStatement.json): 24 resource types, 48 interactions.
+- [FHIR IG package](https://fhir.openservices.cambio.se/site/package.tgz): downloadable NPM-format FHIR package.
+- [OpenID Connect discovery](https://api.openservices.cambio.se/auth/realms/COS/.well-known/openid-configuration): issuer, token endpoint, 723 scopes.
+- [Error handling](https://developer.openservices.cambio.se/error-handling)
+- [Sandbox test data](https://developer.openservices.cambio.se/test-data): synthetic Swedish patients and a test clinician.
+- [Postman guide](https://developer.openservices.cambio.se/postman-guide)
+- [Sign up](https://developer.openservices.cambio.se/signup) / [Sign in](https://developer.openservices.cambio.se/signin)
+- [Help](https://developer.openservices.cambio.se/help)
+- [GitHub organization](https://github.com/CambioHealthcare)
+
+## Base URLs
+- REST: `https://api.openservices.cambio.se/api/open/<service>`
+- FHIR: `https://api.openservices.cambio.se/fhir/<resource>`
+- Authorization server: `https://api.openservices.cambio.se/auth/realms/COS`
+
+## REST operations (current versions)
+- `get-patient-information-v2` GET /api/open/patient - demographics for one patient. Scope `user/Patient.read`.
+- `get-contacts-v2` GET /api/open/contacts - care contacts, filtered by fromDateTime/toDateTime. Scope `user/Contact.read` or `patient/Contact.read`.
+- `get-diagnoses-v2` GET /api/open/diagnosis - diagnoses for a patient.
+- `get-journal-notes-v2` GET /api/open/journalnotes - journal notes.
+- `get-chemistry-lab-results-v2` GET /api/open/chemistrylabreports - chemistry lab reports, filtered by startActionDateTime/endActionDateTime.
+- `getPrescriptionInfo-v2` GET /api/open/medications - medication prescriptions.
+- `get-attention-signals` GET /api/open/attentionsignals - allergies, contagious infections and other care-relevant alerts.
+- `get-bookings` GET /api/open/appointments - booked appointments.
+- `update-appointment` PUT /api/open/appointments?id= - update a booked appointment.
+- `get-videomeetings` GET /open/api/videomeetings - scheduled video meetings.
+- `create-referral` POST /api/open/referrals - create a referral request.
+- `register-payment` POST /api/open/paymentnotice - register a payment notice.
+- `fhir-get` / `fhir-post` / `fhir-put` - pass-through to the FHIR R4 server.
+
+Five APIs (care contacts, chemistry lab results, diagnosis, journal notes, medication prescriptions, patient information) also keep a version literally labelled `deprecated` alongside the v2 successor. Use v2.
+
+## FHIR R4 resources
+Appointment, Basic, Bundle, CarePlan, ClinicalImpression, Condition, Consent, DiagnosticReport, Encounter, Immunization, Invoice, Location, MedicationDispense, MedicationRequest, Observation, OperationDefinition, Organization, Patient, Practitioner, Provenance, Questionnaire, QuestionnaireResponse, ServiceRequest, Task. No `delete` interaction is declared on ANY resource.
+
+## What an agent should know before calling
+- Errors arrive in three different shapes: the APIM gateway envelope `{statusCode, message}`, the COSMIC application envelope `{error, path, status, timestamp}`, and a FHIR `OperationOutcome`. None is RFC 9457 problem+json.
+- 429 means the gateway rate limit tripped; the body says "Try again in 5 seconds". No quota, window or `Retry-After` header is published.
+- There is NO documented pagination, NO idempotency key, and NO webhook or event stream.
+- There is no reversal endpoint for any write. COSMIC version-handles writes rather than deleting them, and no cancel/void/undo operation is published.
+- Cambio ships no SDK, no CLI and no MCP server.
+- COSMIC and its clinical decision support are CE-marked and MDR-certified (notified body BSI-2797); Cambio holds ISO 9001, 13485, 14001, 20000 and 27001.
+
+## Optional
+- [Cambio Group](https://www.cambiogroup.com/)
+- [Compliance](https://www.cambiogroup.com/compliance-eng/)
+- [News](https://www.cambiogroup.com/news/)
+- [Nordic Hackathon 2025 resources](https://github.com/CambioHealthcare/cp-nordic-hackathon-2025): openEHR OPT templates, AQL stored queries, sample apps.

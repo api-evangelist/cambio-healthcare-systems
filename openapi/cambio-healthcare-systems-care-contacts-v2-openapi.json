@@ -1,0 +1,1282 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Care contacts",
+    "description": "<h4>Intended Use</h4>\nThe Care Contacts API is intended to be used for fetching all care contacts for a given patient within a certain time frame.<br></br>The intended use for reading data with this API is in first hand that the API is applied for direct access and should not be used to transfer data between caregivers. If it should be used for ''data copying'' between care providers, patient consent must be handled outside the API.<br></br>The parameters contactAccessZoneUnit represent the PDL Care Unit (Vårdenhet) and contactHeadCareProviderUnit represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL.</br><h4>Specific Rules and Limitations</h4>The consumer of the API is responsible for making sure data retrieved is filtered in compliance with laws and regulations prior to presenting it to any end-users.<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Feb 2022</td>\n    <td>Updated major version due to performance impovements</td>\n  </tr>\n</table>\n<h4>Message Description</h4>The query result contains a list of care contacts.<br></br>",
+    "contact": {},
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/contacts"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "get-contacts-v2",
+        "summary": "Get all contacts",
+        "description": "Gets all care contacts for the given patient. The result can be filtered by using a time interval.\n<p>\n<a target=\"_blank\" href=\"/openidconnectprofile\">OAuth</a> <code>scope</code> for access : <code>user/Contact.read</code> or <code>patient/Contact.read</code> <p>",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContactEHRExtractsArray"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid access token. The client must request a new token from the authorization server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient OAuth2 scope for access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests in a given amount of time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fromDateTime",
+            "in": "query",
+            "description": "Time interval start, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toDateTime",
+            "in": "query",
+            "description": "Time interval end, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "The patient identifier",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "ContactEHRExtracts": {
+        "title": "ContactEHRExtracts",
+        "description": "List of care contacts where every item in the list holds one(1) care contact.",
+        "type": "object",
+        "properties": {
+          "contactEHRExtract": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactEHRExtract"
+            }
+          }
+        }
+      },
+      "ContactEHRExtract": {
+        "title": "ContactEHRExtract",
+        "description": "Object describing the contents of the care contact",
+        "type": "object",
+        "properties": {
+          "ehrId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "ehrSystem": {
+            "$ref": "#/components/schemas/II"
+          },
+          "timeCreated": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "contact": {
+            "$ref": "#/components/schemas/Contact"
+          },
+          "careCommitment": {
+            "$ref": "#/components/schemas/CareCommitment"
+          },
+          "patient": {
+            "$ref": "#/components/schemas/Patient"
+          },
+          "units": {
+            "$ref": "#/components/schemas/Units"
+          },
+          "contactPerformingUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "contactResponsibleUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "contactAccessZoneUnit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SimpleUnit"
+              }
+            ],
+            "description": "PDL care unit"
+          },
+          "contactHeadCareProviderUnit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SimpleUnit"
+              }
+            ],
+            "description": "PDL care provider"
+          },
+          "contactTechnicalUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "careProviders": {
+            "$ref": "#/components/schemas/CareProviders"
+          }
+        }
+      },
+      "Contact": {
+        "title": "Contact",
+        "description": "The data model for representing the contact",
+        "type": "object",
+        "properties": {
+          "rcId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "contactInternalID": {
+            "type": "string",
+            "description": "COSMIC internal id of the contact"
+          },
+          "contactPerformingUnit": {
+            "type": "string",
+            "description": "COSMIC internal id of the contact performing unit"
+          },
+          "contactVersionDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "contactTypeOfVisit": {
+            "type": "string",
+            "description": "Type of visit",
+            "example": "Clinic visit, Home visit, Phone contact"
+          },
+          "contactVisitType": {
+            "type": "string",
+            "description": "Used to specify the type of visit, i.e. a 'follow up visit' or a 'new visit'",
+            "example": "follow up visit"
+          },
+          "contactCategory1": {
+            "type": "string",
+            "description": "A broad categorization of the appointment"
+          },
+          "contactCategory2": {
+            "type": "string",
+            "description": "A broad categorization of the appointment"
+          },
+          "contactStatus": {
+            "type": "string",
+            "description": "Status of the contact",
+            "example": "Arrived"
+          },
+          "contactStatusConfigurationId": {
+            "type": "string",
+            "description": "Configuration path of the contact status",
+            "example": "se.cambiosys.spider.HealthCareModel.HCM_Open"
+          },
+          "contactActive": {
+            "type": "boolean",
+            "description": "Whether the contact is active or not"
+          },
+          "contactBeginDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "contactEndDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "contactShareInfo": {
+            "type": "boolean",
+            "description": "Whether the contact information can be shared or not"
+          },
+          "contactRoom": {
+            "type": "string",
+            "description": "The room related to the contact"
+          },
+          "contactBed": {
+            "type": "string",
+            "description": "The bed related to the contact if it is an inpatient or emergency contact and if the bed reservation has been done"
+          },
+          "contactHomeleaveBeginDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "contactHomeleaveEndDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "contactPatientFee": {
+            "type": "string",
+            "description": "The patient fee when it is applicable"
+          },
+          "contactSecrecyLevels": {
+            "$ref": "#/components/schemas/SecrecyLevels"
+          },
+          "actions": {
+            "$ref": "#/components/schemas/Actions"
+          },
+          "discharge": {
+            "$ref": "#/components/schemas/Discharge"
+          }
+        }
+      },
+      "Actions": {
+        "title": "Actions",
+        "description": "List of actions related to a contact",
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Action"
+            }
+          }
+        }
+      },
+      "Action": {
+        "title": "Action",
+        "description": "The data model for representing an action related to a contact",
+        "type": "object",
+        "properties": {
+          "actionID": {
+            "type": "string",
+            "description": "COSMIC internal id of the action"
+          },
+          "actionType": {
+            "type": "string",
+            "description": "Type of the action",
+            "example": "Registrering"
+          },
+          "actionMain": {
+            "type": "boolean",
+            "description": "Whether the action is a main action. A contact can have multiple actions and one of them can be a main action"
+          },
+          "actionCareService": {
+            "type": "string",
+            "description": "The service that is to be performed during the appointment"
+          },
+          "actionVisitType": {
+            "type": "string",
+            "description": "Used to specify the type of visit, i.e. a 'follow up visit' or a 'new visit",
+            "example": "follow up visit"
+          },
+          "actionCategory1": {
+            "type": "string",
+            "description": "A broad categorization of the appointment"
+          },
+          "actionCategory2": {
+            "type": "string",
+            "description": "A broad categorization of the appointment"
+          },
+          "actionStatus": {
+            "type": "string",
+            "description": "Status of the action",
+            "example": "Arrived"
+          },
+          "actionStatusConfigurationId": {
+            "type": "string",
+            "description": "Configuration path of the action status",
+            "example": "se.cambiosys.spider.HealthCareModel.HCM_Open"
+          },
+          "actionBeginDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "actionEndDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "actionSecrecyLevels": {
+            "$ref": "#/components/schemas/SecrecyLevels"
+          }
+        }
+      },
+      "Discharge": {
+        "title": "Discharge",
+        "description": "Discharge information of the contact when it is relevant",
+        "type": "object",
+        "properties": {
+          "dischargeDestination": {
+            "type": "string",
+            "description": "Destination after discharging the patient. whether moved to another unit or sent home etc"
+          },
+          "dischargeDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "deceasedDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "postMortemRequired": {
+            "type": "boolean",
+            "description": "Whether a post mortem required or not if the patient is deceased"
+          }
+        }
+      },
+      "CareCommitment": {
+        "title": "CareCommitment",
+        "description": "The commitment which the contact is connected to",
+        "type": "object",
+        "properties": {
+          "careCommitmentID": {
+            "type": "string",
+            "description": "COSMIC internal Id of the commitment"
+          },
+          "careCommitmentDate": {
+            "$ref": "#/components/schemas/TSDATE"
+          },
+          "careCommitmentClassification": {
+            "type": "string",
+            "description": "The commitment classified as",
+            "example": "Schizofreni"
+          }
+        }
+      },
+      "II": {
+        "title": "II",
+        "description": "Instance identifier(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "value": {
+            "type": "string"
+          },
+          "root": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "identifierName": {
+            "type": "string"
+          },
+          "displayable": {
+            "type": "boolean"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          },
+          "reliability": {
+            "$ref": "#/components/schemas/Reliability"
+          }
+        }
+      },
+      "TSDATE": {
+        "type": "object",
+        "allOf": [
+          {
+            "type": "object",
+            "properties": {
+              "objectType": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "$ref": "#/components/schemas/TS"
+          }
+        ],
+        "discriminator": "objectType"
+      },
+      "TS": {
+        "title": "TS",
+        "description": "Point in time(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "expression": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/QTY"
+          },
+          "uncertaintyType": {
+            "$ref": "#/components/schemas/UncertaintyType"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "QTY": {
+        "title": "QTY",
+        "description": "Quantity(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "expression": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/QTY"
+          },
+          "uncertaintyType": {
+            "$ref": "#/components/schemas/UncertaintyType"
+          }
+        }
+      },
+      "ED": {
+        "title": "ED",
+        "description": "Encapsulated data(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "data": {
+            "type": "string"
+          },
+          "xml": {
+            "type": "string"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/TEL"
+          },
+          "integrityCheck": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "thumbnail": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "description": {
+            "$ref": "#/components/schemas/ST"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ED"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "compression": {
+            "$ref": "#/components/schemas/Compression"
+          },
+          "integrityCheckAlgorithm": {
+            "$ref": "#/components/schemas/IntegrityCheckAlgorithm"
+          }
+        }
+      },
+      "ST": {
+        "title": "ST",
+        "description": "Character string(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ST"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        }
+      },
+      "TEL": {
+        "title": "TEL",
+        "description": "Telecommunication address(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "useablePeriod": {
+            "$ref": "#/components/schemas/QSETTS"
+          },
+          "value": {
+            "type": "string"
+          },
+          "use": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TELUSE"
+            }
+          }
+        }
+      },
+      "TELUSE": {
+        "title": "TELUSE",
+        "description": "Use of telecommunication address(ISO 21090)",
+        "example": "H",
+        "type": "string",
+        "enum": [
+          "H",
+          "HP",
+          "HV",
+          "WP",
+          "DIR",
+          "PUB",
+          "BAD",
+          "TMP",
+          "AS",
+          "EC",
+          "MC",
+          "PG"
+        ]
+      },
+      "QSETTS": {
+        "title": "QSETTS",
+        "description": "Time period(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          }
+        }
+      },
+      "ANY": {
+        "title": "ANY",
+        "description": "Abstract data type that is effectively instantiated by any of the other data types(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          }
+        }
+      },
+      "Patient": {
+        "title": "Patient",
+        "description": "Data model for representing the patient of the contact",
+        "type": "object",
+        "properties": {
+          "patientID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "patientInternalID": {
+            "type": "string",
+            "description": "COSMIC internal id of the patient"
+          },
+          "patientProtectedId": {
+            "type": "boolean"
+          },
+          "patientSecrecyGroups": {
+            "$ref": "#/components/schemas/SecrecyGroups"
+          },
+          "patientName": {
+            "$ref": "#/components/schemas/PatientName"
+          }
+        }
+      },
+      "PatientName": {
+        "title": "PatientName",
+        "description": "Data model for patient's name",
+        "type": "object",
+        "properties": {
+          "patientFamilyName": {
+            "type": "string",
+            "description": "Family name of the patient"
+          },
+          "patientMiddleName": {
+            "type": "string",
+            "description": "Middle name of the patient"
+          },
+          "patientGivenName": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientGivenName"
+            }
+          }
+        }
+      },
+      "PatientGivenName": {
+        "title": "PatientGivenName",
+        "description": "Data model for patient's given name",
+        "type": "object",
+        "properties": {
+          "qualifier": {
+            "type": "string",
+            "description": "Given name qualifier",
+            "example": "'CL' when the preferred given name is the current given name"
+          },
+          "value": {
+            "type": "string",
+            "description": "Given name of the patient"
+          }
+        }
+      },
+      "Units": {
+        "title": "Units",
+        "description": "Represents list of units",
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Unit"
+            }
+          }
+        }
+      },
+      "Unit": {
+        "title": "Unit",
+        "description": "The data model for representing a unit",
+        "type": "object",
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitInternalID": {
+            "type": "string",
+            "description": "Cosmic internal id of the unit"
+          },
+          "unitName": {
+            "type": "string",
+            "description": "Name of the unit"
+          },
+          "unitSecrecyGroups": {
+            "$ref": "#/components/schemas/SecrecyGroups"
+          },
+          "accessZones": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccessZones"
+              }
+            ],
+            "description": "PDL care unit"
+          },
+          "headCareProviderUnitID": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/II"
+              }
+            ],
+            "description": "PDL care provider unit id"
+          },
+          "phoneNumbers": {
+            "$ref": "#/components/schemas/PhoneNumbers"
+          },
+          "emailAddresses": {
+            "$ref": "#/components/schemas/EmailAddresses"
+          },
+          "unitAddresses": {
+            "$ref": "#/components/schemas/UnitAddresses"
+          }
+        }
+      },
+      "AccessZones": {
+        "description": "Represents PDL AccessZones",
+        "title": "AccessZones",
+        "type": "object",
+        "properties": {
+          "accessZoneID": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/II"
+            }
+          }
+        }
+      },
+      "SimpleUnit": {
+        "title": "SimpleUnit",
+        "description": "A lite model for a unit",
+        "type": "object",
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "CareProviders": {
+        "title": "CareProviders",
+        "description": "Represents list of CareProviders",
+        "type": "object",
+        "properties": {
+          "careProvider": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareProvider"
+            }
+          }
+        }
+      },
+      "CareProvider": {
+        "title": "CareProvider",
+        "description": "Represents a care provider",
+        "type": "object",
+        "properties": {
+          "careProviderType": {
+            "type": "string",
+            "description": "Represents a care provider type",
+            "example": "MainCareProvider"
+          },
+          "careProviderID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderInternalID": {
+            "type": "string",
+            "description": "COSMIC internal id of the care provider"
+          },
+          "careProviderName": {
+            "type": "string",
+            "description": "Name of the care provider"
+          },
+          "careProviderPosition": {
+            "$ref": "#/components/schemas/CareProviderPosition"
+          },
+          "careProviderUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          }
+        }
+      },
+      "CareProviderPosition": {
+        "title": "CareProviderPosition",
+        "description": "The data model for care provider position",
+        "type": "object",
+        "properties": {
+          "careProviderPositionID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderPositionName": {
+            "type": "string",
+            "description": "Represents the care provider role name"
+          }
+        }
+      },
+      "PhoneNumbers": {
+        "title": "PhoneNumbers",
+        "description": "Represents list of phone numbers",
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Phone"
+            }
+          }
+        }
+      },
+      "EmailAddresses": {
+        "title": "EmailAddresses",
+        "description": "Represents list of email addresses",
+        "type": "object",
+        "properties": {
+          "Email": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Email"
+            }
+          }
+        }
+      },
+      "UnitAddresses": {
+        "title": "UnitAddresses",
+        "description": "Represents list of unit addresses",
+        "type": "object",
+        "properties": {
+          "unitAddress": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitAddress"
+            }
+          }
+        }
+      },
+      "Phone": {
+        "title": "Phone",
+        "description": "The data model for phone number of a care provider or a unit",
+        "type": "object",
+        "properties": {
+          "phoneType": {
+            "type": "string",
+            "description": "Phone number type",
+            "example": "Direkttelefon"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The actual phone number",
+            "example": "023-49 17 44"
+          },
+          "phoneComment": {
+            "type": "string",
+            "description": "A comment"
+          }
+        }
+      },
+      "Email": {
+        "title": "Email",
+        "description": "Email address of a care provider or a unit",
+        "type": "object",
+        "properties": {
+          "EmailType": {
+            "type": "string",
+            "description": "Email address type",
+            "example": "work"
+          },
+          "EmailAddress": {
+            "type": "string",
+            "description": "Email address",
+            "example": "karl@abc.com"
+          },
+          "EmailComment": {
+            "type": "string",
+            "description": "A comment"
+          }
+        }
+      },
+      "UnitAddress": {
+        "title": "UnitAddress",
+        "description": "The data model for representing an address of a unit",
+        "type": "object",
+        "properties": {
+          "unitAddressType": {
+            "type": "string",
+            "description": "Address type",
+            "example": "Besöksadress"
+          },
+          "unitAddressAddress": {
+            "type": "string",
+            "description": "Address lines",
+            "example": "Myntgatan 8"
+          },
+          "unitAddressPostcode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "583 36"
+          },
+          "unitAddressCity": {
+            "type": "string",
+            "description": "City",
+            "example": "Linkoping"
+          },
+          "unitAddressCounty": {
+            "type": "string",
+            "description": "County",
+            "example": "Östergötland"
+          },
+          "unitAddressCountry": {
+            "type": "string",
+            "description": "Country",
+            "example": "Sverige"
+          },
+          "unitAddressGeographicalPlace": {
+            "type": "string"
+          },
+          "unitAddressComment": {
+            "type": "string",
+            "description": "A comment"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "title": "ErrorResponse",
+        "description": "Generic error response for all systems and applications errors.",
+        "type": "object",
+        "properties": {
+          "error": {
+            "description": "Error reason in text.",
+            "type": "string"
+          },
+          "path": {
+            "description": "Path to requested resource.",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status.",
+            "type": "integer",
+            "format": "int32"
+          },
+          "timestamp": {
+            "description": "Timestamp (milliseconds since epoch).",
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SecrecyGroups": {
+        "title": "SecrecyGroups",
+        "description": "A model for representing secrecy groups",
+        "type": "object",
+        "properties": {
+          "group": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Name of the group",
+              "example": "Psykiatriska kliniken"
+            }
+          }
+        }
+      },
+      "SecrecyLevels": {
+        "title": "SecrecyLevels",
+        "description": "The model for representing secrecy levels",
+        "type": "object",
+        "properties": {
+          "secrecyLevel": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Name of the secrecy level",
+              "example": "Sensitive"
+            }
+          }
+        }
+      },
+      "Compression": {
+        "title": "Compression",
+        "example": "DF",
+        "type": "string",
+        "enum": [
+          "DF",
+          "GZ",
+          "ZL",
+          "Z",
+          "BZ",
+          "Z_7"
+        ]
+      },
+      "IntegrityCheckAlgorithm": {
+        "title": "IntegrityCheckAlgorithm",
+        "example": "SHA_1",
+        "type": "string",
+        "enum": [
+          "SHA_1",
+          "SHA_256"
+        ]
+      },
+      "NullFlavor": {
+        "title": "NullFlavor",
+        "example": "NI",
+        "type": "string",
+        "enum": [
+          "NI",
+          "INV",
+          "OTH",
+          "NINF",
+          "PINF",
+          "UNC",
+          "DER",
+          "UNK",
+          "ASKU",
+          "NAV",
+          "QS",
+          "NASK",
+          "TRC",
+          "MSK",
+          "NA"
+        ]
+      },
+      "Reliability": {
+        "title": "Reliability",
+        "example": "ISS",
+        "type": "string",
+        "enum": [
+          "ISS",
+          "VER",
+          "UNV"
+        ]
+      },
+      "Scope": {
+        "title": "Scope",
+        "example": "BUSN",
+        "type": "string",
+        "enum": [
+          "BUSN",
+          "OBJ",
+          "VER",
+          "VW"
+        ]
+      },
+      "UncertaintyType": {
+        "title": "UncertaintyType",
+        "example": "U",
+        "type": "string",
+        "enum": [
+          "U",
+          "N",
+          "LN",
+          "G",
+          "E",
+          "X_2",
+          "T",
+          "F",
+          "B"
+        ]
+      },
+      "UpdateMode": {
+        "title": "UpdateMode",
+        "example": "A",
+        "type": "string",
+        "enum": [
+          "A",
+          "AU",
+          "U",
+          "R",
+          "I",
+          "D",
+          "K"
+        ]
+      },
+      "ContactEHRExtractsArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ContactEHRExtracts"
+        }
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

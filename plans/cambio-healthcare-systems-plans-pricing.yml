@@ -1,0 +1,21 @@
+generated: '2026-09-02'
+method: searched
+source: https://developer.openservices.cambio.se/signup + https://developer.openservices.cambio.se/getting-started
+plan_count: 0
+note: 'Cambio publishes NO pricing. Open Services is exposed as a single Azure API Management product, "Cambio Open
+  Services" (id: partner), with subscriptionRequired: true and approvalRequired: true and no price, terms or quota
+  attached — read anonymously from the portal product endpoint. Access is a B2B partner arrangement negotiated with
+  Cambio; the only self-service step is a signup that queues a subscription for manual approval.'
+plans: []
+products:
+- id: partner
+  name: Cambio Open Services
+  description: Subscribe to this product to receive credentials for accessing Open Services.
+  subscription_required: true
+  approval_required: true
+  subscriptions_limit: null
+  terms: null
+  price: null
+  source: https://developer.openservices.cambio.se/developer/products?api-version=2022-04-01-preview (HTTP 200)
+pricing_page: null
+sales_gate: true

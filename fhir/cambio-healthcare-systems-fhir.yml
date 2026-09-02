@@ -1,0 +1,239 @@
+generated: '2026-09-02'
+method: searched
+source: https://fhir.openservices.cambio.se/site/CapabilityStatement-CapabilityStatement.json
+note: Cambio publishes a full HL7 FHIR R4 Implementation Guide for COSMIC at fhir.openservices.cambio.se/site/,
+  canonical https://fhir.cambio.se/ImplementationGuide/se.cambio.fhir. The CapabilityStatement is saved verbatim
+  alongside this manifest; the IG also ships a downloadable NPM package and a definitions bundle.
+implementation_guide:
+  canonical: https://fhir.cambio.se/ImplementationGuide/se.cambio.fhir
+  site: https://fhir.openservices.cambio.se/site/index.html
+  version: 1.0.0
+  fhir_version: 4.0.1
+  published: '2026-06-18'
+  package:
+    url: https://fhir.openservices.cambio.se/site/package.tgz
+    status: 200
+    bytes: 3820918
+  definitions:
+    url: https://fhir.openservices.cambio.se/site/definitions.json.zip
+    status: 200
+    bytes: 3897981
+  implementation_guide_resource:
+    url: https://fhir.openservices.cambio.se/site/ImplementationGuide-se.cambio.fhir.json
+    status: 200
+capability_statement:
+  file: fhir/cambio-healthcare-systems-capabilitystatement.json
+  url: https://fhir.cambio.se/CapabilityStatement/CapabilityStatement
+  status: active
+  date: '2025-02-24'
+  publisher: Cambio
+  fhir_version: 4.0.1
+  kind: instance
+  implementation: FHIR based REST apis which has been developed using HAPI FHIR libraries
+  security:
+  - OAuth
+  mode: server
+  resource_count: 24
+  interaction_count: 48
+base_url: https://api.openservices.cambio.se/fhir
+resources:
+- type: OperationDefinition
+  profile: http://hl7.org/fhir/StructureDefinition/OperationDefinition
+  interactions:
+  - read
+  search_params: []
+- type: Organization
+  profile: http://hl7.org/fhir/StructureDefinition/Organization
+  interactions:
+  - update
+  - search-type
+  - read
+  - create
+  search_params:
+  - _id
+  - identifier
+  - name
+- type: Patient
+  profile: http://hl7.org/fhir/StructureDefinition/Patient
+  interactions:
+  - update
+  - search-type
+  - read
+  - create
+  search_params:
+  - family
+  - given
+  - identifier
+- type: Practitioner
+  profile: http://hl7.org/fhir/StructureDefinition/Practitioner
+  interactions:
+  - update
+  - search-type
+  - read
+  - create
+  search_params:
+  - _id
+  - identifier
+  - name
+- type: Condition
+  profile: http://hl7.org/fhir/StructureDefinition/Condition
+  interactions:
+  - search-type
+  search_params:
+  - category
+  - code
+  - subject
+- type: Appointment
+  profile: http://hl7.org/fhir/StructureDefinition/Appointment
+  interactions:
+  - update
+  - search-type
+  - create
+  search_params:
+  - patient
+  - _profile
+  - _id
+  - date
+- type: Basic
+  profile: http://hl7.org/fhir/StructureDefinition/Basic
+  interactions:
+  - search-type
+  search_params:
+  - _profile
+  - subject
+- type: Bundle
+  profile: http://hl7.org/fhir/StructureDefinition/Bundle
+  interactions:
+  - update
+  - create
+  search_params: []
+- type: CarePlan
+  profile: http://hl7.org/fhir/StructureDefinition/CarePlan
+  interactions:
+  - search-type
+  search_params:
+  - subject
+  - _profile
+  - category
+- type: ClinicalImpression
+  profile: http://hl7.org/fhir/StructureDefinition/ClinicalImpression
+  interactions:
+  - create
+  search_params: []
+- type: Consent
+  profile: http://hl7.org/fhir/StructureDefinition/Consent
+  interactions:
+  - search-type
+  - create
+  search_params:
+  - patient
+  - _profile
+- type: DiagnosticReport
+  profile: http://hl7.org/fhir/StructureDefinition/DiagnosticReport
+  interactions:
+  - search-type
+  - read
+  search_params:
+  - date
+  - patient
+  - _profile
+- type: Encounter
+  profile: http://hl7.org/fhir/StructureDefinition/Encounter
+  interactions:
+  - search-type
+  - create
+  - update
+  search_params:
+  - _id
+  - _profile
+  - class
+  - location
+  - status
+  - subject
+  - identifier
+- type: Immunization
+  profile: http://hl7.org/fhir/StructureDefinition/Immunization
+  interactions:
+  - search-type
+  search_params:
+  - patient
+  - _profile
+- type: Invoice
+  profile: http://hl7.org/fhir/StructureDefinition/Invoice
+  interactions:
+  - search-type
+  search_params:
+  - encounter
+  - subject
+  - _profile
+- type: Location
+  profile: http://hl7.org/fhir/StructureDefinition/Location
+  interactions:
+  - search-type
+  - read
+  search_params:
+  - type
+- type: MedicationDispense
+  profile: http://hl7.org/fhir/StructureDefinition/MedicationDispense
+  interactions:
+  - update
+  - create
+  search_params: []
+- type: MedicationRequest
+  profile: http://hl7.org/fhir/StructureDefinition/MedicationRequest
+  interactions:
+  - search-type
+  search_params:
+  - subject
+  - _profile
+  - category
+  - date
+- type: Observation
+  profile: http://hl7.org/fhir/StructureDefinition/Observation
+  interactions:
+  - search-type
+  - create
+  search_params:
+  - _profile
+  - code
+  - date
+  - patient
+  - status
+  - subject
+- type: Provenance
+  profile: http://hl7.org/fhir/StructureDefinition/Provenance
+  interactions:
+  - create
+  search_params: []
+- type: Questionnaire
+  profile: http://hl7.org/fhir/StructureDefinition/Questionnaire
+  interactions:
+  - search-type
+  - read
+  search_params:
+  - code
+  - _profile
+  - context
+- type: QuestionnaireResponse
+  profile: http://hl7.org/fhir/StructureDefinition/QuestionnaireResponse
+  interactions:
+  - read
+  - create
+  search_params: []
+- type: ServiceRequest
+  profile: http://hl7.org/fhir/StructureDefinition/ServiceRequest
+  interactions:
+  - search-type
+  - read
+  - create
+  search_params:
+  - subject
+  - _profile
+- type: Task
+  profile: http://hl7.org/fhir/StructureDefinition/Task
+  interactions:
+  - search-type
+  - create
+  search_params:
+  - focus
+  - _profile

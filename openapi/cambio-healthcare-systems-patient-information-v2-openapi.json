@@ -1,0 +1,1086 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Patient information",
+    "description": "<h4>Intended Use</h4>The intended use for reading data with this API is in first hand that the API is applied for direct access and should not be used to transfer data between caregivers. If it should be used for ''data copying'' between care providers, patient consent must be handled outside the API.<br></br>The parameters AccessZoneUnit represent the PDL Care Unit (Vårdenhet) and\nheadCareProviderUnit\nrepresents PDL Care provider (Vårdgivare) and can be used to evaluate PDL.<h4>Specific Rules and Limitations</h4>The consumer of the API is responsible for making sure data retrieved is filtered in compliance with laws and regulations prior to presenting it to any end-users.\n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Mar 2022</td>\n    <td>Updated major version due to performance impovements</td>\n  </tr>\n</table>\n<h4>Message Description</h4>Demographic patient information about a given patient.<br></br>",
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/patient"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "get-patient-information-v2",
+        "summary": "Get Patient",
+        "description": "Gets all patient information for the given patient.\n<p>\nOAuth <code>scope</code> for access : <code>user/Patient.read</code>",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientEHRExtractsArray"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid access token. The client must request a new token from the authorization server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient OAuth2 scope for access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests in a given amount of time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "The patient number when acting as a care giver or partner.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "PatientEHRExtracts": {
+        "title": "PatientEHRExtracts",
+        "description": "List of patients where every list currently only holds one(1) patient.",
+        "type": "object",
+        "properties": {
+          "patientEHRExtract": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientEHRExtract"
+            }
+          }
+        }
+      },
+      "PatientEHRExtract": {
+        "title": "PatientEHRExtract",
+        "description": "Object describing the contents of the patient.",
+        "type": "object",
+        "properties": {
+          "ehrId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "ehrSystem": {
+            "$ref": "#/components/schemas/II"
+          },
+          "timeCreated": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "patient": {
+            "$ref": "#/components/schemas/Patient"
+          },
+          "responsibleUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "accessZoneUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "headCareProviderUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          }
+        }
+      },
+      "Patient": {
+        "title": "Patient",
+        "type": "object",
+        "properties": {
+          "rcId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "patientVersionDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "patientID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "patientInternalID": {
+            "type": "string"
+          },
+          "patientProtectedId": {
+            "type": "boolean"
+          },
+          "patientSecrecyGroups": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "patientName": {
+            "$ref": "#/components/schemas/PatientName"
+          },
+          "patientBirthDate": {
+            "$ref": "#/components/schemas/TSDATE"
+          },
+          "patientDeceasedDate": {
+            "$ref": "#/components/schemas/TSDATE"
+          },
+          "patientSex": {
+            "type": "string",
+            "enum": [
+              "M",
+              "F",
+              "U"
+            ]
+          },
+          "patientAddresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientAddress"
+            }
+          },
+          "phoneNumbers": {
+            "$ref": "#/components/schemas/PhoneNumbers"
+          },
+          "emailAddresses": {
+            "$ref": "#/components/schemas/EmailAddresses"
+          },
+          "patientComment": {
+            "type": "string"
+          },
+          "patientRelatives": {
+            "$ref": "#/components/schemas/PatientRelatives"
+          },
+          "patientDataRegister": {
+            "$ref": "#/components/schemas/PatientDataRegister"
+          },
+          "patientConnectedInactiveNumbers": {
+            "$ref": "#/components/schemas/PatientConnectedInactiveNumbers"
+          },
+          "patientConnectedActiveNumbers": {
+            "$ref": "#/components/schemas/PatientConnectedActiveNumbers"
+          },
+          "patientPasses": {
+            "$ref": "#/components/schemas/PatientPasses"
+          },
+          "patientOtherIdentifiers": {
+            "$ref": "#/components/schemas/PatientOtherIdentifiers"
+          }
+        }
+      },
+      "PatientName": {
+        "title": "PatientName",
+        "type": "object",
+        "properties": {
+          "familyName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "givenName": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GivenName"
+            }
+          }
+        }
+      },
+      "GivenName": {
+        "title": "GivenName",
+        "description": "If the given name is the calling name qualifier=CL is set",
+        "type": "object",
+        "properties": {
+          "qualifier": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "PatientRelative": {
+        "title": "PatientRelative",
+        "type": "object",
+        "properties": {
+          "patientRelativeType": {
+            "type": "string"
+          },
+          "patientRelativeName": {
+            "type": "string"
+          },
+          "patientRelativeGivenName": {
+            "type": "string"
+          },
+          "patientRelativeFamilyName": {
+            "type": "string"
+          },
+          "patientRelativeOrder": {
+            "type": "string"
+          },
+          "patientRelativeHomePhonenumber": {
+            "type": "string"
+          },
+          "patientRelativeWorkPhonenumber": {
+            "type": "string"
+          },
+          "patientRelativeAddress": {
+            "type": "string"
+          },
+          "patientRelativeCOAddress": {
+            "type": "string"
+          },
+          "patientRelativeStreetAddress": {
+            "type": "string"
+          },
+          "patientRelativePostalCode": {
+            "type": "string"
+          },
+          "patientRelativeCity": {
+            "type": "string"
+          },
+          "patientRelativeComment": {
+            "type": "string"
+          }
+        }
+      },
+      "PatientRelatives": {
+        "title": "PatientRelatives",
+        "type": "object",
+        "properties": {
+          "patientRelative": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientRelative"
+            }
+          }
+        }
+      },
+      "PatientDataRegister": {
+        "title": "PatientDataRegister",
+        "type": "object",
+        "properties": {
+          "patientCountry": {
+            "type": "string"
+          },
+          "patientCounty": {
+            "type": "string"
+          },
+          "patientCity": {
+            "type": "string"
+          },
+          "patientDistrict": {
+            "type": "string"
+          }
+        }
+      },
+      "PatientConnectedInactiveNumbers": {
+        "title": "PatientConnectedInactiveNumbers",
+        "type": "object",
+        "properties": {
+          "patientConnectedInactiveNumber": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/II"
+            }
+          }
+        }
+      },
+      "PatientConnectedActiveNumbers": {
+        "title": "PatientConnectedActiveNumbers",
+        "type": "object",
+        "properties": {
+          "patientConnectedActiveNumber": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/II"
+            }
+          }
+        }
+      },
+      "PatientPass": {
+        "title": "PatientPass",
+        "type": "object",
+        "properties": {
+          "patientPassTypeDiscountCard": {
+            "type": "string"
+          },
+          "patientPassMembership": {
+            "type": "string"
+          },
+          "patientPassNumber": {
+            "type": "string"
+          },
+          "patientPassValidFrom": {
+            "$ref": "#/components/schemas/TSDATE"
+          },
+          "patientPassValidTo": {
+            "$ref": "#/components/schemas/TSDATE"
+          }
+        }
+      },
+      "PatientPasses": {
+        "title": "PatientPasses",
+        "type": "object",
+        "properties": {
+          "patientPass": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientPass"
+            }
+          }
+        }
+      },
+      "PatientOtherIdentifier": {
+        "title": "PatientOtherIdentifier",
+        "type": "object",
+        "properties": {
+          "patientOtherIdentifierType": {
+            "type": "string"
+          },
+          "patientOtherIdentifierValue": {
+            "type": "string"
+          },
+          "patientOtherIdentifierComment": {
+            "type": "string"
+          }
+        }
+      },
+      "PatientOtherIdentifiers": {
+        "title": "PatientOtherIdentifiers",
+        "type": "object",
+        "properties": {
+          "patientOtherIdentifier": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientOtherIdentifier"
+            }
+          }
+        }
+      },
+      "II": {
+        "title": "II",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "value": {
+            "type": "string"
+          },
+          "root": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "identifierName": {
+            "type": "string"
+          },
+          "displayable": {
+            "type": "boolean"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          },
+          "reliability": {
+            "$ref": "#/components/schemas/Reliability"
+          }
+        }
+      },
+      "TSDATE": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TS"
+          }
+        ]
+      },
+      "TS": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/QTY"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "QTY": {
+        "title": "QTY",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "expression": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/QTY"
+          },
+          "uncertaintyType": {
+            "$ref": "#/components/schemas/UncertaintyType"
+          }
+        }
+      },
+      "ED": {
+        "title": "ED",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "data": {
+            "type": "string"
+          },
+          "xml": {
+            "type": "string"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/TEL"
+          },
+          "integrityCheck": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "thumbnail": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "description": {
+            "$ref": "#/components/schemas/ST"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ED"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "compression": {
+            "$ref": "#/components/schemas/Compression"
+          },
+          "integrityCheckAlgorithm": {
+            "$ref": "#/components/schemas/IntegrityCheckAlgorithm"
+          }
+        }
+      },
+      "ST": {
+        "title": "ST",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ST"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        }
+      },
+      "TEL": {
+        "title": "TEL",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "useablePeriod": {
+            "$ref": "#/components/schemas/QSETTS"
+          },
+          "value": {
+            "type": "string"
+          },
+          "use": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TELUSE"
+            }
+          }
+        }
+      },
+      "TELUSE": {
+        "title": "TELUSE",
+        "example": "H",
+        "type": "string",
+        "enum": [
+          "H",
+          "HP",
+          "HV",
+          "WP",
+          "DIR",
+          "PUB",
+          "BAD",
+          "TMP",
+          "AS",
+          "EC",
+          "MC",
+          "PG"
+        ]
+      },
+      "QSETTS": {
+        "title": "QSETTS",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          }
+        }
+      },
+      "ANY": {
+        "title": "ANY",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          }
+        }
+      },
+      "HXIT": {
+        "title": "HXIT",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          }
+        }
+      },
+      "SimpleUnit": {
+        "title": "SimpleUnit",
+        "type": "object",
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "CareProviders": {
+        "title": "CareProviders",
+        "type": "object",
+        "properties": {
+          "careProvider": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareProvider"
+            }
+          }
+        }
+      },
+      "CareProvider": {
+        "title": "CareProvider",
+        "type": "object",
+        "properties": {
+          "careProviderType": {
+            "type": "string"
+          },
+          "careProviderID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderInternalID": {
+            "type": "string"
+          },
+          "careProviderName": {
+            "type": "string"
+          },
+          "careProviderPosition": {
+            "$ref": "#/components/schemas/CareProviderPosition"
+          },
+          "careProviderUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          }
+        }
+      },
+      "CareProviderPosition": {
+        "title": "CareProviderPosition",
+        "type": "object",
+        "properties": {
+          "careProviderPositionID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderPositionName": {
+            "type": "string"
+          }
+        }
+      },
+      "PhoneNumbers": {
+        "title": "PhoneNumbers",
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Phone"
+            }
+          }
+        }
+      },
+      "EmailAddresses": {
+        "title": "EmailAddresses",
+        "type": "object",
+        "properties": {
+          "Email": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Email"
+            }
+          }
+        }
+      },
+      "Phone": {
+        "title": "Phone",
+        "type": "object",
+        "properties": {
+          "phoneType": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "phoneComment": {
+            "type": "string"
+          }
+        }
+      },
+      "Email": {
+        "title": "Email",
+        "type": "object",
+        "properties": {
+          "EmailType": {
+            "type": "string"
+          },
+          "EmailAddress": {
+            "type": "string"
+          },
+          "EmailComment": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "title": "ErrorResponse",
+        "description": "Generic error response for all systems and applications errors.",
+        "type": "object",
+        "properties": {
+          "error": {
+            "description": "Error reason in text.",
+            "type": "string"
+          },
+          "path": {
+            "description": "Path to requested resource.",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status.",
+            "type": "integer",
+            "format": "int32"
+          },
+          "timestamp": {
+            "description": "Timestamp (milliseconds since epoch).",
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "PatientAddresses": {
+        "title": "PatientAddresses",
+        "type": "object",
+        "properties": {
+          "patientAddress": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientAddress"
+            }
+          }
+        }
+      },
+      "PatientAddress": {
+        "title": "PatientAddress",
+        "type": "object",
+        "properties": {
+          "PatientAddressType": {
+            "type": "string"
+          },
+          "PatientAddressCO": {
+            "type": "string"
+          },
+          "PatientAddressStreet": {
+            "type": "string"
+          },
+          "PatientAddressPostcode": {
+            "type": "string"
+          },
+          "PatientAddressCity": {
+            "type": "string"
+          },
+          "PatientAddressCounty": {
+            "type": "string"
+          },
+          "PatientAddressCountry": {
+            "type": "string"
+          },
+          "PatientAddressCountryCode": {
+            "type": "string"
+          },
+          "PatientAddressComment": {
+            "type": "string"
+          }
+        }
+      },
+      "Compression": {
+        "title": "Compression",
+        "example": "DF",
+        "type": "string",
+        "enum": [
+          "DF",
+          "GZ",
+          "ZL",
+          "Z",
+          "BZ",
+          "Z_7"
+        ]
+      },
+      "IntegrityCheckAlgorithm": {
+        "title": "IntegrityCheckAlgorithm",
+        "example": "SHA_1",
+        "type": "string",
+        "enum": [
+          "SHA_1",
+          "SHA_256"
+        ]
+      },
+      "NullFlavor": {
+        "title": "NullFlavor",
+        "example": "NI",
+        "type": "string",
+        "enum": [
+          "NI",
+          "INV",
+          "OTH",
+          "NINF",
+          "PINF",
+          "UNC",
+          "DER",
+          "UNK",
+          "ASKU",
+          "NAV",
+          "QS",
+          "NASK",
+          "TRC",
+          "MSK",
+          "NA"
+        ]
+      },
+      "PatientSex": {
+        "title": "PatientSex",
+        "example": "M",
+        "type": "string",
+        "enum": [
+          "M",
+          "F",
+          "U"
+        ]
+      },
+      "Reliability": {
+        "title": "Reliability",
+        "example": "ISS",
+        "type": "string",
+        "enum": [
+          "ISS",
+          "VER",
+          "UNV"
+        ]
+      },
+      "Scope": {
+        "title": "Scope",
+        "example": "BUSN",
+        "type": "string",
+        "enum": [
+          "BUSN",
+          "OBJ",
+          "VER",
+          "VW"
+        ]
+      },
+      "UncertaintyType": {
+        "title": "UncertaintyType",
+        "example": "U",
+        "type": "string",
+        "enum": [
+          "U",
+          "N",
+          "LN",
+          "G",
+          "E",
+          "X_2",
+          "T",
+          "F",
+          "B"
+        ]
+      },
+      "UpdateMode": {
+        "title": "UpdateMode",
+        "example": "A",
+        "type": "string",
+        "enum": [
+          "A",
+          "AU",
+          "U",
+          "R",
+          "I",
+          "D",
+          "K"
+        ]
+      },
+      "PatientEHRExtractsArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PatientEHRExtracts"
+        }
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

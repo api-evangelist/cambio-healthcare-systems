@@ -1,0 +1,36 @@
+generated: '2026-09-02'
+method: generated
+source: openapi/ + fhir/cambio-healthcare-systems-capabilitystatement.json + conventions/ + errors/ (every operationId
+  grepped from a provider-published contract)
+note: Three packaged Agent Skills covering the read surface, the write surface and the FHIR surface of Cambio Open
+  Services. Every operationId, path, header and parameter named in these skills appears in a spec Cambio publishes;
+  no endpoint was invented.
+skills:
+- name: cambio-patient-clinical-summary
+  file: skills/cambio-healthcare-systems-patient-clinical-summary.md
+  description: Assemble a read-only clinical summary for one patient from COSMIC.
+  operations:
+  - get-patient-information-v2
+  - get-attention-signals
+  - get-diagnoses-v2
+  - getPrescriptionInfo-v2
+  - get-chemistry-lab-results-v2
+  - get-journal-notes-v2
+  - get-contacts-v2
+- name: cambio-appointments-and-referrals
+  file: skills/cambio-healthcare-systems-appointments-and-referrals.md
+  description: The write surface — appointments, video meetings, referrals and payment notices, and what cannot
+    be undone.
+  operations:
+  - get-bookings
+  - update-appointment
+  - get-videomeetings
+  - create-referral
+  - register-payment
+- name: cambio-fhir-r4-access
+  file: skills/cambio-healthcare-systems-fhir-r4-access.md
+  description: 'Query the FHIR R4 server: declared resources, interactions, search parameters and profiles.'
+  operations:
+  - fhir-get
+  - fhir-post
+  - fhir-put

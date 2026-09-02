@@ -1,0 +1,75 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Authorizer - OpenId Connect",
+    "description": "OpenId Connect API for Authorizer.\nThis is needed in between the developer portal and Keycloak since it seems the dev portals HTTP client can't speak properly directly with Keycloak for some reason.",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/auth/realms/COS"
+    }
+  ],
+  "paths": {
+    "/protocol/openid-connect/*": {
+      "get": {
+        "operationId": "get-open-id-connect",
+        "summary": "GET Open Id Connect",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          }
+        }
+      }
+    },
+    "/.well-known/openid-configuration": {
+      "get": {
+        "operationId": "openid-configuration",
+        "summary": "OpenId Configuration",
+        "description": "OpenId Configuration",
+        "responses": {
+          "200": {
+            "description": "null"
+          }
+        }
+      }
+    },
+    "/protocol/openid-connect/token": {
+      "post": {
+        "operationId": "token-endpoint",
+        "summary": "Token Endpoint",
+        "description": "Token Endpoint",
+        "responses": {
+          "200": {
+            "description": "null"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {}
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

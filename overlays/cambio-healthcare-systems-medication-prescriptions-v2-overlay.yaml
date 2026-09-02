@@ -1,0 +1,30 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Cambio Open Services — Medication prescriptions
+  version: 1.0.0
+extends: openapi/cambio-healthcare-systems-medication-prescriptions-v2-openapi.json
+x-generated: '2026-09-02'
+x-method: generated
+x-source: Derived from this repo's own enrichment pass; does not modify the provider contract.
+actions:
+- target: $.info
+  description: Record where this contract came from and how it was assembled.
+  update:
+    x-apis-io-source: https://developer.openservices.cambio.se/developer/apis/medication-prescriptions-v2?api-version=2022-04-01-preview
+    x-apis-io-provenance: Exported from the Cambio Open Services Azure API Management developer portal (anonymous
+      read). The portal export carries info/servers/securitySchemes but an EMPTY paths object; operations and component
+      schemas were re-attached from the same portal operations and schemas endpoints. openapi/_original/ holds the
+      export unmodified.
+    x-apis-io-fetched: '2026-09-02'
+- target: $
+  description: Note the ref-dialect defect fixed when assembling this document.
+  update:
+    x-apis-io-repairs:
+    - Rewrote Swagger 2.0 "#/definitions/..." schema pointers to OpenAPI 3 "#/components/schemas/..."; the portal
+      emits the older dialect inside an openapi 3.0.1 envelope.
+- target: $.components.securitySchemes
+  description: The published spec declares only the gateway subscription key. Record the OAuth 2.0 layer the docs
+    require but the export omits.
+  update:
+    x-apis-io-note: Calls ALSO require an OAuth 2.0 bearer token from https://api.openservices.cambio.se/auth/realms/COS
+      (authorization_code or client_credentials), carrying a SMART-on-FHIR scope. See authentication/ and scopes/.

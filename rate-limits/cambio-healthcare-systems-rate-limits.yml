@@ -1,0 +1,27 @@
+generated: '2026-09-02'
+method: searched
+source: https://developer.openservices.cambio.se/error-handling + openapi/ response definitions
+limit_count: 0
+note: 'Cambio documents the 429 EXHAUSTION SIGNAL but not the limit. 15 of 24 published operations declare a 429
+  "Call rate limit exceeded / Too many requests in a given amount of time" response with the standard ErrorResponse
+  body, and the gateway is Azure API Management (which supports rate-limit-by-key policies), but no numeric quota,
+  window, burst, scope or Retry-After / RateLimit-* response header is published anywhere on the public portal.
+  An agent can detect exhaustion but cannot budget for it. One concrete number DOES exist, buried in the 429 response
+  example rather than in any prose: the gateway body says "Rate limit is exceeded. Try again in 5 seconds.", which
+  is the Azure API Management renewal-period message. It gives a retry interval but still no call quota, so limit_count
+  stays 0.'
+limits: []
+signaling:
+  status_code: 429
+  response_body: ErrorResponse {error, path, status, timestamp}
+  headers_documented: []
+  retry_after: false
+  draft_ratelimit_headers: false
+  operations_declaring_429: 15
+  operations_total: 24
+  retry_hint_in_body: Rate limit is exceeded. Try again in 5 seconds.
+  retry_after_seconds_observed: 5
+  retry_hint_source: openapi/ 429 response examples published by the portal
+enforcement:
+  gateway: Azure API Management
+  scope: presumed per-subscription-key (not stated by the provider)

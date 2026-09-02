@@ -1,0 +1,903 @@
+generated: '2026-09-02'
+method: derived
+source: openapi/ response examples published by the Cambio Open Services developer portal
+note: 'Cambio ships in-spec examples on both success and error responses. The success examples are typed skeletons
+  ("string", 0) rather than populated clinical records, which is the right call for a patient-data API but means
+  an agent gets the SHAPE and not the semantics. The error examples are the useful ones: they expose two distinct
+  envelopes — the Azure API Management gateway envelope {statusCode, message} and the application ErrorResponse
+  {error, path, status, timestamp} — plus a FHIR OperationOutcome on the FHIR surface, and the 429 example carries
+  a concrete "Try again in 5 seconds" retry hint that appears nowhere in the prose documentation.'
+example_count: 64
+success_examples: 7
+error_examples: 57
+examples:
+- spec: openapi/cambio-healthcare-systems-attention-signal-openapi.json
+  api: Attention signal
+  operationId: get-attention-signals
+  status: '401'
+  media_type: application/json
+  example:
+    statusCode: 401
+    message: Invalid access token.
+- spec: openapi/cambio-healthcare-systems-attention-signal-openapi.json
+  api: Attention signal
+  operationId: get-attention-signals
+  status: '401'
+  media_type: application/fhir+json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-attention-signal-openapi.json
+  api: Attention signal
+  operationId: get-attention-signals
+  status: '403'
+  media_type: application/json
+  example:
+    statusCode: 403
+    message: Insufficient scope.
+- spec: openapi/cambio-healthcare-systems-attention-signal-openapi.json
+  api: Attention signal
+  operationId: get-attention-signals
+  status: '403'
+  media_type: application/fhir+json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-attention-signal-openapi.json
+  api: Attention signal
+  operationId: get-attention-signals
+  status: '429'
+  media_type: application/json
+  example:
+    statusCode: 429
+    message: Rate limit is exceeded. Try again in 5 seconds.
+- spec: openapi/cambio-healthcare-systems-attention-signal-openapi.json
+  api: Attention signal
+  operationId: get-attention-signals
+  status: '429'
+  media_type: application/fhir+json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-booked-appointments-openapi.json
+  api: Booked appointments
+  operationId: get-bookings
+  status: '200'
+  media_type: application/json
+  example:
+  - Booking:
+    - ContactId: string
+      StartTime: string
+      PerformingUnit:
+        Name: string
+        Id: string
+        Address:
+          StreetAddress: string
+          CareOfAddress: string
+          PostalCode: string
+          City: string
+          Country: string
+          Type:
+            Id: string
+            Name: string
+        HSAId: string
+      CareGiver: string
+      PatientInformation: string
+      PaymentDetails:
+        Price: 0
+        Reduction: 0
+        ReductionReason: string
+      TypedStartDateTime: string
+      Any:
+      - {}
+    RegisteredBooking:
+    - BookingId: string
+      StartTime: string
+      PerformingUnit:
+        Name: string
+        Id: string
+        Address:
+          StreetAddress: string
+          CareOfAddress: string
+          PostalCode: string
+          City: string
+          Country: string
+          Type:
+            Id: string
+            Name: string
+        HSAId: string
+      CareGiver: string
+      PatientInformation: string
+      TypedStartDateTime: string
+      Any:
+      - {}
+    Patient:
+      Name: string
+      PersonNumbers:
+      - Number: string
+        Type:
+          Id: string
+          Name: string
+      Addresses:
+      - StreetAddress: string
+        CareOfAddress: string
+        PostalCode: string
+        City: string
+        Country: string
+        Type:
+          Id: string
+          Name: string
+      PhoneNumbers:
+      - Number: string
+        Type:
+          Id: string
+          Name: string
+    ResultCode: OK
+    Comment: string
+    Any:
+    - {}
+- spec: openapi/cambio-healthcare-systems-booked-appointments-openapi.json
+  api: Booked appointments
+  operationId: get-bookings
+  status: '401'
+  media_type: application/json
+  example:
+    statusCode: 401
+    message: Invalid access token.
+- spec: openapi/cambio-healthcare-systems-booked-appointments-openapi.json
+  api: Booked appointments
+  operationId: get-bookings
+  status: '403'
+  media_type: application/json
+  example:
+    statusCode: 403
+    message: Insufficient scope.
+- spec: openapi/cambio-healthcare-systems-booked-appointments-openapi.json
+  api: Booked appointments
+  operationId: get-bookings
+  status: '429'
+  media_type: application/json
+  example:
+    statusCode: 429
+    message: Rate limit is exceeded. Try again in 5 seconds.
+- spec: openapi/cambio-healthcare-systems-booked-appointments-openapi.json
+  api: Booked appointments
+  operationId: update-appointment
+  status: '200'
+  media_type: application/json
+  example:
+    ResultCode: OK
+    Comment: string
+    Any:
+    - {}
+- spec: openapi/cambio-healthcare-systems-booked-appointments-openapi.json
+  api: Booked appointments
+  operationId: update-appointment
+  status: '401'
+  media_type: application/json
+  example:
+    statusCode: 401
+    message: Invalid access token.
+- spec: openapi/cambio-healthcare-systems-booked-appointments-openapi.json
+  api: Booked appointments
+  operationId: update-appointment
+  status: '403'
+  media_type: application/json
+  example:
+    statusCode: 403
+    message: Insufficient scope.
+- spec: openapi/cambio-healthcare-systems-booked-appointments-openapi.json
+  api: Booked appointments
+  operationId: update-appointment
+  status: '429'
+  media_type: application/json
+  example:
+    statusCode: 429
+    message: Rate limit is exceeded. Try again in 5 seconds.
+- spec: openapi/cambio-healthcare-systems-care-contacts-openapi.json
+  api: Care contacts
+  operationId: get-contacts
+  status: '401'
+  media_type: application/json
+  example:
+    statusCode: 401
+    message: Invalid access token.
+- spec: openapi/cambio-healthcare-systems-care-contacts-openapi.json
+  api: Care contacts
+  operationId: get-contacts
+  status: '403'
+  media_type: application/json
+  example:
+    statusCode: 403
+    message: Insufficient scope.
+- spec: openapi/cambio-healthcare-systems-care-contacts-openapi.json
+  api: Care contacts
+  operationId: get-contacts
+  status: '429'
+  media_type: application/json
+  example:
+    statusCode: 429
+    message: Rate limit is exceeded. Try again in 5 seconds.
+- spec: openapi/cambio-healthcare-systems-care-contacts-v2-openapi.json
+  api: Care contacts
+  operationId: get-contacts-v2
+  status: '401'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-care-contacts-v2-openapi.json
+  api: Care contacts
+  operationId: get-contacts-v2
+  status: '403'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-care-contacts-v2-openapi.json
+  api: Care contacts
+  operationId: get-contacts-v2
+  status: '429'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-chemistry-lab-results-openapi.json
+  api: Chemistry lab results
+  operationId: get-chemistry-lab-results
+  status: '200'
+  media_type: application/json
+  example:
+  - ChemistryReportEHRExtract:
+    - AccessZoneUnit:
+        UnitID:
+          extension: string
+          root: string
+        UnitLocalID:
+          extension: string
+          root: string
+      AttestingCareProviders:
+        AttestingCareProvider:
+        - CareProviderID:
+            extension: string
+            root: string
+          CareProviderName: string
+          CareProviderType: string
+          ProviderPosition:
+            CareProviderPositionID:
+              extension: string
+              root: string
+            CareProviderPositionName: string
+      CareProviders:
+        CareProvider:
+        - CareProviderInternalID:
+          - CareProviderID:
+              extension: string
+              root: string
+            CareProviderName: string
+            CareProviderType: string
+            ProviderPosition:
+              CareProviderPositionID:
+                extension: string
+                root: string
+              CareProviderPositionName: string
+          CareProviderType: string
+      Hcmcontact:
+        ContactPerformingUnit: string
+        ContactSecrecyLevels:
+        - SecrecyLevel: string
+        HCMContacInternaltID: string
+        HCMContactBegin:
+          value: string
+        HCMContactEnd:
+          value: string
+        HCMContactStatus: string
+        HCMContactType: string
+        target_id:
+          extension: string
+          root: string
+      HeadCareproviderUnit:
+        UnitID:
+          extension: string
+          root: string
+        UnitLocalID:
+          extension: string
+          root: string
+      Patient:
+        PatientID:
+          extension: string
+          root: string
+        PatientInternalID: string
+        PatientName:
+          PatientFamilyName: string
+          PatientGivenName:
+          - qualifier: string
+            value: string
+          PatientMiddleName: string
+        PatientProtectedId: true
+        PatientSecrecyGroups:
+          Group:
+          - string
+      PerformingUnit:
+        UnitID:
+          extension: string
+          root: string
+        UnitLocalID:
+          extension: string
+          root: string
+      ReceivingUnit:
+        UnitID:
+          extension: string
+          root: string
+        UnitLocalID:
+          extension: string
+          root: string
+      Report:
+        ReportCommentary: string
+        ReportDateTime:
+          value: string
+        ReportId: string
+        ReportStatus: string
+        ReportVersionDateTime:
+          value: string
+        SecrecyClassification: string
+        TestResult:
+        - AttestDateTime:
+            value: string
+          AttestingCareProviderId:
+            extension: string
+            root: string
+          IUPAC: string
+          Pathological: string
+          Range: string
+          Result: string
+          Status: string
+          TestCommentary: string
+          TestId: string
+          TestName: string
+          Unit: string
+          rc_id:
+            extension: string
+            root: string
+        rc_id:
+          extension: string
+          root: string
+      Request:
+        ClinicalInformation:
+        - Information: string
+          Reply: string
+        CollectionDateTime: string
+        CollectorsCommentary: string
+        Priority: string
+        RequestCommentary: string
+        RequestDateTime:
+          value: string
+        RequestId: string
+        rc_id:
+          extension: string
+          root: string
+      RequestingUnit:
+        UnitID:
+          extension: string
+          root: string
+        UnitLocalID:
+          extension: string
+          root: string
+      ResponsibleUnit:
+        UnitID:
+          extension: string
+          root: string
+        UnitLocalID:
+          extension: string
+          root: string
+      Units:
+        Unit:
+        - AccessZones:
+            AccessZoneID:
+            - extension: string
+              root: string
+          EmailAddresses:
+            Email:
+            - EmailAddress: string
+              EmailComment: string
+              EmailType: string
+          HeadCareproviderUnitID:
+            extension: string
+            root: string
+          PhoneNumbers:
+            Phone:
+            - PhoneComment: string
+              PhoneNumber: string
+              PhoneType: string
+          UnitAddresses:
+            UnitAddress:
+            - UnitAddressAddress: string
+              UnitAddressCity: string
+              UnitAddressComment: string
+              UnitAddressCountry: string
+              UnitAddressCounty: string
+              UnitAddressGeographicalPlace: string
+              UnitAddressPostcode: string
+              UnitAddressType: string
+          UnitID:
+            extension: string
+            root: string
+          UnitLocalID:
+            extension: string
+            root: string
+          UnitName: string
+          UnitSecrecyGroups:
+            Group:
+            - string
+      ehr_id:
+        extension: string
+        root: string
+      ehr_system:
+        extension: string
+        root: string
+      time_created:
+        value: string
+- spec: openapi/cambio-healthcare-systems-chemistry-lab-results-openapi.json
+  api: Chemistry lab results
+  operationId: get-chemistry-lab-results
+  status: '401'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-chemistry-lab-results-v2-openapi.json
+  api: Chemistry lab results
+  operationId: get-chemistry-lab-results-v2
+  status: '401'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-chemistry-lab-results-v2-openapi.json
+  api: Chemistry lab results
+  operationId: get-chemistry-lab-results-v2
+  status: '403'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-chemistry-lab-results-v2-openapi.json
+  api: Chemistry lab results
+  operationId: get-chemistry-lab-results-v2
+  status: '429'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-diagnosis-openapi.json
+  api: Diagnosis
+  operationId: get-diagnoses
+  status: '401'
+  media_type: application/json
+  example: "{\r\n  \"statusCode\": 401,\r\n  \"message\": \"Invalid access token.\"\r\n}"
+- spec: openapi/cambio-healthcare-systems-diagnosis-openapi.json
+  api: Diagnosis
+  operationId: get-diagnoses
+  status: '403'
+  media_type: application/json
+  example: "{\r\n  \"statusCode\": 403,\r\n  \"message\": \"Insufficient scope.\"\r\n}"
+- spec: openapi/cambio-healthcare-systems-diagnosis-openapi.json
+  api: Diagnosis
+  operationId: get-diagnoses
+  status: '429'
+  media_type: application/json
+  example: "{\r\n  \"statusCode\": 429,\r\n  \"message\": \"Rate limit is exceeded. Try again in 5 seconds.\"\r\n\
+    }"
+- spec: openapi/cambio-healthcare-systems-diagnosis-v2-openapi.json
+  api: Diagnosis
+  operationId: get-diagnoses-v2
+  status: '401'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-diagnosis-v2-openapi.json
+  api: Diagnosis
+  operationId: get-diagnoses-v2
+  status: '403'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-diagnosis-v2-openapi.json
+  api: Diagnosis
+  operationId: get-diagnoses-v2
+  status: '429'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-journal-notes-openapi.json
+  api: Journal notes
+  operationId: get-journal-notes
+  status: '401'
+  media_type: application/json
+  example: "{\r\n  \"statusCode\": 401,\r\n  \"message\": \"Invalid access token.\"\r\n}"
+- spec: openapi/cambio-healthcare-systems-journal-notes-openapi.json
+  api: Journal notes
+  operationId: get-journal-notes
+  status: '403'
+  media_type: application/json
+  example: "{\r\n  \"statusCode\": 403,\r\n  \"message\": \"Insufficient scope.\"\r\n}"
+- spec: openapi/cambio-healthcare-systems-journal-notes-openapi.json
+  api: Journal notes
+  operationId: get-journal-notes
+  status: '429'
+  media_type: application/json
+  example: "{\r\n  \"statusCode\": 429,\r\n  \"message\": \"Rate limit is exceeded. Try again in 5 seconds.\"\r\n\
+    }"
+- spec: openapi/cambio-healthcare-systems-journal-notes-v2-openapi.json
+  api: Journal notes
+  operationId: get-journal-notes-v2
+  status: '401'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-journal-notes-v2-openapi.json
+  api: Journal notes
+  operationId: get-journal-notes-v2
+  status: '403'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-journal-notes-v2-openapi.json
+  api: Journal notes
+  operationId: get-journal-notes-v2
+  status: '429'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-patient-information-openapi.json
+  api: Patient information
+  operationId: get-patient-information
+  status: '401'
+  media_type: application/json
+  example: "{\r\n  \"statusCode\": 401,\r\n  \"message\": \"Invalid access token.\"\r\n}"
+- spec: openapi/cambio-healthcare-systems-patient-information-openapi.json
+  api: Patient information
+  operationId: get-patient-information
+  status: '403'
+  media_type: application/json
+  example: "{\r\n  \"statusCode\": 403,\r\n  \"message\": \"Insufficient scope.\"\r\n}"
+- spec: openapi/cambio-healthcare-systems-patient-information-openapi.json
+  api: Patient information
+  operationId: get-patient-information
+  status: '429'
+  media_type: application/json
+  example: "{\r\n  \"statusCode\": 429,\r\n  \"message\": \"Rate limit is exceeded. Try again in 5 seconds.\"\r\n\
+    }"
+- spec: openapi/cambio-healthcare-systems-patient-information-v2-openapi.json
+  api: Patient information
+  operationId: get-patient-information-v2
+  status: '401'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-patient-information-v2-openapi.json
+  api: Patient information
+  operationId: get-patient-information-v2
+  status: '403'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-patient-information-v2-openapi.json
+  api: Patient information
+  operationId: get-patient-information-v2
+  status: '429'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-payment-notice-openapi.json
+  api: Payment notice
+  operationId: register-payment
+  status: '200'
+  media_type: application/json
+  example:
+  - ResultCode: OK
+    Comment: string
+    Any:
+    - {}
+- spec: openapi/cambio-healthcare-systems-payment-notice-openapi.json
+  api: Payment notice
+  operationId: register-payment
+  status: '401'
+  media_type: application/json
+  example:
+    statusCode: 401
+    message: Invalid access token.
+- spec: openapi/cambio-healthcare-systems-payment-notice-openapi.json
+  api: Payment notice
+  operationId: register-payment
+  status: '403'
+  media_type: application/json
+  example:
+    statusCode: 403
+    message: Insufficient scope.
+- spec: openapi/cambio-healthcare-systems-payment-notice-openapi.json
+  api: Payment notice
+  operationId: register-payment
+  status: '429'
+  media_type: application/json
+  example:
+    statusCode: 429
+    message: Rate limit is exceeded. Try again in 5 seconds.
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '200'
+  media_type: application/fhir+json
+  example:
+    id: string
+    text:
+      id: string
+      status: generated
+    resourceType: OperationOutcome
+    issue:
+    - id: string
+      severity: fatal
+      code: invalid
+      diagnostics: string
+      location:
+      - string
+      expression:
+      - string
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '200'
+  media_type: application/json
+  example:
+    id: string
+    text:
+      id: string
+      status: generated
+    resourceType: OperationOutcome
+    issue:
+    - id: string
+      severity: fatal
+      code: invalid
+      diagnostics: string
+      location:
+      - string
+      expression:
+      - string
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '401'
+  media_type: resourceType
+  example: OperationOutcome
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '401'
+  media_type: id
+  example: 101
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '401'
+  media_type: issue
+  example:
+  - severity: error
+    code: forbidden
+    details:
+      text: The authorization token was invalid
+    diagnostics: TokenError
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '401'
+  media_type: application/fhir+json
+  example:
+    id: string
+    text:
+      id: string
+      status: generated
+    resourceType: OperationOutcome
+    issue:
+    - id: string
+      severity: fatal
+      code: invalid
+      diagnostics: string
+      location:
+      - string
+      expression:
+      - string
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '401'
+  media_type: application/json
+  example:
+    id: string
+    text:
+      id: string
+      status: generated
+    resourceType: OperationOutcome
+    issue:
+    - id: string
+      severity: fatal
+      code: invalid
+      diagnostics: string
+      location:
+      - string
+      expression:
+      - string
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '403'
+  media_type: application/json
+  example:
+    statusCode: 403
+    message: Insufficient scope.
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '403'
+  media_type: application/fhir+json
+  example:
+    id: string
+    text:
+      id: string
+      status: generated
+    resourceType: OperationOutcome
+    issue:
+    - id: string
+      severity: fatal
+      code: invalid
+      diagnostics: string
+      location:
+      - string
+      expression:
+      - string
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '429'
+  media_type: application/json
+  example:
+    statusCode: 429
+    message: Rate limit is exceeded. Try again in 5 seconds.
+- spec: openapi/cambio-healthcare-systems-referral-requests-openapi.json
+  api: Referral requests
+  operationId: create-referral
+  status: '429'
+  media_type: application/fhir+json
+  example:
+    id: string
+    text:
+      id: string
+      status: generated
+    resourceType: OperationOutcome
+    issue:
+    - id: string
+      severity: fatal
+      code: invalid
+      diagnostics: string
+      location:
+      - string
+      expression:
+      - string
+- spec: openapi/cambio-healthcare-systems-video-meetings-openapi.json
+  api: Video meetings
+  operationId: get-videomeetings
+  status: '200'
+  media_type: application/json
+  example:
+  - actionId: 0
+    endDateTimeInUnix: 0
+    startDateTimeInUnix: 0
+    performingUnitName: string
+    serviceName: string
+    meetingLink: string
+    mainStaff:
+      name: string
+      type: string
+    otherStaffList:
+    - name: string
+      type: string
+    server:
+      discoveryURI: string
+      clientID: string
+      onPremise: true
+- spec: openapi/cambio-healthcare-systems-video-meetings-openapi.json
+  api: Video meetings
+  operationId: get-videomeetings
+  status: '401'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-video-meetings-openapi.json
+  api: Video meetings
+  operationId: get-videomeetings
+  status: '403'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-video-meetings-openapi.json
+  api: Video meetings
+  operationId: get-videomeetings
+  status: '404'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-video-meetings-openapi.json
+  api: Video meetings
+  operationId: get-videomeetings
+  status: '429'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0
+- spec: openapi/cambio-healthcare-systems-video-meetings-openapi.json
+  api: Video meetings
+  operationId: get-videomeetings
+  status: '500'
+  media_type: application/json
+  example:
+    error: string
+    path: string
+    status: 0
+    timestamp: 0

@@ -1,0 +1,58 @@
+generated: '2026-09-02'
+method: searched
+source: npm registry search, PyPI, and https://developer.openservices.cambio.se/ (Postman guide, Getting started,
+  API list)
+note: Cambio publishes NO first-party client library for Open Services on any public registry. npm, PyPI, Maven
+  Central, NuGet, RubyGems, crates.io and pkg.go.dev were searched for cambio / cosmic / openservices client packages
+  and every hit belonged to an unrelated project (the npm package "cambio" is a React animation component). The
+  developer portal offers no SDK download and the Postman guide explicitly asks the developer to build the collection
+  by hand rather than importing one. The single public GitHub repository is a 2025 hackathon resource pack, not
+  a distributed library.
+package_count: 0
+packages: []
+searched_registries:
+- registry: npm
+  query: cambio, cambio cosmic, cambio healthcare, openservices cambio
+  first_party_hits: 0
+  version: null
+  published: null
+  note: Only unrelated packages returned; nothing published by Cambio.
+- registry: pypi
+  query: cambio-cosmic (404), cambio (200, unrelated project)
+  first_party_hits: 0
+  version: null
+  published: null
+- registry: maven-central
+  query: cambio
+  first_party_hits: 0
+  version: null
+  published: null
+- registry: nuget
+  query: cambio
+  first_party_hits: 0
+  version: null
+  published: null
+- registry: rubygems
+  query: cambio
+  first_party_hits: 0
+  version: null
+  published: null
+- registry: crates.io
+  query: cambio
+  first_party_hits: 0
+  version: null
+  published: null
+- registry: pkg.go.dev
+  query: cambio
+  first_party_hits: 0
+  version: null
+  published: null
+related_source_code:
+- name: cp-nordic-hackathon-2025
+  official: true
+  registry: null
+  version: null
+  published: null
+  url: https://github.com/CambioHealthcare/cp-nordic-hackathon-2025
+  note: First-party GitHub repository, but a hackathon resource pack (sample apps, openEHR OPT templates, AQL stored
+    queries, Bruno API collection) — not an installable client library, so it carries no registry version.

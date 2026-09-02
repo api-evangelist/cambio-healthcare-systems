@@ -1,0 +1,1400 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Attention signal",
+    "description": "<h4>Intended Use</h4>The intended use of this API is to retrieve attention signals for a given patient. Attention signals can be information about allergies, contagious infections and more that is relevant when providing care to the patient. The result can be filtered by using a time interval. <br></br>The intended use for reading data with this API is in first hand that the API is applied for direct access and should not be used to transfer data between caregivers. If it should be used for \"data copying\" between care providers, patient consent must be handled outside the API.<h4>Specific Rules and Limitations</h4>The consumer of the API is responsible for making sure data retrieved is filtered in compliance with laws and regulations prior to presenting it to any end-users.<br></br>The parameters AccessZoneUnit represent the PDL Care Unit (Vårdenhet) and CareProvider represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL.\n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>1.0.0</td>\n    <td>R8.3.05</td>\n    <td>Feb 2022</td>\n    <td>Initial version</td>\n  </tr>\n</table>\n<h4>Message Description </h4>The query result contains a list of attention signals with important information about the patient such as allergies, infections and more.",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/attentionsignals"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "get-attention-signals",
+        "summary": "Get Attention Signal(s)",
+        "description": "All attention signals for the given patient. The result can be filtered by using a time interval.\n<p>\n<a target=\"_blank\" href=\"/openidconnectprofile\">OAuth</a> <code>scope</code> for access : \n<code>user/AttentionSignal.read</code> or <code>patient/AttentionSignal.read</code> \n</p>",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttentionSignalResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid access token. The client must request a new token from the authorization server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "statusCode": 401,
+                      "message": "Invalid access token."
+                    }
+                  }
+                }
+              },
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient OAuth2 scope for access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "statusCode": 403,
+                      "message": "Insufficient scope."
+                    }
+                  }
+                }
+              },
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests in a given amount of time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "statusCode": 429,
+                      "message": "Rate limit is exceeded. Try again in 5 seconds."
+                    }
+                  }
+                }
+              },
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fromDateTime",
+            "in": "query",
+            "description": "Time interval start, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toDateTime",
+            "in": "query",
+            "description": "Time interval end, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "The patient identifier",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "AttentionSignalResponse": {
+        "description": "List of attention signals",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AttentionSignalEHRExtracts"
+        }
+      },
+      "AttentionSignalEHRExtracts": {
+        "description": "List of attention signals where every list currently only holds one(1) attention signal.",
+        "type": "object",
+        "properties": {
+          "AttentionSignalEHRExtract": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttentionSignalEHRExtract"
+            }
+          },
+          "XSDVersion": {
+            "$ref": "#/components/schemas/XSDVersion"
+          }
+        }
+      },
+      "AttentionSignalEHRExtract": {
+        "description": "Object describing the contents of the attention signal.",
+        "type": "object",
+        "properties": {
+          "ehr_id": {
+            "description": "\n<p>EhrID is the identity of a patient's entire medical record in a system. It should be the same in all extracts for all information sets for the same patient. uses OID of the local installation ID. \n<br>ehr_id extension format: System_Definde_ID + :EhrId: + unformated patient id\n</p>",
+            "example": "root: 1.2.752.129.2.1.2.1, extension: Define:EhrId:197211060103",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/II"
+              }
+            ]
+          },
+          "ehr_system": {
+            "description": "OID of the installation system",
+            "example": "root: 1.2.752.129.2.1.2.1, extension: Define",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/II"
+              }
+            ]
+          },
+          "time_created": {
+            "description": "Created time",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          },
+          "AttentionSignal": {
+            "$ref": "#/components/schemas/AttentionSignal"
+          },
+          "Patient": {
+            "$ref": "#/components/schemas/Patient"
+          },
+          "CareUnit": {
+            "description": "The data model for representing the Care Unit",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SimpleUnit"
+              }
+            ]
+          },
+          "ResponsibleUnit": {
+            "description": "The unit given in the contact",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SimpleUnit"
+              }
+            ]
+          },
+          "AccessZoneUnit": {
+            "description": "Value configured for HSA_vardenhet",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SimpleUnit"
+              }
+            ]
+          },
+          "HeadCareproviderUnit": {
+            "description": "Value configured for HAS_vardgivare",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SimpleUnit"
+              }
+            ]
+          },
+          "Units": {
+            "description": "The data model for representing all of the above units",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Units"
+              }
+            ]
+          },
+          "CareProviders": {
+            "$ref": "#/components/schemas/CareProviders"
+          }
+        }
+      },
+      "AttentionSignal": {
+        "type": "object",
+        "description": "The data model for representing the Attention Signal",
+        "properties": {
+          "RcId": {
+            "description": "\n<p>RcId is the unique identity of the principal amount of information in each extract (we use the COSMIC-key as a base, but also SYSTEMID and information set name to make it unique outside COSMIC). \n<br>RcId extension format: System_Definde_ID + :RcId:AttentionSignal: +Attentionsignal_ID\n</p>",
+            "example": "root: 1.2.752.129.2.1.2.1, extension: Define:RcId:AttentionSignal:349576",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/II"
+              }
+            ]
+          },
+          "SignalVersionDateTime": {
+            "description": "Last updated time of the AttentionSignal",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          },
+          "SignalVerifiedDateTime": {
+            "description": "Verified date time",
+            "type": "string"
+          },
+          "SignalReassessmentEndDate": {
+            "description": "Reassessment date time",
+            "type": "string"
+          },
+          "SignalSignDateTime": {
+            "description": "The Date Time when the attention signal was signed",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          },
+          "SignalActive": {
+            "description": "Indicating if the signal is active. (true if not invalidated)",
+            "type": "boolean"
+          },
+          "SignalDeletionDate": {
+            "description": "The date time when the attention signal was deleted",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          },
+          "SignalDeletionComment": {
+            "description": "The invalidation reason",
+            "type": "string"
+          },
+          "SignalWarningSubType": {
+            "description": "The subtype if the attention signal has sub types",
+            "example": "Smittsam sjukdom",
+            "type": "string"
+          },
+          "SignalDataType": {
+            "description": "If the attention signal is a hypersensitivity, Contagious disease etc.",
+            "type": "string"
+          },
+          "MedicalRecordLinks": {
+            "$ref": "#/components/schemas/MedicalRecordLinks"
+          },
+          "HypersensitivityType": {
+            "$ref": "#/components/schemas/Hypersensitivity"
+          },
+          "ContagiousDiseaseType": {
+            "$ref": "#/components/schemas/ContagiousDisease"
+          },
+          "NonStandardProcedureType": {
+            "$ref": "#/components/schemas/NonStandardProcedure"
+          },
+          "TreatmentAndConditionType": {
+            "$ref": "#/components/schemas/TreatmentAndCondition"
+          },
+          "UnstructuredType": {
+            "$ref": "#/components/schemas/UnstructuredData"
+          }
+        }
+      },
+      "UnstructuredData": {
+        "type": "object",
+        "description": "Attention Signal Unstructured",
+        "properties": {
+          "Heading": {
+            "description": "Heading for the unstructured information",
+            "type": "string"
+          },
+          "Comment": {
+            "description": "Comment for the unstructured information",
+            "type": "string"
+          },
+          "Type": {
+            "description": "Unstructured types",
+            "example": "Warning/Caution",
+            "type": "string",
+            "enum": [
+              "WARNING",
+              "CAUTION"
+            ]
+          },
+          "ReasessmentRequired": {
+            "description": "If the reassessment is required",
+            "type": "boolean"
+          },
+          "ReasessmentComment": {
+            "description": "Reassessment comment",
+            "type": "string"
+          },
+          "ReasessmentDateTime": {
+            "description": "Reassessment date time",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          },
+          "Valid": {
+            "description": "If the unstructured data is moved or not",
+            "type": "boolean"
+          }
+        }
+      },
+      "TreatmentAndCondition": {
+        "type": "object",
+        "description": "Attention Signal Treatment and Diagnosis",
+        "properties": {
+          "Comment": {
+            "description": "Comment for Treatment or Diagnosis",
+            "type": "string"
+          },
+          "Heading": {
+            "description": "Heading for Treatment or Diagnosis",
+            "type": "string"
+          },
+          "ReasessmentRequired": {
+            "description": "If the reassessment is required",
+            "type": "boolean"
+          },
+          "ReasessmentComment": {
+            "description": "Reassessment comment",
+            "type": "string"
+          },
+          "ReasessmentDateTime": {
+            "description": "Reassessment date time",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          },
+          "TreatmentCode": {
+            "description": "Code for the treatment",
+            "type": "string"
+          },
+          "TreatmentDateTime": {
+            "description": "Date time when the treatment was registered",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          },
+          "TreatmentDescription": {
+            "description": "Description of the Treatment",
+            "type": "string"
+          },
+          "DiagnosisCode": {
+            "description": "Code for the Diagnosis",
+            "type": "string"
+          },
+          "DiagnosisDateTime": {
+            "description": "Date time when the diagnosis was registered",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          },
+          "DiagnosisDescription": {
+            "description": "Description of the Diagnosis",
+            "type": "string"
+          }
+        }
+      },
+      "NonStandardProcedure": {
+        "type": "object",
+        "description": "Attention Signal Non Standard Procedure",
+        "properties": {
+          "Comment": {
+            "description": "Comment for the non standard procedure",
+            "type": "string"
+          },
+          "Heading": {
+            "description": "Heading for the non standard procedure",
+            "type": "string"
+          },
+          "ReasessmentRequired": {
+            "description": "If the reassessment is required",
+            "type": "boolean"
+          },
+          "ReasessmentComment": {
+            "description": "Reassessment comment",
+            "type": "string"
+          },
+          "ReasessmentDateTime": {
+            "description": "Reassessment date time",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          }
+        }
+      },
+      "ContagiousDisease": {
+        "type": "object",
+        "description": "Attention Signal Contagious Disease",
+        "properties": {
+          "Heading": {
+            "description": "Heading for the Contagious disease",
+            "type": "string"
+          },
+          "Comment": {
+            "description": "Comment for the Contagious disease",
+            "type": "string"
+          },
+          "ReasessmentRequired": {
+            "description": "If the reassessment is required",
+            "type": "boolean"
+          },
+          "ReasessmentComment": {
+            "description": "Reassessment comment",
+            "type": "string"
+          },
+          "ReasessmentDateTime": {
+            "description": "Reassessment  date time",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          }
+        }
+      },
+      "Hypersensitivity": {
+        "type": "object",
+        "description": "Attention Signal Hypersensitivity",
+        "properties": {
+          "Comment": {
+            "description": "Comment for the hypersensitivity for both drug and non drug.",
+            "type": "string"
+          },
+          "Heading": {
+            "description": "Heading for the hypersensitivity for both drug and non drug",
+            "type": "string"
+          },
+          "Severity": {
+            "description": "Severity level for a hypersensitivity",
+            "example": "Life Threatening,Harmful or Troublesome",
+            "type": "string"
+          },
+          "Reaction": {
+            "description": "Reaction for the hypersensitivity for both drug and non drug",
+            "type": "string"
+          },
+          "Certitude": {
+            "description": "Certainty level for the hypersensitivity",
+            "type": "string",
+            "example": "Confirmed,Probable or Suspected"
+          },
+          "ReasessmentComment": {
+            "description": "Reassessment comment",
+            "type": "string"
+          },
+          "ReasessmentRequired": {
+            "description": "The reassessment is required",
+            "type": "boolean"
+          },
+          "ReasessmentDateTime": {
+            "description": "Reassessment date time.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TS"
+              }
+            ]
+          },
+          "ReactionTypes": {
+            "type": "array",
+            "description": "Reaction types",
+            "items": {
+              "type": "string"
+            }
+          },
+          "SignalATCCodes": {
+            "description": "ATC codes for the drug related hypersensitivity",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SignalATCCodes"
+              }
+            ]
+          },
+          "Agent": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SignalATCCodes": {
+        "type": "object",
+        "description": "ATC code for the drug related hypersensitivity",
+        "properties": {
+          "signalATCCode": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CD"
+            }
+          }
+        }
+      },
+      "MedicalRecordLinks": {
+        "type": "object",
+        "description": "Information about medical record notes linked with the attention signal",
+        "properties": {
+          "MedicalRecordLinkData": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MedicalRecordLink"
+            }
+          }
+        }
+      },
+      "MedicalRecordLink": {
+        "type": "object",
+        "description": "Information about medical record note linked with the attention signal",
+        "properties": {
+          "RcId": {
+            "description": "\n<p>RcId is the unique identity of the principal amount of information in each extract (we use the COSMIC-key as a base, but also SYSTEMID and information set name to make it unique outside COSMIC). \n<br>RcId extension format: System_Definde_ID + :RcId:JournalNoteId + JournalNote_ID\n</p>",
+            "example": "root: 1.2.752.129.2.1.2.1, extension: Define:RcId:JournalNoteId:349576",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/II"
+              }
+            ]
+          }
+        }
+      },
+      "Patient": {
+        "type": "object",
+        "description": "Data model for representing the Patient of the AttentionSignal",
+        "properties": {
+          "PatientID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "PatientInternalID": {
+            "type": "string",
+            "description": "Internal Id of the Patient"
+          },
+          "PatientProtectedId": {
+            "type": "boolean"
+          },
+          "PatientSecrecyGroups": {
+            "$ref": "#/components/schemas/PatientSecrecyGroups"
+          },
+          "PatientName": {
+            "$ref": "#/components/schemas/PatientName"
+          }
+        }
+      },
+      "PatientSecrecyGroups": {
+        "type": "object",
+        "description": "A model for representing secrecy groups",
+        "properties": {
+          "Group": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Name of the group"
+            }
+          }
+        }
+      },
+      "PatientName": {
+        "description": "Data model for Patient's name",
+        "type": "object",
+        "properties": {
+          "PatientFamilyName": {
+            "type": "string",
+            "description": "Family name of the Patient"
+          },
+          "PatientMiddleName": {
+            "type": "string",
+            "description": "Middle name of the Patient"
+          },
+          "PatientGivenName": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientGivenName"
+            }
+          }
+        }
+      },
+      "PatientGivenName": {
+        "type": "object",
+        "description": "Data model for Patient's given name",
+        "properties": {
+          "qualifier": {
+            "type": "string",
+            "description": "Given name qualifier",
+            "example": "'CL' when the preferred given name is the current given name"
+          },
+          "value": {
+            "type": "string",
+            "description": "Given name of the Patient"
+          }
+        }
+      },
+      "Units": {
+        "type": "object",
+        "description": "Represents list of Units",
+        "properties": {
+          "Unit": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Unit"
+            }
+          }
+        }
+      },
+      "Unit": {
+        "type": "object",
+        "description": "The data model for representing a Unit",
+        "properties": {
+          "UnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitInternalID": {
+            "type": "string",
+            "description": "Internal Id of the Unit"
+          },
+          "UnitName": {
+            "type": "string"
+          },
+          "UnitSecrecyGroups": {
+            "type": "object",
+            "properties": {
+              "Group": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "HeadCareproviderUnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "AccessZones": {
+            "type": "object",
+            "description": "Represents the HealthCareProvider Unit",
+            "properties": {
+              "AccessZoneID": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/II"
+                }
+              }
+            }
+          },
+          "PhoneNumbers": {
+            "type": "object",
+            "description": "Represents list of Phone Numbers",
+            "properties": {
+              "Phone": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "PhoneType": {
+                      "type": "string",
+                      "description": "Phone number type",
+                      "example": "Direkttelefon"
+                    },
+                    "PhoneNumber": {
+                      "type": "string",
+                      "description": "The actual Phone number",
+                      "example": "023-49 17 44"
+                    },
+                    "PhoneComment": {
+                      "type": "string",
+                      "description": "A comment"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "EmailAddresses": {
+            "type": "object",
+            "description": "Represents list of Email Addresses",
+            "properties": {
+              "Email": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "EmailType": {
+                      "type": "string",
+                      "description": "Email address type",
+                      "example": "work"
+                    },
+                    "EmailAddress": {
+                      "type": "string",
+                      "description": "Email address",
+                      "example": "karl@abc.com"
+                    },
+                    "EmailComment": {
+                      "type": "string",
+                      "description": "A comment"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "UnitAddresses": {
+            "type": "object",
+            "description": "Represents list of Unit Addresses",
+            "properties": {
+              "UnitAddress": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "UnitAddressType": {
+                      "type": "string",
+                      "description": "Address type",
+                      "example": "Besöksadress"
+                    },
+                    "UnitAddressAddress": {
+                      "type": "string",
+                      "description": "Address lines",
+                      "example": "Myntgatan 8"
+                    },
+                    "UnitAddressPostcode": {
+                      "type": "string",
+                      "description": "Postal code",
+                      "example": "583 36"
+                    },
+                    "UnitAddressCity": {
+                      "type": "string",
+                      "description": "City",
+                      "example": "Linkoping"
+                    },
+                    "UnitAddressCounty": {
+                      "type": "string",
+                      "description": "County",
+                      "example": "Östergötland"
+                    },
+                    "UnitAddressCountry": {
+                      "type": "string",
+                      "description": "Country",
+                      "example": "Sverige"
+                    },
+                    "UnitAddressGeographicalPlace": {
+                      "type": "string"
+                    },
+                    "UnitAddressComment": {
+                      "type": "string",
+                      "description": "A comment"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CareProviders": {
+        "type": "object",
+        "description": "Related care givers to the AttentionSignal",
+        "properties": {
+          "CareProvider": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareProvider"
+            }
+          }
+        }
+      },
+      "CareProvider": {
+        "type": "object",
+        "description": "Related care giver to the AttentionSignal",
+        "properties": {
+          "CareProviderType": {
+            "type": "string",
+            "description": "Represents a Care Provider type",
+            "example": "MainCareProvider"
+          },
+          "CareProviderID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "CareProviderInternalID": {
+            "type": "string",
+            "description": "Internal Id of the Care Provider"
+          },
+          "CareProviderName": {
+            "type": "string",
+            "description": "Name of the Care Provider"
+          },
+          "ProviderPosition": {
+            "type": "object",
+            "description": "The data model for Care Provider Position",
+            "properties": {
+              "careProviderPositionID": {
+                "$ref": "#/components/schemas/II"
+              },
+              "careProviderPositionName": {
+                "type": "string",
+                "description": "Represents the Care Provider Role name"
+              }
+            }
+          },
+          "CareProviderUnit": {
+            "description": "Organizational affiliation for the caregiver",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SimpleUnit"
+              }
+            ]
+          }
+        }
+      },
+      "SimpleUnit": {
+        "type": "object",
+        "description": "A lite model for a Unit",
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "XSDVersion": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number"
+          }
+        }
+      },
+      "CD": {
+        "type": "object",
+        "description": "Concept Descriptor(ISO 21090)",
+        "properties": {
+          "ValidTimeLow": {
+            "type": "string"
+          },
+          "ValidTimeHigh": {
+            "type": "string"
+          },
+          "ControlActRoot": {
+            "type": "string"
+          },
+          "ControlActExtension": {
+            "type": "string"
+          },
+          "NullFlavor": {
+            "type": "string",
+            "enum": [
+              "NI",
+              "INV",
+              "OTH",
+              "NINF",
+              "PINF",
+              "UNC",
+              "DER",
+              "UNK",
+              "ASKU",
+              "NAV",
+              "QS",
+              "NASK",
+              "TRC",
+              "MSK",
+              "NA"
+            ]
+          },
+          "FlavorId": {
+            "type": "string"
+          },
+          "UpdateMode": {
+            "type": "string",
+            "enum": [
+              "A",
+              "AU",
+              "U",
+              "R",
+              "I",
+              "D",
+              "K"
+            ]
+          },
+          "DisplayName": {
+            "$ref": "#/components/schemas/ST"
+          },
+          "OriginalText": {
+            "$ref": "#/components/schemas/EDTEXT"
+          },
+          "Translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CD"
+            }
+          },
+          "Source": {
+            "$ref": "#/components/schemas/XReference"
+          },
+          "Code": {
+            "type": "string"
+          },
+          "CodeSystem": {
+            "type": "string"
+          },
+          "CodeSystemName": {
+            "type": "string"
+          },
+          "CodeSystemVersion": {
+            "type": "string"
+          },
+          "ValueSet": {
+            "type": "string"
+          },
+          "ValueSetVersion": {
+            "type": "string"
+          },
+          "CodingRationale": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "O",
+                "P",
+                "R"
+              ]
+            }
+          },
+          "Id": {
+            "type": "string"
+          }
+        }
+      },
+      "XReference": {
+        "type": "object",
+        "properties": {
+          "xref": {
+            "$ref": "#/components/schemas/ANY"
+          }
+        }
+      },
+      "II": {
+        "type": "object",
+        "description": "Instance Identifier(ISO 21090)",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "$self": {
+            "type": "string"
+          },
+          "root": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "identifierName": {
+            "type": "string"
+          },
+          "displayable": {
+            "type": "boolean"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "BUSN",
+              "OBJ",
+              "VER",
+              "VW"
+            ]
+          },
+          "reliability": {
+            "type": "string",
+            "enum": [
+              "ISS",
+              "VER",
+              "UNV"
+            ]
+          }
+        }
+      },
+      "TS": {
+        "type": "object",
+        "description": "Point in time(ISO 21090)",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/QTY"
+          }
+        ],
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "QTY": {
+        "type": "object",
+        "description": "Quantity(ISO 21090)",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "expression": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/EDTEXT"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/QTY"
+          },
+          "uncertaintyType": {
+            "type": "string",
+            "enum": [
+              "U",
+              "N",
+              "LN",
+              "G",
+              "E",
+              "X_2",
+              "T",
+              "F",
+              "B"
+            ]
+          }
+        }
+      },
+      "ED": {
+        "type": "object",
+        "description": "Encapsulated Data(ISO 21090)",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "xml": {
+            "type": "string"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/TELURL"
+          },
+          "integrityCheck": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "thumbnail": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "description": {
+            "$ref": "#/components/schemas/ST"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ED"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "compression": {
+            "type": "string",
+            "enum": [
+              "DF",
+              "GZ",
+              "ZL",
+              "Z",
+              "BZ",
+              "Z_7"
+            ]
+          },
+          "integrityCheckAlgorithm": {
+            "type": "string",
+            "enum": [
+              "SHA_1",
+              "SHA_256"
+            ]
+          }
+        }
+      },
+      "EDTEXT": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ED"
+          }
+        ]
+      },
+      "ST": {
+        "type": "object",
+        "description": "Character string(ISO 21090)",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/STNT"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        }
+      },
+      "STNT": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ST"
+          }
+        ]
+      },
+      "TELURL": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TEL"
+          }
+        ]
+      },
+      "TEL": {
+        "type": "object",
+        "description": "Telecommunication Address(ISO 21090)",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "useablePeriod": {
+            "$ref": "#/components/schemas/QSETTS"
+          },
+          "value": {
+            "type": "string"
+          },
+          "use": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "H",
+                "HP",
+                "HV",
+                "WP",
+                "DIR",
+                "PUB",
+                "BAD",
+                "TMP",
+                "AS",
+                "EC",
+                "MC",
+                "PG"
+              ]
+            }
+          }
+        }
+      },
+      "QSETTS": {
+        "type": "object",
+        "description": "Time period(ISO 21090)",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "originalText": {
+            "$ref": "#/components/schemas/EDTEXT"
+          }
+        }
+      },
+      "ANY": {
+        "type": "object",
+        "description": "Abstract data type that is effectively instantiated by any of the other data types(ISO 21090)",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HXIT"
+          },
+          {
+            "properties": {
+              "nullFlavor": {
+                "type": "string",
+                "enum": [
+                  "NI",
+                  "INV",
+                  "OTH",
+                  "NINF",
+                  "PINF",
+                  "UNC",
+                  "DER",
+                  "UNK",
+                  "ASKU",
+                  "NAV",
+                  "QS",
+                  "NASK",
+                  "TRC",
+                  "MSK",
+                  "NA"
+                ]
+              },
+              "flavorId": {
+                "type": "string"
+              },
+              "updateMode": {
+                "type": "string",
+                "enum": [
+                  "A",
+                  "AU",
+                  "U",
+                  "R",
+                  "I",
+                  "D",
+                  "K"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HXIT": {
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Generic error response for all systems and applications errors.",
+        "properties": {
+          "error": {
+            "description": "Error reason in text.",
+            "type": "string"
+          },
+          "path": {
+            "description": "Path to requested resource.",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status.",
+            "type": "integer"
+          },
+          "timestamp": {
+            "description": "Timestamp (milliseconds since epoch).",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

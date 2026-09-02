@@ -1,0 +1,1326 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Chemistry lab results",
+    "description": "<h4>Intended Use</h4>The intended use of this API is to retrieve chemistry lab results for a given patient. The result may be filtered using a specific time interval.<br></br>The intended use for reading data with this API is in first hand that the API is applied for direct access and should not be used to transfer data between caregivers. If it should be used for \"data copying\" between care providers, patient consent must be handled outside the API. <h4>Specific Rules and Limitations</h4>The consumer of the API is responsible for making sure data retrieved is filtered in compliance with laws and regulations prior to presenting it to any end-users.<br></br>The parameters AccessZones represent the PDL Care Unit (Vårdenhet) and CareProvider represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL. <h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Mar 2022</td>\n    <td>Updated major version due to performance impovements</td>\n  </tr>\n</table>\n<h4>Message Description </h4>The result includes a list of chemistry lab result reports. The reports include test results as well as information about the patient, care provider and more.</br> ChemistryReportEHRExtract.accessZoneUnit should be used as the PDL care unit and ChemistryReportEHRExtract.headCareProviderUnit should be used as the PDL care provider",
+    "contact": {},
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/chemistrylabreports"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "get-chemistry-lab-results-v2",
+        "summary": "Get chemistry lab report",
+        "description": "Gets all chemistry lab results for the given patient. The result can be filtered by using a time interval. \n<p>\n<a target=\"_blank\" href=\"/openidconnectprofile\">OAuth</a> <code>scope</code> for access : <code>user/Observation.read</code> or  <code>patient/Observation.read</code> </p> ",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemistryReportEHRExtractsArray"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid access token. The client must request a new token from the authorization server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient OAuth2 scope for access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests in a given amount of time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "startActionDateTime",
+            "in": "query",
+            "description": "Time interval start, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endActionDateTime",
+            "in": "query",
+            "description": "Time interval end, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "The patient identifier",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "ChemistryReportEHRExtracts": {
+        "title": "ChemistryReportEHRExtracts",
+        "description": "List of chemistry lab reports which contains one or more results for the investigations",
+        "type": "object",
+        "properties": {
+          "chemistryReportEHRExtract": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChemistryReportEHRExtract"
+            }
+          }
+        }
+      },
+      "ChemistryReportEHRExtract": {
+        "title": "ChemistryReportEHRExtract",
+        "description": "Data model for representing the content of the chemistry lab report",
+        "type": "object",
+        "properties": {
+          "accessZoneUnit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SimpleUnit"
+              }
+            ],
+            "description": "PDL care unit"
+          },
+          "attestingCareProviders": {
+            "$ref": "#/components/schemas/AttestingCareProviders"
+          },
+          "careProviders": {
+            "$ref": "#/components/schemas/CareProviders"
+          },
+          "hCMContact": {
+            "$ref": "#/components/schemas/HCMContact"
+          },
+          "headCareProviderUnit": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SimpleUnit"
+              }
+            ],
+            "description": "PDL care provider"
+          },
+          "patient": {
+            "$ref": "#/components/schemas/Patient"
+          },
+          "performingUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "receivingUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "report": {
+            "$ref": "#/components/schemas/Report"
+          },
+          "request": {
+            "$ref": "#/components/schemas/Request"
+          },
+          "requestingUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "responsibleUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          },
+          "units": {
+            "$ref": "#/components/schemas/Units"
+          },
+          "ehrId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "ehrSystem": {
+            "$ref": "#/components/schemas/II"
+          },
+          "timeCreated": {
+            "$ref": "#/components/schemas/TS"
+          }
+        }
+      },
+      "AttestingCareProviders": {
+        "title": "AttestingCareProviders",
+        "description": "Data model for representing care providers who attested chemistry results",
+        "type": "object",
+        "properties": {
+          "attestingCareProvider": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttestingCareProvider"
+            }
+          }
+        }
+      },
+      "AttestingCareProvider": {
+        "title": "AttestingCareProvider",
+        "description": "Data model for representing care provider who attested the chemistry results",
+        "type": "object",
+        "properties": {
+          "careProviderID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderName": {
+            "type": "string",
+            "description": "Name of the attesting care provider"
+          },
+          "careProviderType": {
+            "type": "string",
+            "description": "Type of the attesting care provider",
+            "example": "Attester"
+          },
+          "providerPosition": {
+            "$ref": "#/components/schemas/ProviderPosition"
+          }
+        }
+      },
+      "ProviderPosition": {
+        "title": "ProviderPosition",
+        "description": "Data model for representing care provider's position",
+        "type": "object",
+        "properties": {
+          "careProviderPositionID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderPositionName": {
+            "type": "string",
+            "description": "Name of the care provider position",
+            "example": "Doctor"
+          }
+        }
+      },
+      "HCMContact": {
+        "title": "HCMContact",
+        "description": "Data model for representing care contact (HCM contact) of the patient",
+        "type": "object",
+        "properties": {
+          "contactPerformingUnit": {
+            "type": "string",
+            "description": "Internal Id of the performing unit of the contact"
+          },
+          "contactSecrecyLevels": {
+            "type": "array",
+            "description": "Secrecy level on the contact",
+            "items": {
+              "$ref": "#/components/schemas/ContactSecrecyLevels"
+            }
+          },
+          "hCMContactInternalID": {
+            "type": "string",
+            "description": "Internal ID of the contact"
+          },
+          "hCMContactBegin": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "hCMContactEnd": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "hCMContactStatus": {
+            "type": "string",
+            "description": "Status of the contact",
+            "example": "Pågående"
+          },
+          "hCMContactType": {
+            "type": "string",
+            "description": "Contact type : visit or a admission",
+            "example": "Admission*"
+          },
+          "targetId": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "ContactSecrecyLevels": {
+        "title": "ContactSecrecyLevels",
+        "type": "object",
+        "description": "Data model for representing secrecy level of the contact",
+        "properties": {
+          "secrecyLevel": {
+            "type": "string",
+            "description": "Secrecy level of the contact"
+          }
+        }
+      },
+      "Report": {
+        "title": "Report",
+        "description": "Data model for representing chemistry lab report",
+        "type": "object",
+        "properties": {
+          "reportCommentary": {
+            "type": "string",
+            "description": "Comment in the lab report"
+          },
+          "reportDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "reportId": {
+            "type": "string",
+            "description": "Internal id of the lab report"
+          },
+          "reportStatus": {
+            "type": "string",
+            "description": "Status of the request report",
+            "example": "CO"
+          },
+          "reportVersionDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "secrecyClassification": {
+            "type": "string"
+          },
+          "testResult": {
+            "type": "array",
+            "description": "Result of the investigation",
+            "items": {
+              "$ref": "#/components/schemas/TestResult"
+            }
+          },
+          "rcId": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "Request": {
+        "title": "Request",
+        "description": "Data model for representing request with chemistry lab investigations",
+        "type": "object",
+        "properties": {
+          "clinicalInformation": {
+            "type": "array",
+            "description": "Clinical information related to the request",
+            "example": "Anamnes/frågeställning",
+            "items": {
+              "$ref": "#/components/schemas/ClinicalInformation"
+            }
+          },
+          "collectionDateTime": {
+            "type": "string",
+            "description": "Request collected date and time"
+          },
+          "collectorsCommentary": {
+            "type": "string",
+            "description": "Comment of the collector"
+          },
+          "priority": {
+            "type": "string",
+            "description": "Priority of the request",
+            "example": "Akut"
+          },
+          "requestCommentary": {
+            "type": "string"
+          },
+          "requestDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "requestId": {
+            "type": "string",
+            "description": "Internal request id"
+          },
+          "rcId": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "ClinicalInformation": {
+        "title": "ClinicalInformation",
+        "description": "Data model for representing clinical information",
+        "type": "object",
+        "properties": {
+          "information": {
+            "type": "string"
+          },
+          "reply": {
+            "type": "string"
+          }
+        }
+      },
+      "TestResult": {
+        "title": "TestResult",
+        "description": "Data model for representing result of the investigation",
+        "type": "object",
+        "properties": {
+          "attestDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "attestingCareProviderId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "IUPAC": {
+            "type": "string"
+          },
+          "pathological": {
+            "type": "string",
+            "description": "Pathological false - 0,  Pathological true  - 1"
+          },
+          "range": {
+            "type": "string",
+            "description": "Range for the numeric results"
+          },
+          "result": {
+            "type": "string",
+            "description": "Value of the investigation's result"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the investigation's result",
+            "example": "Pending"
+          },
+          "testCommentary": {
+            "type": "string",
+            "description": "Comment on the test result"
+          },
+          "testId": {
+            "type": "string",
+            "description": "Internal id of the investigation"
+          },
+          "testName": {
+            "type": "string",
+            "description": "Name of the investigation"
+          },
+          "unit": {
+            "type": "string",
+            "description": "Unit of measure",
+            "example": "mmol/L"
+          },
+          "rcId": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "II": {
+        "title": "II",
+        "description": "Instance Identifier(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "value": {
+            "type": "string"
+          },
+          "root": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "identifierName": {
+            "type": "string"
+          },
+          "displayable": {
+            "type": "boolean"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          },
+          "reliability": {
+            "$ref": "#/components/schemas/Reliability"
+          }
+        }
+      },
+      "TS": {
+        "title": "TS",
+        "description": "Point in time(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "expression": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/QTY"
+          },
+          "uncertaintyType": {
+            "$ref": "#/components/schemas/UncertaintyType"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "QTY": {
+        "title": "QTY",
+        "description": "Quantity(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "expression": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/QTY"
+          },
+          "uncertaintyType": {
+            "$ref": "#/components/schemas/UncertaintyType"
+          }
+        }
+      },
+      "ED": {
+        "title": "ED",
+        "description": "Encapsulated Data(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "data": {
+            "type": "string"
+          },
+          "xml": {
+            "type": "string"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/TEL"
+          },
+          "integrityCheck": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          "thumbnail": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "description": {
+            "$ref": "#/components/schemas/ST"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ED"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "compression": {
+            "$ref": "#/components/schemas/Compression"
+          },
+          "integrityCheckAlgorithm": {
+            "$ref": "#/components/schemas/IntegrityCheckAlgorithm"
+          }
+        }
+      },
+      "ST": {
+        "title": "ST",
+        "description": "Character string(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ST"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        }
+      },
+      "TEL": {
+        "title": "TEL",
+        "description": "Telecommunication Address(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "useablePeriod": {
+            "$ref": "#/components/schemas/QSETTS"
+          },
+          "value": {
+            "type": "string"
+          },
+          "use": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TELUSE"
+            }
+          }
+        }
+      },
+      "TELUSE": {
+        "title": "TELUSE",
+        "description": "Use of Telecommunication Address(ISO 21090)",
+        "example": "H",
+        "type": "string",
+        "enum": [
+          "H",
+          "HP",
+          "HV",
+          "WP",
+          "DIR",
+          "PUB",
+          "BAD",
+          "TMP",
+          "AS",
+          "EC",
+          "MC",
+          "PG"
+        ]
+      },
+      "QSETTS": {
+        "title": "QSETTS",
+        "description": "Time period(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/ED"
+          }
+        }
+      },
+      "ANY": {
+        "title": "ANY",
+        "description": "Abstract data type that is effectively instantiated by any of the other data types(ISO 21090)",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          },
+          "nullFlavor": {
+            "$ref": "#/components/schemas/NullFlavor"
+          },
+          "flavorId": {
+            "type": "string"
+          },
+          "updateMode": {
+            "$ref": "#/components/schemas/UpdateMode"
+          }
+        }
+      },
+      "HXIT": {
+        "title": "HXIT",
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          }
+        }
+      },
+      "Patient": {
+        "title": "Patient",
+        "description": "Data model for representing the Patient to whom the lab result belongs to",
+        "type": "object",
+        "properties": {
+          "patientID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "patientInternalID": {
+            "type": "string",
+            "description": "Internal Id of the Patient"
+          },
+          "patientProtectedId": {
+            "type": "boolean",
+            "description": "Whether the patient identifier is protected or not"
+          },
+          "patientSecrecyGroups": {
+            "$ref": "#/components/schemas/SecrecyGroups"
+          },
+          "patientName": {
+            "$ref": "#/components/schemas/PatientName"
+          }
+        }
+      },
+      "PatientName": {
+        "title": "PatientName",
+        "type": "object",
+        "properties": {
+          "patientFamilyName": {
+            "type": "string",
+            "description": "Family name of the patient"
+          },
+          "patientMiddleName": {
+            "type": "string",
+            "description": "Middle name of the patient"
+          },
+          "patientGivenName": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientGivenName"
+            }
+          }
+        }
+      },
+      "PatientGivenName": {
+        "title": "PatientGivenName",
+        "description": "Data model for patient's given name",
+        "type": "object",
+        "properties": {
+          "qualifier": {
+            "type": "string",
+            "description": "Given name qualifier",
+            "example": "'CL' when the preferred given name is the current given name"
+          },
+          "value": {
+            "type": "string",
+            "description": "Given name of the patient"
+          }
+        }
+      },
+      "Units": {
+        "title": "Units",
+        "description": "Data model for representing units",
+        "type": "object",
+        "properties": {
+          "unit": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Unit"
+            }
+          }
+        }
+      },
+      "Unit": {
+        "title": "Unit",
+        "description": "Data model for representing a unit",
+        "type": "object",
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitInternalID": {
+            "type": "string",
+            "description": "Internal Id of the Unit"
+          },
+          "unitName": {
+            "type": "string",
+            "description": "Name of the Unit"
+          },
+          "unitSecrecyGroups": {
+            "$ref": "#/components/schemas/SecrecyGroups"
+          },
+          "accessZones": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AccessZones"
+              }
+            ],
+            "description": "PDL care unit"
+          },
+          "headCareProviderUnitID": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/II"
+              }
+            ],
+            "description": "PDL care provider unit id"
+          },
+          "phoneNumbers": {
+            "$ref": "#/components/schemas/PhoneNumbers"
+          },
+          "emailAddresses": {
+            "$ref": "#/components/schemas/EmailAddresses"
+          },
+          "unitAddresses": {
+            "$ref": "#/components/schemas/UnitAddresses"
+          }
+        }
+      },
+      "AccessZones": {
+        "title": "AccessZones",
+        "description": "Represents PDL AccessZones",
+        "type": "object",
+        "properties": {
+          "accessZoneID": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/II"
+            }
+          }
+        }
+      },
+      "SimpleUnit": {
+        "title": "SimpleUnit",
+        "description": "A lite model for a unit",
+        "type": "object",
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "CareProviders": {
+        "title": "CareProviders",
+        "description": "Data model representing list of CareProviders",
+        "type": "object",
+        "properties": {
+          "careProvider": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CareProvider"
+            }
+          }
+        }
+      },
+      "CareProvider": {
+        "title": "CareProvider",
+        "description": "Represents a care provider",
+        "type": "object",
+        "properties": {
+          "careProviderType": {
+            "type": "string",
+            "description": "Represents a care provider type",
+            "example": "RequestingPhysician"
+          },
+          "careProviderID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderInternalID": {
+            "type": "string",
+            "description": "Internal Id of the care provider"
+          },
+          "careProviderName": {
+            "type": "string",
+            "description": "Name of the care provider"
+          },
+          "careProviderPosition": {
+            "$ref": "#/components/schemas/CareProviderPosition"
+          },
+          "careProviderUnit": {
+            "$ref": "#/components/schemas/SimpleUnit"
+          }
+        }
+      },
+      "CareProviderPosition": {
+        "title": "CareProviderPosition",
+        "description": "Data model for  representing care provider's position",
+        "type": "object",
+        "properties": {
+          "careProviderPositionID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "careProviderPositionName": {
+            "type": "string",
+            "description": "Represents the care provider role name"
+          }
+        }
+      },
+      "PhoneNumbers": {
+        "title": "PhoneNumbers",
+        "description": "Represents list of phone numbers",
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Phone"
+            }
+          }
+        }
+      },
+      "EmailAddresses": {
+        "title": "EmailAddresses",
+        "description": "Represents list of email addresses",
+        "type": "object",
+        "properties": {
+          "Email": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Email"
+            }
+          }
+        }
+      },
+      "UnitAddresses": {
+        "title": "UnitAddresses",
+        "description": "Represents list of unit addresses",
+        "type": "object",
+        "properties": {
+          "unitAddress": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitAddress"
+            }
+          }
+        }
+      },
+      "Phone": {
+        "title": "Phone",
+        "description": "Data model for representing phone number of a care provider or a unit",
+        "type": "object",
+        "properties": {
+          "phoneType": {
+            "type": "string",
+            "description": "Phone number type",
+            "example": "HSA_Tjänstetelefon"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "description": "The actual Phone number",
+            "example": "013-200301"
+          },
+          "phoneComment": {
+            "type": "string",
+            "description": "A comment"
+          }
+        }
+      },
+      "Email": {
+        "title": "Email",
+        "description": "Email address of a care provider or a unit",
+        "type": "object",
+        "properties": {
+          "EmailType": {
+            "type": "string",
+            "description": "Email address type",
+            "example": "work"
+          },
+          "EmailAddress": {
+            "type": "string",
+            "description": "Email address",
+            "example": "info@ortmott1.se"
+          },
+          "EmailComment": {
+            "type": "string",
+            "description": "A comment"
+          }
+        }
+      },
+      "UnitAddress": {
+        "title": "UnitAddress",
+        "description": "Data model for  representing an address of a unit",
+        "type": "object",
+        "properties": {
+          "unitAddressType": {
+            "type": "string",
+            "description": "Address type",
+            "example": "Postadress"
+          },
+          "unitAddressAddress": {
+            "type": "string",
+            "description": "Address lines",
+            "example": "Myntgatan 8"
+          },
+          "unitAddressPostcode": {
+            "type": "string",
+            "description": "Postal code",
+            "example": "583 36"
+          },
+          "unitAddressCity": {
+            "type": "string",
+            "description": "City",
+            "example": "Söderköping"
+          },
+          "unitAddressCounty": {
+            "type": "string",
+            "description": "County",
+            "example": "Östergötland"
+          },
+          "unitAddressCountry": {
+            "type": "string",
+            "description": "Country",
+            "example": "Sverige"
+          },
+          "unitAddressGeographicalPlace": {
+            "type": "string"
+          },
+          "unitAddressComment": {
+            "type": "string",
+            "description": "A comment"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "title": "ErrorResponse",
+        "description": "Generic error response for all systems and applications errors.",
+        "type": "object",
+        "properties": {
+          "error": {
+            "description": "Error reason in text.",
+            "type": "string"
+          },
+          "path": {
+            "description": "Path to requested resource.",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status.",
+            "type": "integer",
+            "format": "int32"
+          },
+          "timestamp": {
+            "description": "Timestamp (milliseconds since epoch).",
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "SecrecyGroups": {
+        "title": "SecrecyGroups",
+        "description": "A model for representing secrecy groups of the patient",
+        "type": "object",
+        "properties": {
+          "group": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "Name of the group",
+              "example": "Psykiatriska kliniken"
+            }
+          }
+        }
+      },
+      "Compression": {
+        "title": "Compression",
+        "example": "DF",
+        "type": "string",
+        "enum": [
+          "DF",
+          "GZ",
+          "ZL",
+          "Z",
+          "BZ",
+          "Z_7"
+        ]
+      },
+      "IntegrityCheckAlgorithm": {
+        "title": "IntegrityCheckAlgorithm",
+        "example": "SHA_1",
+        "type": "string",
+        "enum": [
+          "SHA_1",
+          "SHA_256"
+        ]
+      },
+      "NullFlavor": {
+        "title": "NullFlavor",
+        "example": "NI",
+        "type": "string",
+        "enum": [
+          "NI",
+          "INV",
+          "OTH",
+          "NINF",
+          "PINF",
+          "UNC",
+          "DER",
+          "UNK",
+          "ASKU",
+          "NAV",
+          "QS",
+          "NASK",
+          "TRC",
+          "MSK",
+          "NA"
+        ]
+      },
+      "Reliability": {
+        "title": "Reliability",
+        "example": "ISS",
+        "type": "string",
+        "enum": [
+          "ISS",
+          "VER",
+          "UNV"
+        ]
+      },
+      "Scope": {
+        "title": "Scope",
+        "example": "BUSN",
+        "type": "string",
+        "enum": [
+          "BUSN",
+          "OBJ",
+          "VER",
+          "VW"
+        ]
+      },
+      "UncertaintyType": {
+        "title": "UncertaintyType",
+        "example": "U",
+        "type": "string",
+        "enum": [
+          "U",
+          "N",
+          "LN",
+          "G",
+          "E",
+          "X_2",
+          "T",
+          "F",
+          "B"
+        ]
+      },
+      "UpdateMode": {
+        "title": "UpdateMode",
+        "example": "A",
+        "type": "string",
+        "enum": [
+          "A",
+          "AU",
+          "U",
+          "R",
+          "I",
+          "D",
+          "K"
+        ]
+      },
+      "ChemistryReportEHRExtractsArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ChemistryReportEHRExtracts"
+        }
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

@@ -1,0 +1,956 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Referral requests",
+    "description": "Referral requests\n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Feb 2022</td>\n    <td>Initial version</td>\n  </tr>\n</table>",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/referrals"
+    }
+  ],
+  "paths": {
+    "/": {
+      "post": {
+        "operationId": "create-referral",
+        "summary": "Create referral request",
+        "description": "Create a new referral request.\n<p>\n<a target=\"_blank\" href=\"/openidconnectprofile\">OAuth</a> <code>scope</code> for access :  <code>user/Referral.write</code></p>",
+        "responses": {
+          "200": {
+            "description": "Successfully created referral request",
+            "content": {
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "string",
+                      "text": {
+                        "id": "string",
+                        "status": "generated"
+                      },
+                      "resourceType": "OperationOutcome",
+                      "issue": [
+                        {
+                          "id": "string",
+                          "severity": "fatal",
+                          "code": "invalid",
+                          "diagnostics": "string",
+                          "location": [
+                            "string"
+                          ],
+                          "expression": [
+                            "string"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "resourceType": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "id": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "issue": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "string",
+                      "text": {
+                        "id": "string",
+                        "status": "generated"
+                      },
+                      "resourceType": "OperationOutcome",
+                      "issue": [
+                        {
+                          "id": "string",
+                          "severity": "fatal",
+                          "code": "invalid",
+                          "diagnostics": "string",
+                          "location": [
+                            "string"
+                          ],
+                          "expression": [
+                            "string"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token.",
+            "content": {
+              "resourceType": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": "OperationOutcome"
+                  }
+                }
+              },
+              "id": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": 101
+                  }
+                }
+              },
+              "issue": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": [
+                      {
+                        "severity": "error",
+                        "code": "forbidden",
+                        "details": {
+                          "text": "The authorization token was invalid"
+                        },
+                        "diagnostics": "TokenError"
+                      }
+                    ]
+                  }
+                }
+              },
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "string",
+                      "text": {
+                        "id": "string",
+                        "status": "generated"
+                      },
+                      "resourceType": "OperationOutcome",
+                      "issue": [
+                        {
+                          "id": "string",
+                          "severity": "fatal",
+                          "code": "invalid",
+                          "diagnostics": "string",
+                          "location": [
+                            "string"
+                          ],
+                          "expression": [
+                            "string"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "string",
+                      "text": {
+                        "id": "string",
+                        "status": "generated"
+                      },
+                      "resourceType": "OperationOutcome",
+                      "issue": [
+                        {
+                          "id": "string",
+                          "severity": "fatal",
+                          "code": "invalid",
+                          "diagnostics": "string",
+                          "location": [
+                            "string"
+                          ],
+                          "expression": [
+                            "string"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient OAuth2 scope.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "statusCode": 403,
+                      "message": "Insufficient scope."
+                    }
+                  }
+                }
+              },
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "string",
+                      "text": {
+                        "id": "string",
+                        "status": "generated"
+                      },
+                      "resourceType": "OperationOutcome",
+                      "issue": [
+                        {
+                          "id": "string",
+                          "severity": "fatal",
+                          "code": "invalid",
+                          "diagnostics": "string",
+                          "location": [
+                            "string"
+                          ],
+                          "expression": [
+                            "string"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "resourceType": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "id": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "issue": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Call rate limit exceeded.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "statusCode": 429,
+                      "message": "Rate limit is exceeded. Try again in 5 seconds."
+                    }
+                  }
+                }
+              },
+              "application/fhir+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": "string",
+                      "text": {
+                        "id": "string",
+                        "status": "generated"
+                      },
+                      "resourceType": "OperationOutcome",
+                      "issue": [
+                        {
+                          "id": "string",
+                          "severity": "fatal",
+                          "code": "invalid",
+                          "diagnostics": "string",
+                          "location": [
+                            "string"
+                          ],
+                          "expression": [
+                            "string"
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              "resourceType": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "id": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              },
+              "issue": {
+                "schema": {
+                  "$ref": "#/components/schemas/OperationOutcome"
+                },
+                "examples": {
+                  "default": {
+                    "value": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReferralRequest"
+              },
+              "examples": {
+                "default": {
+                  "value": {
+                    "id": "string",
+                    "text": {
+                      "id": "string",
+                      "status": "generated"
+                    },
+                    "resourceType": "ReferralRequest",
+                    "identifier": [
+                      {
+                        "id": "string",
+                        "system": "string",
+                        "value": "string"
+                      }
+                    ],
+                    "subject": {
+                      "id": "string",
+                      "reference": "string",
+                      "identifier": {
+                        "id": "string",
+                        "system": "string",
+                        "value": "string"
+                      },
+                      "display": "string"
+                    },
+                    "context": {
+                      "id": "string",
+                      "reference": "string",
+                      "identifier": {
+                        "id": "string",
+                        "system": "string",
+                        "value": "string"
+                      },
+                      "display": "string"
+                    },
+                    "authoredOn": "string",
+                    "requester": {
+                      "id": "string",
+                      "agent": {
+                        "id": "string",
+                        "reference": "string",
+                        "identifier": {
+                          "id": "string",
+                          "system": "string",
+                          "value": "string"
+                        },
+                        "display": "string"
+                      },
+                      "onBehalfOf": {
+                        "id": "string",
+                        "reference": "string",
+                        "identifier": {
+                          "id": "string",
+                          "system": "string",
+                          "value": "string"
+                        },
+                        "display": "string"
+                      }
+                    },
+                    "recipient": [
+                      {
+                        "id": "string",
+                        "reference": "string",
+                        "identifier": {
+                          "id": "string",
+                          "system": "string",
+                          "value": "string"
+                        },
+                        "display": "string"
+                      }
+                    ],
+                    "description": "string",
+                    "note": [
+                      {
+                        "id": "string",
+                        "text": "string"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "ReferralRequest": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DomainResource"
+          },
+          {
+            "description": "Used to record and send details about a request for referral service or transfer of a patient to the care of another provider or provider organization.",
+            "properties": {
+              "resourceType": {
+                "description": "This is a ReferralRequest resource",
+                "type": "string",
+                "enum": [
+                  "ReferralRequest"
+                ]
+              },
+              "identifier": {
+                "description": "Business identifier that uniquely identifies the referral/care transfer request instance.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Identifier"
+                }
+              },
+              "subject": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Reference"
+                  },
+                  {
+                    "description": "The patient who is the subject of a referral or transfer of care request."
+                  }
+                ]
+              },
+              "context": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Reference"
+                  },
+                  {
+                    "description": "The encounter at which the request for referral or transfer of care is initiated."
+                  }
+                ]
+              },
+              "authoredOn": {
+                "description": "Date/DateTime of creation for draft requests and date of activation for active requests.",
+                "type": "string",
+                "pattern": "-?[0-9]{4}(-(0[1-9]|1[0-2])(-(0[0-9]|[1-2][0-9]|3[0-1])(T([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00)))?)?)?"
+              },
+              "requester": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ReferralRequest_Requester"
+                  },
+                  {
+                    "description": "The individual who initiated the request and has responsibility for its activation."
+                  }
+                ]
+              },
+              "recipient": {
+                "description": "The healthcare provider(s) or provider organization(s) who/which is to receive the referral/transfer of care request.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Reference"
+                }
+              },
+              "description": {
+                "description": "The reason element gives a short description of why the referral is being made, the description expands on this to support a more complete clinical summary.",
+                "type": "string"
+              },
+              "note": {
+                "description": "Comments made about the referral request by any of the participants.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Annotation"
+                }
+              }
+            },
+            "required": [
+              "subject",
+              "resourceType"
+            ]
+          }
+        ],
+        "example": {
+          "id": "string",
+          "text": {
+            "id": "string",
+            "status": "generated"
+          },
+          "resourceType": "ReferralRequest",
+          "identifier": [
+            {
+              "id": "string",
+              "system": "string",
+              "value": "string"
+            }
+          ],
+          "subject": {
+            "id": "string",
+            "reference": "string",
+            "identifier": {
+              "id": "string",
+              "system": "string",
+              "value": "string"
+            },
+            "display": "string"
+          },
+          "context": {
+            "id": "string",
+            "reference": "string",
+            "identifier": {
+              "id": "string",
+              "system": "string",
+              "value": "string"
+            },
+            "display": "string"
+          },
+          "authoredOn": "string",
+          "requester": {
+            "id": "string",
+            "agent": {
+              "id": "string",
+              "reference": "string",
+              "identifier": {
+                "id": "string",
+                "system": "string",
+                "value": "string"
+              },
+              "display": "string"
+            },
+            "onBehalfOf": {
+              "id": "string",
+              "reference": "string",
+              "identifier": {
+                "id": "string",
+                "system": "string",
+                "value": "string"
+              },
+              "display": "string"
+            }
+          },
+          "recipient": [
+            {
+              "id": "string",
+              "reference": "string",
+              "identifier": {
+                "id": "string",
+                "system": "string",
+                "value": "string"
+              },
+              "display": "string"
+            }
+          ],
+          "description": "string",
+          "note": [
+            {
+              "id": "string",
+              "text": "string"
+            }
+          ]
+        }
+      },
+      "DomainResource": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Resource"
+          },
+          {
+            "description": "A resource that includes narrative, extensions, and contained resources.",
+            "properties": {
+              "text": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Narrative"
+                  },
+                  {
+                    "description": "A human-readable narrative that contains a summary of the resource, and may be used to represent the content of the resource to a human. The narrative need not encode all the structured data, but is required to contain sufficient detail to make it \"clinically safe\" for a human to just read the narrative. Resource definitions may define what content should be represented in the narrative to ensure clinical safety."
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "Identifier": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Element"
+          },
+          {
+            "description": "A technical identifier - identifies some entity uniquely and unambiguously.",
+            "properties": {
+              "system": {
+                "description": "Establishes the namespace for the value - that is, a URL that describes a set values that are unique.",
+                "type": "string"
+              },
+              "value": {
+                "description": "The portion of the identifier typically relevant to the user and which is unique within the context of the system.",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "ReferralRequest_Requester": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BackboneElement"
+          },
+          {
+            "description": "Used to record and send details about a request for referral service or transfer of a patient to the care of another provider or provider organization.",
+            "properties": {
+              "agent": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Reference"
+                  },
+                  {
+                    "description": "The device, practitioner, etc. who initiated the request."
+                  }
+                ]
+              },
+              "onBehalfOf": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Reference"
+                  },
+                  {
+                    "description": "The organization the device or practitioner was acting on behalf of."
+                  }
+                ]
+              }
+            },
+            "required": [
+              "agent"
+            ]
+          }
+        ]
+      },
+      "Reference": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Element"
+          },
+          {
+            "description": "A reference from one resource to another.",
+            "properties": {
+              "reference": {
+                "description": "A reference to a location at which the other resource is found. The reference may be a relative reference, in which case it is relative to the service base URL, or an absolute URL that resolves to the location where the resource is found. The reference may be version specific or not. If the reference is not to a FHIR RESTful server, then it should be assumed to be version specific. Internal fragment references (start with '#') refer to contained resources.",
+                "type": "string"
+              },
+              "identifier": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Identifier"
+                  },
+                  {
+                    "description": "An identifier for the other resource. This is used when there is no way to reference the other resource directly, either because the entity is not available through a FHIR server, or because there is no way for the author of the resource to convert a known identifier to an actual location. There is no requirement that a Reference.identifier point to something that is actually exposed as a FHIR instance, but it SHALL point to a business concept that would be expected to be exposed as a FHIR instance, and that instance would need to be of a FHIR resource type allowed by the reference."
+                  }
+                ]
+              },
+              "display": {
+                "description": "Plain text narrative that identifies the resource in addition to the resource reference.",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "OperationOutcome": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/DomainResource"
+          },
+          {
+            "description": "A collection of error, warning or information messages that result from a system action.",
+            "properties": {
+              "resourceType": {
+                "description": "This is a OperationOutcome resource",
+                "type": "string",
+                "enum": [
+                  "OperationOutcome"
+                ]
+              },
+              "issue": {
+                "description": "An error, warning or information message that results from a system action.",
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/OperationOutcome_Issue"
+                }
+              }
+            },
+            "required": [
+              "issue",
+              "resourceType"
+            ]
+          }
+        ]
+      },
+      "OperationOutcome_Issue": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/BackboneElement"
+          },
+          {
+            "description": "A collection of error, warning or information messages that result from a system action.",
+            "properties": {
+              "severity": {
+                "description": "Indicates whether the issue indicates a variation from successful processing.",
+                "enum": [
+                  "fatal",
+                  "error",
+                  "warning",
+                  "information"
+                ],
+                "type": "string"
+              },
+              "code": {
+                "description": "Describes the type of the issue. The system that creates an OperationOutcome SHALL choose the most applicable code from the IssueType value set, and may additional provide its own code for the error in the details element.",
+                "enum": [
+                  "invalid",
+                  "structure",
+                  "required",
+                  "value",
+                  "invariant",
+                  "security",
+                  "login",
+                  "unknown",
+                  "expired",
+                  "forbidden",
+                  "suppressed",
+                  "processing",
+                  "not-supported",
+                  "duplicate",
+                  "not-found",
+                  "too-long",
+                  "code-invalid",
+                  "extension",
+                  "too-costly",
+                  "business-rule",
+                  "conflict",
+                  "incomplete",
+                  "transient",
+                  "lock-error",
+                  "no-store",
+                  "exception",
+                  "timeout",
+                  "throttled",
+                  "informational"
+                ],
+                "type": "string"
+              },
+              "diagnostics": {
+                "description": "Additional diagnostic information about the issue.  Typically, this may be a description of how a value is erroneous, or a stack dump to help trace the issue.",
+                "type": "string"
+              },
+              "location": {
+                "description": "For resource issues, this will be a simple XPath limited to element names, repetition indicators and the default child access that identifies one of the elements in the resource that caused this issue to be raised.  For HTTP errors, will be \"http.\" + the parameter name.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "expression": {
+                "description": "A simple FHIRPath limited to element names, repetition indicators and the default child access that identifies one of the elements in the resource that caused this issue to be raised.",
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Element": {
+        "allOf": [
+          {
+            "description": "Base definition for all elements in a resource.",
+            "properties": {
+              "id": {
+                "description": "unique id for the element within a resource (for internal references). This may be any string value that does not contain spaces.",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "Narrative": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Element"
+          },
+          {
+            "description": "A human-readable formatted text, including images.",
+            "properties": {
+              "status": {
+                "description": "The status of the narrative - whether it's entirely generated (from just the defined data or the extensions too), or whether a human authored it and it may contain additional data.",
+                "enum": [
+                  "generated",
+                  "extensions",
+                  "additional",
+                  "empty"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [
+              "div"
+            ]
+          }
+        ]
+      },
+      "Annotation": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Element"
+          },
+          {
+            "description": "A  text note which also  contains information about who made the statement and when.",
+            "properties": {
+              "text": {
+                "description": "The text of the annotation.",
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "BackboneElement": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Element"
+          },
+          {
+            "description": "Base definition for all elements that are defined inside a resource - but not those in a data type.",
+            "properties": {}
+          }
+        ]
+      },
+      "Resource": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Element"
+          },
+          {
+            "description": "This is the base resource type for everything.",
+            "properties": {
+              "id": {
+                "description": "The logical id of the resource, as used in the URL for the resource. Once assigned, this value never changes.",
+                "type": "string",
+                "pattern": "[A-Za-z0-9\\-\\.]{1,64}"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

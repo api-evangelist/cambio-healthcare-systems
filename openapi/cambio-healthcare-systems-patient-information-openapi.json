@@ -1,0 +1,825 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Patient information",
+    "description": "Demographic patient information about a given patient. \n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>1.0.0</td>\n    <td>R8.3.05</td>\n    <td>Feb 2022</td>\n    <td>Initial version, deprecated</td>\n  </tr>\n</table>",
+    "version": "deprecated"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/patient"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "get-patient-information",
+        "summary": "Get Patient",
+        "description": "Gets all patient information for the given patient.\n<p>\n<a target=\"_blank\" href=\"/openidconnectprofile\">OAuth</a> <code>scope</code>for access : <code>user/Patient-read</code>\n</p>",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid access token. The client must request a new token from the authorization server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": "{\r\n  \"statusCode\": 401,\r\n  \"message\": \"Invalid access token.\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient OAuth2 scope for access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": "{\r\n  \"statusCode\": 403,\r\n  \"message\": \"Insufficient scope.\"\r\n}"
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests in a given amount of time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": "{\r\n  \"statusCode\": 429,\r\n  \"message\": \"Rate limit is exceeded. Try again in 5 seconds.\"\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "The patient number when acting as a care giver or partner.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "PatientResponse": {
+        "description": "List of patients",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/PatientEHRExtracts"
+        }
+      },
+      "PatientEHRExtracts": {
+        "description": "List of patients where every list currently only holds one(1) patient.",
+        "type": "object",
+        "properties": {
+          "PatientEHRExtract": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PatientEHRExtract"
+            }
+          },
+          "XSDVersion": {
+            "$ref": "#/components/schemas/XSDVersion"
+          }
+        }
+      },
+      "PatientEHRExtract": {
+        "description": "Object describing the contents of the patient.",
+        "type": "object",
+        "properties": {
+          "ehr_id": {
+            "$ref": "#/components/schemas/II"
+          },
+          "ehr_system": {
+            "$ref": "#/components/schemas/II"
+          },
+          "time_created": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "Patient": {
+            "$ref": "#/components/schemas/Patient"
+          },
+          "ResponsibleUnit": {
+            "$ref": "#/components/schemas/Unit"
+          },
+          "AccessZoneUnit": {
+            "$ref": "#/components/schemas/Unit"
+          },
+          "HeadCareproviderUnit": {
+            "$ref": "#/components/schemas/Unit"
+          }
+        }
+      },
+      "Patient": {
+        "type": "object",
+        "properties": {
+          "rc_id": {
+            "$ref": "#/components/schemas/II"
+          },
+          "PatientVersionDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "PatientID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "PatientInternalID": {
+            "type": "string"
+          },
+          "PatientProtectedId": {
+            "type": "boolean"
+          },
+          "PatientSecrecyGroups": {
+            "type": "object",
+            "properties": {
+              "Group": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "PatientName": {
+            "type": "object",
+            "properties": {
+              "PatientFamilyName": {
+                "type": "string"
+              },
+              "PatientMiddleName": {
+                "type": "string"
+              },
+              "PatientGivenName": {
+                "type": "array",
+                "items": {
+                  "description": "If the given name is the calling name qualifier=CL is set",
+                  "type": "object",
+                  "properties": {
+                    "qualifier": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "PatientBirthDate": {
+            "$ref": "#/components/schemas/TSDATE"
+          },
+          "PatientDeceasedDate": {
+            "$ref": "#/components/schemas/TSDATE"
+          },
+          "PatientSex": {
+            "type": "string",
+            "enum": [
+              "M",
+              "F",
+              "U"
+            ]
+          },
+          "patientAddresses": {
+            "type": "object",
+            "properties": {
+              "PatientAddress": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "PatientAddressType": {
+                      "type": "string"
+                    },
+                    "PatientAddressCO": {
+                      "type": "string"
+                    },
+                    "PatientAddressStreet": {
+                      "type": "string"
+                    },
+                    "PatientAddressPostcode": {
+                      "type": "string"
+                    },
+                    "PatientAddressCity": {
+                      "type": "string"
+                    },
+                    "PatientAddressCounty": {
+                      "type": "string"
+                    },
+                    "PatientAddressCountry": {
+                      "type": "string"
+                    },
+                    "PatientAddressCountryCode": {
+                      "type": "string"
+                    },
+                    "PatientAddressComment": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "PhoneNumbers": {
+            "type": "object",
+            "properties": {
+              "Phone": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "PhoneType": {
+                      "type": "string"
+                    },
+                    "PhoneNumber": {
+                      "type": "string"
+                    },
+                    "PhoneComment": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "EmailAddresses": {
+            "type": "object",
+            "properties": {
+              "Email": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "EmailType": {
+                      "type": "string"
+                    },
+                    "EmailAddress": {
+                      "type": "string"
+                    },
+                    "EmailComment": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "PatientComment": {
+            "type": "string"
+          },
+          "PatientRelatives": {
+            "type": "object",
+            "properties": {
+              "PatientRelative": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "PatientRelativeType": {
+                      "type": "string"
+                    },
+                    "PatientRelativeName": {
+                      "type": "string"
+                    },
+                    "PatientRelativeGivenName": {
+                      "type": "string"
+                    },
+                    "PatientRelativeFamilyName": {
+                      "type": "string"
+                    },
+                    "PatientRelativeOrder": {
+                      "type": "string"
+                    },
+                    "PatientRelativeHomePhonenumber": {
+                      "type": "string"
+                    },
+                    "PatientRelativeWorkPhonenumber": {
+                      "type": "string"
+                    },
+                    "PatientRelativeAddress": {
+                      "type": "string"
+                    },
+                    "PatientRelativeCOAddress": {
+                      "type": "string"
+                    },
+                    "PatientRelativeStreetAddress": {
+                      "type": "string"
+                    },
+                    "PatientRelativePostalCode": {
+                      "type": "string"
+                    },
+                    "PatientRelativeCity": {
+                      "type": "string"
+                    },
+                    "PatientRelativeComment": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "PatientDataRegister": {
+            "type": "object",
+            "properties": {
+              "PatientCountry": {
+                "type": "string"
+              },
+              "PatientCounty": {
+                "type": "string"
+              },
+              "PatientCity": {
+                "type": "string"
+              },
+              "PatientDistrict": {
+                "type": "string"
+              }
+            }
+          },
+          "PatientConnectedInactiveNumbers": {
+            "type": "object",
+            "properties": {
+              "PatientConnectedInactiveNumber": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/II"
+                }
+              }
+            }
+          },
+          "PatientConnectedActiveNumbers": {
+            "type": "object",
+            "properties": {
+              "PatientConnectedActiveNumber": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/II"
+                }
+              }
+            }
+          },
+          "PatientPasses": {
+            "type": "object",
+            "properties": {
+              "PatientPass": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "PatientPassTypeDiscountCard": {
+                      "type": "string"
+                    },
+                    "PatientPassMembership": {
+                      "type": "string"
+                    },
+                    "PatientPassNumber": {
+                      "type": "string"
+                    },
+                    "PatientPassValidFrom": {
+                      "$ref": "#/components/schemas/TSDATE"
+                    },
+                    "PatientPassValidTo": {
+                      "$ref": "#/components/schemas/TSDATE"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "PatientOtherIdentifiers": {
+            "type": "object",
+            "properties": {
+              "PatientOtherIdentifier": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "PatientOtherIdentifierType": {
+                      "type": "string"
+                    },
+                    "PatientOtherIdentifierValue": {
+                      "type": "string"
+                    },
+                    "PatientOtherIdentifierComment": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unit": {
+        "type": "object",
+        "properties": {
+          "UnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        }
+      },
+      "XSDVersion": {
+        "type": "object",
+        "properties": {
+          "version": {
+            "type": "number"
+          }
+        }
+      },
+      "II": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "$self": {
+            "type": "string"
+          },
+          "root": {
+            "type": "string"
+          },
+          "extension": {
+            "type": "string"
+          },
+          "identifierName": {
+            "type": "string"
+          },
+          "displayable": {
+            "type": "boolean"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "BUSN",
+              "OBJ",
+              "VER",
+              "VW"
+            ]
+          },
+          "reliability": {
+            "type": "string",
+            "enum": [
+              "ISS",
+              "VER",
+              "UNV"
+            ]
+          }
+        }
+      },
+      "TSDATE": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TS"
+          }
+        ]
+      },
+      "TS": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/QTY"
+          }
+        ],
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "QTY": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "expression": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "originalText": {
+            "$ref": "#/components/schemas/EDTEXT"
+          },
+          "uncertainty": {
+            "$ref": "#/components/schemas/QTY"
+          },
+          "uncertaintyType": {
+            "type": "string",
+            "enum": [
+              "U",
+              "N",
+              "LN",
+              "G",
+              "E",
+              "X_2",
+              "T",
+              "F",
+              "B"
+            ]
+          }
+        }
+      },
+      "ED": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "xml": {
+            "type": "string"
+          },
+          "reference": {
+            "$ref": "#/components/schemas/TELURL"
+          },
+          "integrityCheck": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "thumbnail": {
+            "$ref": "#/components/schemas/ED"
+          },
+          "description": {
+            "$ref": "#/components/schemas/ST"
+          },
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ED"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "mediaType": {
+            "type": "string"
+          },
+          "charset": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "compression": {
+            "type": "string",
+            "enum": [
+              "DF",
+              "GZ",
+              "ZL",
+              "Z",
+              "BZ",
+              "Z_7"
+            ]
+          },
+          "integrityCheckAlgorithm": {
+            "type": "string",
+            "enum": [
+              "SHA_1",
+              "SHA_256"
+            ]
+          }
+        }
+      },
+      "EDTEXT": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ED"
+          }
+        ]
+      },
+      "ST": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "translation": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/STNT"
+            }
+          },
+          "value": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        }
+      },
+      "STNT": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ST"
+          }
+        ]
+      },
+      "TELURL": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TEL"
+          }
+        ]
+      },
+      "TEL": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "useablePeriod": {
+            "$ref": "#/components/schemas/QSETTS"
+          },
+          "value": {
+            "type": "string"
+          },
+          "use": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "H",
+                "HP",
+                "HV",
+                "WP",
+                "DIR",
+                "PUB",
+                "BAD",
+                "TMP",
+                "AS",
+                "EC",
+                "MC",
+                "PG"
+              ]
+            }
+          }
+        }
+      },
+      "QSETTS": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ANY"
+          }
+        ],
+        "properties": {
+          "originalText": {
+            "$ref": "#/components/schemas/EDTEXT"
+          }
+        }
+      },
+      "ANY": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/HXIT"
+          },
+          {
+            "properties": {
+              "nullFlavor": {
+                "type": "string",
+                "enum": [
+                  "NI",
+                  "INV",
+                  "OTH",
+                  "NINF",
+                  "PINF",
+                  "UNC",
+                  "DER",
+                  "UNK",
+                  "ASKU",
+                  "NAV",
+                  "QS",
+                  "NASK",
+                  "TRC",
+                  "MSK",
+                  "NA"
+                ]
+              },
+              "flavorId": {
+                "type": "string"
+              },
+              "updateMode": {
+                "type": "string",
+                "enum": [
+                  "A",
+                  "AU",
+                  "U",
+                  "R",
+                  "I",
+                  "D",
+                  "K"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "HXIT": {
+        "type": "object",
+        "properties": {
+          "validTimeLow": {
+            "type": "string"
+          },
+          "validTimeHigh": {
+            "type": "string"
+          },
+          "controlActRoot": {
+            "type": "string"
+          },
+          "controlActExtension": {
+            "type": "string"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "description": "Generic error response for all systems and applications errors.",
+        "properties": {
+          "error": {
+            "description": "Error reason in text.",
+            "type": "string"
+          },
+          "path": {
+            "description": "Path to requested resource.",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status.",
+            "type": "integer"
+          },
+          "timestamp": {
+            "description": "Timestamp (milliseconds since epoch).",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

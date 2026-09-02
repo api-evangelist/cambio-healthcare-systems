@@ -1,0 +1,343 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Video meetings",
+    "description": "<u>Note: Deprecated - Will be removed in COSMIC 4.1.0</u><br/>\nBooked appointments supporting remote participation through video.\n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>2.0.0</td>\n    <td>R8.3.05</td>\n    <td>Feb 2022</td>\n    <td>Initial version</td>\n  </tr>\n</table>",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/open/api/videomeetings"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "get-videomeetings",
+        "summary": "Get Video meeting(s)",
+        "description": "Gets all booked appointments supporting remote participation through video. The result can be filtered by using a time interval. \n<p>OAuth <code>scope</code> for access : <code>user/VideoMeeting.read</code></p>",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoMeetingArray"
+                },
+                "examples": {
+                  "default": {
+                    "value": [
+                      {
+                        "actionId": 0,
+                        "endDateTimeInUnix": 0,
+                        "startDateTimeInUnix": 0,
+                        "performingUnitName": "string",
+                        "serviceName": "string",
+                        "meetingLink": "string",
+                        "mainStaff": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "otherStaffList": [
+                          {
+                            "name": "string",
+                            "type": "string"
+                          }
+                        ],
+                        "server": {
+                          "discoveryURI": "string",
+                          "clientID": "string",
+                          "onPremise": true
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid access token. The client must request a new token from the authorization server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Insufficient OAuth2 scope for access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests in a given amount of time.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "fromDateTime",
+            "in": "query",
+            "description": "Time interval start, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "toDateTime",
+            "in": "query",
+            "description": "Time interval end, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "The patient number when acting as a care giver or partner.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "VideoMeeting": {
+        "title": "VideoMeeting",
+        "description": "A single video meeting",
+        "type": "object",
+        "properties": {
+          "actionId": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 10000000000000000,
+            "format": "int64"
+          },
+          "endDateTimeInUnix": {
+            "type": "integer",
+            "minimum": -9999999999999,
+            "maximum": 9999999999999,
+            "format": "int64"
+          },
+          "startDateTimeInUnix": {
+            "type": "integer",
+            "minimum": -9999999999999,
+            "maximum": 9999999999999,
+            "format": "int64"
+          },
+          "performingUnitName": {
+            "type": "string",
+            "pattern": "/[\\S\\s]/",
+            "maxLength": 64
+          },
+          "serviceName": {
+            "type": "string",
+            "pattern": "/[\\S\\s]/",
+            "maxLength": 64
+          },
+          "meetingLink": {
+            "type": "string",
+            "pattern": "/[\\S\\s]/",
+            "maxLength": 64
+          },
+          "mainStaff": {
+            "$ref": "#/components/schemas/Staff"
+          },
+          "otherStaffList": {
+            "type": "array",
+            "maxItems": 32,
+            "items": {
+              "$ref": "#/components/schemas/Staff"
+            }
+          },
+          "server": {
+            "$ref": "#/components/schemas/SkypeServer"
+          }
+        }
+      },
+      "Staff": {
+        "title": "Staff",
+        "description": "Staff",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "/[\\S\\s]/",
+            "maxLength": 64
+          },
+          "type": {
+            "type": "string",
+            "pattern": "/[\\S\\s]/",
+            "maxLength": 64
+          }
+        }
+      },
+      "SkypeServer": {
+        "title": "Server",
+        "type": "object",
+        "properties": {
+          "discoveryURI": {
+            "type": "string",
+            "pattern": "/[\\S\\s]/",
+            "maxLength": 64
+          },
+          "clientID": {
+            "type": "string",
+            "pattern": "/[\\S\\s]/",
+            "maxLength": 64
+          },
+          "onPremise": {
+            "type": "boolean"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "title": "ErrorResponse",
+        "description": "Generic error response for all systems and applications errors.",
+        "type": "object",
+        "properties": {
+          "error": {
+            "description": "Error reason in text.",
+            "type": "string",
+            "pattern": "/[\\s\\S]/",
+            "maxLength": 1024
+          },
+          "path": {
+            "description": "Path to requested resource.",
+            "type": "string",
+            "pattern": "/[A-z/0-9]/",
+            "maxLength": 128
+          },
+          "status": {
+            "description": "HTTP status.",
+            "type": "integer",
+            "format": "int32",
+            "maximum": 999,
+            "minimum": 200
+          },
+          "timestamp": {
+            "description": "Timestamp (milliseconds since epoch).",
+            "type": "integer",
+            "format": "int64",
+            "minimum": -9999999999999,
+            "maximum": 9999999999999
+          }
+        }
+      },
+      "VideoMeetingArray": {
+        "type": "array",
+        "maxItems": 64,
+        "items": {
+          "$ref": "#/components/schemas/VideoMeeting"
+        }
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

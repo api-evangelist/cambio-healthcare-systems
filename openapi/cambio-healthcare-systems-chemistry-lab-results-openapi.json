@@ -1,0 +1,1041 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Chemistry lab results",
+    "description": "DEPRECATED\nAll existing chemistry lab results for a given patient.\n<h4>Versions</h4>\n<table style=\"width:100%\">\n  <tr>\n    <th>COS version</th>\n    <th>API version</th>\n    <th>Required Cosmic version</th>\n    <th>Date</th>\n    <th>Description</th>\n  </tr>\n  <tr>\n    <td>3.0.0</td>\n    <td>1.0.0</td>\n    <td>R8.3.05</td>\n    <td>Feb 2022</td>\n    <td>Initial version, deprecated</td>\n  </tr>\n</table>",
+    "version": "deprecated"
+  },
+  "servers": [
+    {
+      "url": "https://api.openservices.cambio.se/api/open/chemistrylabreports"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "operationId": "get-chemistry-lab-results",
+        "summary": "Get chemistry lab report",
+        "description": "Gets all chemistry lab results for the given patient. The result can be filtered by using a time interval. <br/> See also the detailed <a target='_blank' href='https://developer.openservices.cambio.se/getchemistry_description-en'>description</a> of the contents of this message.",
+        "responses": {
+          "200": {
+            "description": "Request succeeded for the given patient.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChemistryResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": [
+                      {
+                        "ChemistryReportEHRExtract": [
+                          {
+                            "AccessZoneUnit": {
+                              "UnitID": {
+                                "extension": "string",
+                                "root": "string"
+                              },
+                              "UnitLocalID": {
+                                "extension": "string",
+                                "root": "string"
+                              }
+                            },
+                            "AttestingCareProviders": {
+                              "AttestingCareProvider": [
+                                {
+                                  "CareProviderID": {
+                                    "extension": "string",
+                                    "root": "string"
+                                  },
+                                  "CareProviderName": "string",
+                                  "CareProviderType": "string",
+                                  "ProviderPosition": {
+                                    "CareProviderPositionID": {
+                                      "extension": "string",
+                                      "root": "string"
+                                    },
+                                    "CareProviderPositionName": "string"
+                                  }
+                                }
+                              ]
+                            },
+                            "CareProviders": {
+                              "CareProvider": [
+                                {
+                                  "CareProviderInternalID": [
+                                    {
+                                      "CareProviderID": {
+                                        "extension": "string",
+                                        "root": "string"
+                                      },
+                                      "CareProviderName": "string",
+                                      "CareProviderType": "string",
+                                      "ProviderPosition": {
+                                        "CareProviderPositionID": {
+                                          "extension": "string",
+                                          "root": "string"
+                                        },
+                                        "CareProviderPositionName": "string"
+                                      }
+                                    }
+                                  ],
+                                  "CareProviderType": "string"
+                                }
+                              ]
+                            },
+                            "Hcmcontact": {
+                              "ContactPerformingUnit": "string",
+                              "ContactSecrecyLevels": [
+                                {
+                                  "SecrecyLevel": "string"
+                                }
+                              ],
+                              "HCMContacInternaltID": "string",
+                              "HCMContactBegin": {
+                                "value": "string"
+                              },
+                              "HCMContactEnd": {
+                                "value": "string"
+                              },
+                              "HCMContactStatus": "string",
+                              "HCMContactType": "string",
+                              "target_id": {
+                                "extension": "string",
+                                "root": "string"
+                              }
+                            },
+                            "HeadCareproviderUnit": {
+                              "UnitID": {
+                                "extension": "string",
+                                "root": "string"
+                              },
+                              "UnitLocalID": {
+                                "extension": "string",
+                                "root": "string"
+                              }
+                            },
+                            "Patient": {
+                              "PatientID": {
+                                "extension": "string",
+                                "root": "string"
+                              },
+                              "PatientInternalID": "string",
+                              "PatientName": {
+                                "PatientFamilyName": "string",
+                                "PatientGivenName": [
+                                  {
+                                    "qualifier": "string",
+                                    "value": "string"
+                                  }
+                                ],
+                                "PatientMiddleName": "string"
+                              },
+                              "PatientProtectedId": true,
+                              "PatientSecrecyGroups": {
+                                "Group": [
+                                  "string"
+                                ]
+                              }
+                            },
+                            "PerformingUnit": {
+                              "UnitID": {
+                                "extension": "string",
+                                "root": "string"
+                              },
+                              "UnitLocalID": {
+                                "extension": "string",
+                                "root": "string"
+                              }
+                            },
+                            "ReceivingUnit": {
+                              "UnitID": {
+                                "extension": "string",
+                                "root": "string"
+                              },
+                              "UnitLocalID": {
+                                "extension": "string",
+                                "root": "string"
+                              }
+                            },
+                            "Report": {
+                              "ReportCommentary": "string",
+                              "ReportDateTime": {
+                                "value": "string"
+                              },
+                              "ReportId": "string",
+                              "ReportStatus": "string",
+                              "ReportVersionDateTime": {
+                                "value": "string"
+                              },
+                              "SecrecyClassification": "string",
+                              "TestResult": [
+                                {
+                                  "AttestDateTime": {
+                                    "value": "string"
+                                  },
+                                  "AttestingCareProviderId": {
+                                    "extension": "string",
+                                    "root": "string"
+                                  },
+                                  "IUPAC": "string",
+                                  "Pathological": "string",
+                                  "Range": "string",
+                                  "Result": "string",
+                                  "Status": "string",
+                                  "TestCommentary": "string",
+                                  "TestId": "string",
+                                  "TestName": "string",
+                                  "Unit": "string",
+                                  "rc_id": {
+                                    "extension": "string",
+                                    "root": "string"
+                                  }
+                                }
+                              ],
+                              "rc_id": {
+                                "extension": "string",
+                                "root": "string"
+                              }
+                            },
+                            "Request": {
+                              "ClinicalInformation": [
+                                {
+                                  "Information": "string",
+                                  "Reply": "string"
+                                }
+                              ],
+                              "CollectionDateTime": "string",
+                              "CollectorsCommentary": "string",
+                              "Priority": "string",
+                              "RequestCommentary": "string",
+                              "RequestDateTime": {
+                                "value": "string"
+                              },
+                              "RequestId": "string",
+                              "rc_id": {
+                                "extension": "string",
+                                "root": "string"
+                              }
+                            },
+                            "RequestingUnit": {
+                              "UnitID": {
+                                "extension": "string",
+                                "root": "string"
+                              },
+                              "UnitLocalID": {
+                                "extension": "string",
+                                "root": "string"
+                              }
+                            },
+                            "ResponsibleUnit": {
+                              "UnitID": {
+                                "extension": "string",
+                                "root": "string"
+                              },
+                              "UnitLocalID": {
+                                "extension": "string",
+                                "root": "string"
+                              }
+                            },
+                            "Units": {
+                              "Unit": [
+                                {
+                                  "AccessZones": {
+                                    "AccessZoneID": [
+                                      {
+                                        "extension": "string",
+                                        "root": "string"
+                                      }
+                                    ]
+                                  },
+                                  "EmailAddresses": {
+                                    "Email": [
+                                      {
+                                        "EmailAddress": "string",
+                                        "EmailComment": "string",
+                                        "EmailType": "string"
+                                      }
+                                    ]
+                                  },
+                                  "HeadCareproviderUnitID": {
+                                    "extension": "string",
+                                    "root": "string"
+                                  },
+                                  "PhoneNumbers": {
+                                    "Phone": [
+                                      {
+                                        "PhoneComment": "string",
+                                        "PhoneNumber": "string",
+                                        "PhoneType": "string"
+                                      }
+                                    ]
+                                  },
+                                  "UnitAddresses": {
+                                    "UnitAddress": [
+                                      {
+                                        "UnitAddressAddress": "string",
+                                        "UnitAddressCity": "string",
+                                        "UnitAddressComment": "string",
+                                        "UnitAddressCountry": "string",
+                                        "UnitAddressCounty": "string",
+                                        "UnitAddressGeographicalPlace": "string",
+                                        "UnitAddressPostcode": "string",
+                                        "UnitAddressType": "string"
+                                      }
+                                    ]
+                                  },
+                                  "UnitID": {
+                                    "extension": "string",
+                                    "root": "string"
+                                  },
+                                  "UnitLocalID": {
+                                    "extension": "string",
+                                    "root": "string"
+                                  },
+                                  "UnitName": "string",
+                                  "UnitSecrecyGroups": {
+                                    "Group": [
+                                      "string"
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            "ehr_id": {
+                              "extension": "string",
+                              "root": "string"
+                            },
+                            "ehr_system": {
+                              "extension": "string",
+                              "root": "string"
+                            },
+                            "time_created": {
+                              "value": "string"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid access token. The client must request a new token from the authorization server.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "error": "string",
+                      "path": "string",
+                      "status": 0,
+                      "timestamp": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "startActionDateTime",
+            "in": "query",
+            "description": "Time interval start, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "endActionDateTime",
+            "in": "query",
+            "description": "Time interval end, using date format: 1970-01-01T01:00:00",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patient",
+            "in": "header",
+            "description": "The patient number when acting as a care giver or partner.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "apiKeyHeader": {
+        "type": "apiKey",
+        "name": "Ocp-Apim-Subscription-Key",
+        "in": "header"
+      },
+      "apiKeyQuery": {
+        "type": "apiKey",
+        "name": "subscription-key",
+        "in": "query"
+      }
+    },
+    "schemas": {
+      "AccessZoneUnit": {
+        "properties": {
+          "UnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        },
+        "type": "object"
+      },
+      "AccessZones": {
+        "properties": {
+          "AccessZoneID": {
+            "items": {
+              "$ref": "#/components/schemas/II"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "AttestingCareProvider": {
+        "properties": {
+          "CareProviderID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "CareProviderName": {
+            "type": "string"
+          },
+          "CareProviderType": {
+            "type": "string"
+          },
+          "ProviderPosition": {
+            "$ref": "#/components/schemas/ProviderPosition"
+          }
+        },
+        "type": "object"
+      },
+      "AttestingCareProviders": {
+        "properties": {
+          "AttestingCareProvider": {
+            "items": {
+              "$ref": "#/components/schemas/AttestingCareProvider"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "CareProvider": {
+        "properties": {
+          "CareProviderInternalID": {
+            "items": {
+              "$ref": "#/components/schemas/AttestingCareProvider"
+            },
+            "type": "array"
+          },
+          "CareProviderType": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "CareProviderUnit": {
+        "properties": {
+          "unitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "unitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        },
+        "type": "object"
+      },
+      "CareProviders": {
+        "properties": {
+          "CareProvider": {
+            "items": {
+              "$ref": "#/components/schemas/CareProvider"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "ChemistryReportEHRExtract": {
+        "description": "Object describing the content of the Chemistry lab report.",
+        "properties": {
+          "AccessZoneUnit": {
+            "$ref": "#/components/schemas/AccessZoneUnit"
+          },
+          "AttestingCareProviders": {
+            "$ref": "#/components/schemas/AttestingCareProviders"
+          },
+          "CareProviders": {
+            "$ref": "#/components/schemas/CareProviders"
+          },
+          "Hcmcontact": {
+            "$ref": "#/components/schemas/HCMContact"
+          },
+          "HeadCareproviderUnit": {
+            "$ref": "#/components/schemas/HeadCareproviderUnit"
+          },
+          "Patient": {
+            "$ref": "#/components/schemas/Patient"
+          },
+          "PerformingUnit": {
+            "$ref": "#/components/schemas/PerformingUnit"
+          },
+          "ReceivingUnit": {
+            "$ref": "#/components/schemas/ReceivingUnit"
+          },
+          "Report": {
+            "$ref": "#/components/schemas/Report"
+          },
+          "Request": {
+            "$ref": "#/components/schemas/Request"
+          },
+          "RequestingUnit": {
+            "$ref": "#/components/schemas/RequestingUnit"
+          },
+          "ResponsibleUnit": {
+            "$ref": "#/components/schemas/ResponsibleUnit"
+          },
+          "Units": {
+            "$ref": "#/components/schemas/Units"
+          },
+          "ehr_id": {
+            "$ref": "#/components/schemas/II"
+          },
+          "ehr_system": {
+            "$ref": "#/components/schemas/II"
+          },
+          "time_created": {
+            "$ref": "#/components/schemas/TS"
+          }
+        },
+        "type": "object"
+      },
+      "ChemistryReportEHRExtracts": {
+        "description": "List of Chemistry Lab Reports svarsrapporter where every list currently only holds one(1) Chemistry Lab Report.",
+        "properties": {
+          "ChemistryReportEHRExtract": {
+            "items": {
+              "$ref": "#/components/schemas/ChemistryReportEHRExtract"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "ChemistryResponse": {
+        "description": "List of Chemistry Lab Reports.",
+        "items": {
+          "$ref": "#/components/schemas/ChemistryReportEHRExtracts"
+        },
+        "type": "array"
+      },
+      "ClinicalInformation": {
+        "description": "Clinical Information.",
+        "properties": {
+          "Information": {
+            "type": "string"
+          },
+          "Reply": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ContactSecrecyLevels": {
+        "properties": {
+          "SecrecyLevel": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Email": {
+        "properties": {
+          "EmailAddress": {
+            "type": "string"
+          },
+          "EmailComment": {
+            "type": "string"
+          },
+          "EmailType": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "EmailAddresses": {
+        "properties": {
+          "Email": {
+            "items": {
+              "$ref": "#/components/schemas/Email"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "description": "Generic error response for all systems and applications errors.",
+        "properties": {
+          "error": {
+            "description": "Error reason in text.",
+            "type": "string"
+          },
+          "path": {
+            "description": "Path to requested resource.",
+            "type": "string"
+          },
+          "status": {
+            "description": "HTTP status.",
+            "type": "integer"
+          },
+          "timestamp": {
+            "description": "Timestamp (milliseconds since epoch).",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "HCMContact": {
+        "properties": {
+          "ContactPerformingUnit": {
+            "type": "string"
+          },
+          "ContactSecrecyLevels": {
+            "items": {
+              "$ref": "#/components/schemas/ContactSecrecyLevels"
+            },
+            "type": "array"
+          },
+          "HCMContacInternaltID": {
+            "type": "string"
+          },
+          "HCMContactBegin": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "HCMContactEnd": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "HCMContactStatus": {
+            "type": "string"
+          },
+          "HCMContactType": {
+            "type": "string"
+          },
+          "target_id": {
+            "$ref": "#/components/schemas/II"
+          }
+        },
+        "type": "object"
+      },
+      "HeadCareproviderUnit": {
+        "properties": {
+          "UnitID": {
+            "$ref": "#/components/schemas/II",
+            "type": "object"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II",
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "II": {
+        "properties": {
+          "extension": {
+            "description": "Current value (code from code system)",
+            "type": "string"
+          },
+          "root": {
+            "description": "Identity of used code system (OID)",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "Patient": {
+        "description": "Information about the patient.",
+        "properties": {
+          "PatientID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "PatientInternalID": {
+            "type": "string"
+          },
+          "PatientName": {
+            "$ref": "#/components/schemas/PatientName"
+          },
+          "PatientProtectedId": {
+            "type": "boolean"
+          },
+          "PatientSecrecyGroups": {
+            "$ref": "#/components/schemas/PatientSecrecyGroups"
+          }
+        },
+        "type": "object"
+      },
+      "PatientGivenName": {
+        "properties": {
+          "qualifier": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PatientName": {
+        "properties": {
+          "PatientFamilyName": {
+            "type": "string"
+          },
+          "PatientGivenName": {
+            "items": {
+              "$ref": "#/components/schemas/PatientGivenName"
+            },
+            "type": "array"
+          },
+          "PatientMiddleName": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PatientSecrecyGroups": {
+        "properties": {
+          "Group": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "PerformingUnit": {
+        "description": "Utförande enhet.",
+        "properties": {
+          "UnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        },
+        "type": "object"
+      },
+      "Phone": {
+        "properties": {
+          "PhoneComment": {
+            "type": "string"
+          },
+          "PhoneNumber": {
+            "type": "string"
+          },
+          "PhoneType": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "PhoneNumbers": {
+        "properties": {
+          "Phone": {
+            "items": {
+              "$ref": "#/components/schemas/Phone"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "ProviderPosition": {
+        "properties": {
+          "CareProviderPositionID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "CareProviderPositionName": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "ReceivingUnit": {
+        "description": "Receiving Unit.",
+        "properties": {
+          "UnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        },
+        "type": "object"
+      },
+      "Report": {
+        "description": "Information about a Chemistry Lab Report.",
+        "properties": {
+          "ReportCommentary": {
+            "type": "string"
+          },
+          "ReportDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "ReportId": {
+            "type": "string"
+          },
+          "ReportStatus": {
+            "type": "string"
+          },
+          "ReportVersionDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "SecrecyClassification": {
+            "type": "string"
+          },
+          "TestResult": {
+            "items": {
+              "$ref": "#/components/schemas/TestResult"
+            },
+            "type": "array"
+          },
+          "rc_id": {
+            "$ref": "#/components/schemas/II"
+          }
+        },
+        "type": "object"
+      },
+      "Request": {
+        "description": "Information about a Chemistry Lab Request.",
+        "properties": {
+          "ClinicalInformation": {
+            "items": {
+              "$ref": "#/components/schemas/ClinicalInformation"
+            },
+            "type": "array"
+          },
+          "CollectionDateTime": {
+            "type": "string"
+          },
+          "CollectorsCommentary": {
+            "type": "string"
+          },
+          "Priority": {
+            "type": "string"
+          },
+          "RequestCommentary": {
+            "type": "string"
+          },
+          "RequestDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "RequestId": {
+            "type": "string"
+          },
+          "rc_id": {
+            "$ref": "#/components/schemas/II"
+          }
+        },
+        "type": "object"
+      },
+      "RequestingUnit": {
+        "description": "Requesting Unit.",
+        "properties": {
+          "UnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        },
+        "type": "object"
+      },
+      "ResponsibleUnit": {
+        "description": "Responsible Unit.",
+        "properties": {
+          "UnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II"
+          }
+        },
+        "type": "object"
+      },
+      "TS": {
+        "properties": {
+          "value": {
+            "description": "Timestamp using format '20170609120306'",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "TestResult": {
+        "description": "Information about a Test Result.",
+        "properties": {
+          "AttestDateTime": {
+            "$ref": "#/components/schemas/TS"
+          },
+          "AttestingCareProviderId": {
+            "$ref": "#/components/schemas/II"
+          },
+          "IUPAC": {
+            "type": "string"
+          },
+          "Pathological": {
+            "type": "string"
+          },
+          "Range": {
+            "type": "string"
+          },
+          "Result": {
+            "type": "string"
+          },
+          "Status": {
+            "type": "string"
+          },
+          "TestCommentary": {
+            "type": "string"
+          },
+          "TestId": {
+            "type": "string"
+          },
+          "TestName": {
+            "type": "string"
+          },
+          "Unit": {
+            "type": "string"
+          },
+          "rc_id": {
+            "$ref": "#/components/schemas/II"
+          }
+        },
+        "type": "object"
+      },
+      "Unit": {
+        "description": "Information about a Unit.",
+        "properties": {
+          "AccessZones": {
+            "$ref": "#/components/schemas/AccessZones"
+          },
+          "EmailAddresses": {
+            "$ref": "#/components/schemas/EmailAddresses"
+          },
+          "HeadCareproviderUnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "PhoneNumbers": {
+            "$ref": "#/components/schemas/PhoneNumbers"
+          },
+          "UnitAddresses": {
+            "$ref": "#/components/schemas/UnitAddresses"
+          },
+          "UnitID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitLocalID": {
+            "$ref": "#/components/schemas/II"
+          },
+          "UnitName": {
+            "type": "string"
+          },
+          "UnitSecrecyGroups": {
+            "$ref": "#/components/schemas/UnitSecrecyGroups"
+          }
+        },
+        "type": "object"
+      },
+      "UnitAddress": {
+        "properties": {
+          "UnitAddressAddress": {
+            "type": "string"
+          },
+          "UnitAddressCity": {
+            "type": "string"
+          },
+          "UnitAddressComment": {
+            "type": "string"
+          },
+          "UnitAddressCountry": {
+            "type": "string"
+          },
+          "UnitAddressCounty": {
+            "type": "string"
+          },
+          "UnitAddressGeographicalPlace": {
+            "type": "string"
+          },
+          "UnitAddressPostcode": {
+            "type": "string"
+          },
+          "UnitAddressType": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "UnitAddresses": {
+        "properties": {
+          "UnitAddress": {
+            "items": {
+              "$ref": "#/components/schemas/UnitAddress",
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "UnitSecrecyGroups": {
+        "properties": {
+          "Group": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "Units": {
+        "properties": {
+          "Unit": {
+            "description": "List of Units",
+            "items": {
+              "$ref": "#/components/schemas/Unit"
+            },
+            "type": "array"
+          }
+        },
+        "type": "object"
+      }
+    }
+  },
+  "security": [
+    {},
+    {
+      "apiKeyHeader": []
+    },
+    {
+      "apiKeyQuery": []
+    }
+  ]
+}

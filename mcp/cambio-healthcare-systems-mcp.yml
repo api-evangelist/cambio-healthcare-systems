@@ -1,0 +1,203 @@
+generated: '2026-09-02'
+method: derived
+source: openapi/ (24 operations across 19 provider-published specs); searched developer.openservices.cambio.se,
+  github.com/CambioHealthcare and the public MCP registry for a Cambio server and found none
+status: candidate
+note: Cambio ships NO MCP server. Nothing on the developer portal, the corporate site, the GitHub organisation or
+  the public MCP registry mentions Model Context Protocol. The tool list below is a CANDIDATE derived from the operations
+  Cambio does publish, so that an integrator can see the shape a COSMIC MCP server would take; it is not an endpoint
+  anyone can call. Deprecated API versions are excluded. Note that any real server would inherit the dual credential
+  requirement (APIM subscription key plus an OAuth token carrying the right SMART-on-FHIR scope) and the per-patient
+  header context, which makes an unattended agent surface a non-trivial consent problem, not just a plumbing one.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: searched
+tool_count: 19
+tools:
+- name: get_attention_signals
+  description: Get Attention Signal(s)
+  rest:
+  - get-attention-signals
+  api: Attention signal
+  method: GET
+  inputs:
+  - fromDateTime
+  - toDateTime
+  - patient
+  status: candidate
+- name: get_open_id_connect
+  description: GET Open Id Connect
+  rest:
+  - get-open-id-connect
+  api: Authorizer - OpenId Connect
+  method: GET
+  inputs: []
+  status: candidate
+- name: openid_configuration
+  description: OpenId Configuration
+  rest:
+  - openid-configuration
+  api: Authorizer - OpenId Connect
+  method: GET
+  inputs: []
+  status: candidate
+- name: token_endpoint
+  description: Token Endpoint
+  rest:
+  - token-endpoint
+  api: Authorizer - OpenId Connect
+  method: POST
+  inputs: []
+  status: candidate
+- name: get_bookings
+  description: Get booked appointments
+  rest:
+  - get-bookings
+  api: Booked appointments
+  method: GET
+  inputs:
+  - fromDateTime
+  - toDateTime
+  - patient
+  status: candidate
+- name: update_appointment
+  description: Update booked appointment
+  rest:
+  - update-appointment
+  api: Booked appointments
+  method: PUT
+  inputs:
+  - id
+  - patient
+  status: candidate
+- name: get_contacts
+  description: Get Contact(s)
+  rest:
+  - get-contacts
+  api: Care contacts
+  method: GET
+  inputs:
+  - fromDateTime
+  - toDateTime
+  - patient
+  status: candidate
+- name: get_contacts_v2
+  description: Get all contacts
+  rest:
+  - get-contacts-v2
+  api: Care contacts
+  method: GET
+  inputs:
+  - fromDateTime
+  - toDateTime
+  - patient
+  status: candidate
+- name: get_chemistry_lab_results_v2
+  description: Get chemistry lab report
+  rest:
+  - get-chemistry-lab-results-v2
+  api: Chemistry lab results
+  method: GET
+  inputs:
+  - startActionDateTime
+  - endActionDateTime
+  - patient
+  status: candidate
+- name: get_diagnoses_v2
+  description: Get Diagnoses
+  rest:
+  - get-diagnoses-v2
+  api: Diagnosis
+  method: GET
+  inputs:
+  - fromDateTime
+  - toDateTime
+  - patient
+  status: candidate
+- name: fhir_get
+  description: FHIR GET
+  rest:
+  - fhir-get
+  api: FHIR R4 Public Profiles
+  method: GET
+  inputs: []
+  status: candidate
+- name: fhir_post
+  description: FHIR POST
+  rest:
+  - fhir-post
+  api: FHIR R4 Public Profiles
+  method: POST
+  inputs: []
+  status: candidate
+- name: fhir_put
+  description: FHIR PUT
+  rest:
+  - fhir-put
+  api: FHIR R4 Public Profiles
+  method: PUT
+  inputs: []
+  status: candidate
+- name: get_journal_notes_v2
+  description: Get Journal Note(s)
+  rest:
+  - get-journal-notes-v2
+  api: Journal notes
+  method: GET
+  inputs:
+  - fromDateTime
+  - toDateTime
+  - patient
+  status: candidate
+- name: getPrescriptionInfo_v2
+  description: Get all prescriptions
+  rest:
+  - getPrescriptionInfo-v2
+  api: Medication prescriptions
+  method: GET
+  inputs:
+  - fromDateTime
+  - toDateTime
+  - patient
+  status: candidate
+- name: get_patient_information_v2
+  description: Get Patient
+  rest:
+  - get-patient-information-v2
+  api: Patient information
+  method: GET
+  inputs:
+  - patient
+  status: candidate
+- name: register_payment
+  description: Register payment
+  rest:
+  - register-payment
+  api: Payment notice
+  method: POST
+  inputs:
+  - patient
+  status: candidate
+- name: create_referral
+  description: Create referral request
+  rest:
+  - create-referral
+  api: Referral requests
+  method: POST
+  inputs: []
+  status: candidate
+- name: get_videomeetings
+  description: Get Video meeting(s)
+  rest:
+  - get-videomeetings
+  api: Video meetings
+  method: GET
+  inputs:
+  - fromDateTime
+  - toDateTime
+  - patient
+  status: candidate
