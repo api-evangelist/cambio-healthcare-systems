@@ -1,0 +1,23 @@
+aid: cambio-healthcare-systems
+name: Cambio Healthcare Systems
+description: 'Cambio Healthcare Systems is a company surfaced via the API Evangelist harvest backlog (source:
+  swedish-healthcare) and added to the network as a stub for full-pipeline profiling.'
+url: https://raw.githubusercontent.com/api-evangelist/cambio-healthcare-systems/refs/heads/main/apis.yml
+x-type: company
+x-source: harvest:swedish-healthcare
+x-tier: stub
+x-tier-reason: harvest
+specificationVersion: '0.20'
+created: '2026-09-02'
+modified: '2026-09-02'
+tags:
+- Company
+apis: []
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+- FN: APIs.json
+  email: info@apis.io
+common:
+- type: Website
+  url: https://www.cambiogroup.com/
