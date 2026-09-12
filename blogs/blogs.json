@@ -1,0 +1,21 @@
+{
+  "repo": "cambio-healthcare-systems",
+  "feeds": [
+    {
+      "source": "https://www.cambiogroup.com/news/",
+      "feed_url": "https://www.cambiogroup.com/news/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    },
+    {
+      "source": "https://developer.openservices.cambio.se/help",
+      "feed_url": "https://developer.openservices.cambio.se/help",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-09-06T19:17:18Z"
+}
