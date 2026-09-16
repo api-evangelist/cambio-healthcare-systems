@@ -33,477 +33,14 @@ tags:
 - SMART on FHIR
 - Company
 apis:
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-attention-signal
-  name: Attention signal
-  description: 'Intended Use: The intended use of this API is to retrieve attention signals for a given
-    patient. Attention signals can be information about allergies, contagious infections and more that
-    is relevant when providing care to the patient. The result can be filtered by using a time interval.
-    The intended use for reading data with this API is in first hand that the API is applied for direct
-    access and should not be used to transfer data between caregivers. If it should be used for "data
-    copying" between care providers, patient consent must be handled outside the API. Specific Rules and
-    Limitations: The consumer of the API is responsible for making sure data retrieved is filtered in
-    compliance with laws and regulations prior to presenting it to any end-users. The parameters AccessZoneUnit
-    represent the PDL Care Unit (Vårdenhet) and CareProvider represents PDL Care provider (Vårdgivare)
-    and can'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=attention-signal
-  baseURL: https://api.openservices.cambio.se/api/open/attentionsignals
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Attention Signals
-  - Alerts
-  - Clinical
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-attention-signal-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=attention-signal
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-attention-signal-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-authorizer-openid-connect
-  name: Authorizer - OpenId Connect
-  description: OpenId Connect API for Authorizer. This is needed in between the developer portal and Keycloak
-    since it seems the dev portals HTTP client can't speak properly directly with Keycloak for some reason.
-    Part of Cambio Open Services (COS), the business-to-business open API programme that lets third-party
-    applications read and write data in the Cambio COSMIC electronic health record. Access is gated by
-    an Azure API Management subscription key plus an OAuth 2.0 access token.
-  humanURL: https://developer.openservices.cambio.se/api-details#api=authorizer-openid-connect
-  baseURL: https://api.openservices.cambio.se/auth/realms/COS
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Authentication
-  - OpenID Connect
-  tags_raw:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Authentication
-  - OpenID Connect
-  - OAuth
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-authorizer-openid-connect-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=authorizer-openid-connect
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-authorizer-openid-connect-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-booked-appointments
-  name: Booked appointments
-  description: 'Intended Use: Booked appointments of all types for a patient. The intended use for reading
-    data with this API is in first hand that the API is applied for direct access and should not be used
-    to transfer data between caregivers. If it should be used for "data copying" between care providers,
-    patient consent must be handled outside the API. Specific Rules and Limitations: The consumer of the
-    API is responsible for making sure data retrieved is filtered in compliance with laws and regulations
-    prior to presenting it to any end-users. The parameters AccessZoneUnit represent the PDL Care Unit
-    (Vårdenhet) and CareProvider represents PDL Care provider (Vårdgivare) and can be used to evaluate
-    PDL.'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=booked-appointments
-  baseURL: https://api.openservices.cambio.se/api/open/appointments
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Appointments
-  - Scheduling
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-booked-appointments-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=booked-appointments
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-booked-appointments-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-care-contacts
-  name: Care contacts
-  description: 'Note: Deprecated All types of care contacts. Part of Cambio Open Services (COS), the business-to-business
-    open API programme that lets third-party applications read and write data in the Cambio COSMIC electronic
-    health record. Access is gated by an Azure API Management subscription key plus an OAuth 2.0 access
-    token.'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=care-contacts
-  baseURL: https://api.openservices.cambio.se/api/open/contacts
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Care Contacts
-  - Encounters
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-care-contacts-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=care-contacts
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-care-contacts-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-care-contacts-v2
-  name: Care contacts (v2)
-  description: 'Intended Use: The Care Contacts API is intended to be used for fetching all care contacts
-    for a given patient within a certain time frame. The intended use for reading data with this API is
-    in first hand that the API is applied for direct access and should not be used to transfer data between
-    caregivers. If it should be used for ''''data copying'''' between care providers, patient consent
-    must be handled outside the API. The parameters contactAccessZoneUnit represent the PDL Care Unit
-    (Vårdenhet) and contactHeadCareProviderUnit represents PDL Care provider (Vårdgivare) and can be used
-    to evaluate PDL. Specific Rules and Limitations: The consumer of the API is responsible for making
-    sure data retrieved is filtered in compliance with laws and regulations prior to presenting it to
-    any end-users. Message Description: The query result contains a list of care contacts.'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=care-contacts-v2
-  baseURL: https://api.openservices.cambio.se/api/open/contacts
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Care Contacts
-  - Encounters
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-care-contacts-v2-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=care-contacts-v2
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-care-contacts-v2-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-chemistry-lab-results
-  name: Chemistry lab results (deprecated)
-  description: DEPRECATED All existing chemistry lab results for a given patient. Part of Cambio Open
-    Services (COS), the business-to-business open API programme that lets third-party applications read
-    and write data in the Cambio COSMIC electronic health record. Access is gated by an Azure API Management
-    subscription key plus an OAuth 2.0 access token.
-  humanURL: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results
-  baseURL: https://api.openservices.cambio.se/api/open/chemistrylabreports
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Laboratory
-  - Diagnostics
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-chemistry-lab-results-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-chemistry-lab-results-overlay.yaml
-  x-status: deprecated
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-chemistry-lab-results-v2
-  name: Chemistry lab results (v2)
-  description: 'Intended Use: The intended use of this API is to retrieve chemistry lab results for a
-    given patient. The result may be filtered using a specific time interval. The intended use for reading
-    data with this API is in first hand that the API is applied for direct access and should not be used
-    to transfer data between caregivers. If it should be used for "data copying" between care providers,
-    patient consent must be handled outside the API. Specific Rules and Limitations: The consumer of the
-    API is responsible for making sure data retrieved is filtered in compliance with laws and regulations
-    prior to presenting it to any end-users. The parameters AccessZones represent the PDL Care Unit (Vårdenhet)
-    and CareProvider represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL. Message
-    Description : The result includes a list of chemistry lab result reports. The reports include test'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results-v2
-  baseURL: https://api.openservices.cambio.se/api/open/chemistrylabreports
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Laboratory
-  - Diagnostics
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-chemistry-lab-results-v2-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results-v2
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-chemistry-lab-results-v2-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-diagnosis
-  name: Diagnosis (deprecated)
-  description: Diagnosis API in Cambio Open Services (COS), the B2B open API programme for the Cambio
-    COSMIC electronic health record. Part of Cambio Open Services (COS), the business-to-business open
-    API programme that lets third-party applications read and write data in the Cambio COSMIC electronic
-    health record. Access is gated by an Azure API Management subscription key plus an OAuth 2.0 access
-    token.
-  humanURL: https://developer.openservices.cambio.se/api-details#api=diagnosis
-  baseURL: https://api.openservices.cambio.se/api/open/diagnosis
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Diagnosis
-  - Conditions
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-diagnosis-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=diagnosis
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-diagnosis-overlay.yaml
-  x-status: deprecated
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-diagnosis-v2
-  name: Diagnosis (v2)
-  description: 'Intended Use: The Diagnosis API is intended to be used for fetching all diagnoses for
-    a specific patient within a specified time frame. The intended use for reading data with this API
-    is in first hand that the API is applied for direct access and should not be used to transfer data
-    between caregivers. If it should be used for "data copying" between care providers, patient consent
-    must be handled outside the API. Specific Rules and Limitations: The consumer of the API is responsible
-    for making sure data retrieved is filtered in compliance with laws and regulations prior to presenting
-    it to any end-users. The parameters AccessZones represent the PDL Care Unit (Vårdenhet) and CareProvider
-    represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL. Message Description : The
-    result returned is a list of diagnoses, please see the API definition file for the exact data structure.'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=diagnosis-v2
-  baseURL: https://api.openservices.cambio.se/api/open/diagnosis
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Diagnosis
-  - Conditions
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-diagnosis-v2-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=diagnosis-v2
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-diagnosis-v2-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-fhir-r4-public-profiles
-  name: FHIR R4 Public Profiles
-  description: 'The Cambio FHIR R4 Public Profiles are available at Simplifier. Please look in the implementation
-    guide for available resources: https://fhir.openservices.cambio.se/site/index.html Part of Cambio
-    Open Services (COS), the business-to-business open API programme that lets third-party applications
-    read and write data in the Cambio COSMIC electronic health record. Access is gated by an Azure API
-    Management subscription key plus an OAuth 2.0 access token.'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=fhir-r4-public-profiles
-  baseURL: https://api.openservices.cambio.se/api/open/fhir
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - FHIR
-  - Interoperability
-  - HL7
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-fhir-r4-public-profiles-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=fhir-r4-public-profiles
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-fhir-r4-public-profiles-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-journal-notes
-  name: Journal notes (deprecated)
-  description: Journal notes API in Cambio Open Services (COS), the B2B open API programme for the Cambio
-    COSMIC electronic health record. Part of Cambio Open Services (COS), the business-to-business open
-    API programme that lets third-party applications read and write data in the Cambio COSMIC electronic
-    health record. Access is gated by an Azure API Management subscription key plus an OAuth 2.0 access
-    token.
-  humanURL: https://developer.openservices.cambio.se/api-details#api=journal-notes
-  baseURL: https://api.openservices.cambio.se/api/open/journalnotes
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Journal Notes
-  - Clinical Documentation
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-journal-notes-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=journal-notes
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-journal-notes-overlay.yaml
-  x-status: deprecated
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-journal-notes-v2
-  name: Journal notes (v2)
-  description: 'Intended Use: The Journal Note API is intended to be used for fetching all journal notes
-    for a given patient within a specified time interval. The intended use for reading data with this
-    API is in first hand that the API is applied for direct access and should not be used to transfer
-    data between caregivers. If it should be used for "data copying" between care providers, patient consent
-    must be handled outside the API. Specific Rules and Limitations: The consumer of the API is responsible
-    for making sure data retrieved is filtered in compliance with laws and regulations prior to presenting
-    it to any end-users. The parameters AccessZones represent the PDL Care Unit (Vårdenhet) and CareProvider
-    represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL. Message Description : The
-    result returned is a list of journal notes, please see the API definition file for the exact data'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=journal-notes-v2
-  baseURL: https://api.openservices.cambio.se/api/open/journalnotes
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Journal Notes
-  - Clinical Documentation
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-journal-notes-v2-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=journal-notes-v2
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-journal-notes-v2-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-medication-prescriptions
-  name: Medication prescriptions (deprecated)
-  description: Medication prescriptions API in Cambio Open Services (COS), the B2B open API programme
-    for the Cambio COSMIC electronic health record. Part of Cambio Open Services (COS), the business-to-business
-    open API programme that lets third-party applications read and write data in the Cambio COSMIC electronic
-    health record. Access is gated by an Azure API Management subscription key plus an OAuth 2.0 access
-    token.
-  humanURL: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions
-  baseURL: https://api.openservices.cambio.se/open/api/medications
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Medications
-  - Prescriptions
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-medication-prescriptions-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-medication-prescriptions-overlay.yaml
-  x-status: deprecated
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-medication-prescriptions-v2
-  name: Medication prescriptions (v2)
-  description: 'Intended use: The intended use of this API is to retrieve all prescriptions for the given
-    patient. The result can be filtered by using a time interval. The intended use for reading data with
-    this API is in first hand that the API is applied for direct access and should not be used to transfer
-    data between caregivers. If it should be used for "data copying" between care providers, patient consent
-    must be handled outside the API. Specific Rules and Limitations: The consumer of the API is responsible
-    for making sure data retrieved is filtered in compliance with laws and regulations prior to presenting
-    it to any end-users. The parameters AccessZones represent the PDL Care Unit (Vårdenhet) and CareProvider
-    represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL. Message description: The
-    query result is a list of prescriptions. PrescriptionEHRExtract.accessZoneUnit should be'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions-v2
-  baseURL: https://api.openservices.cambio.se/api/open/medications
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Medications
-  - Prescriptions
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-medication-prescriptions-v2-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions-v2
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-medication-prescriptions-v2-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-patient-information
-  name: Patient information (deprecated)
-  description: Demographic patient information about a given patient. Part of Cambio Open Services (COS),
-    the business-to-business open API programme that lets third-party applications read and write data
-    in the Cambio COSMIC electronic health record. Access is gated by an Azure API Management subscription
-    key plus an OAuth 2.0 access token.
-  humanURL: https://developer.openservices.cambio.se/api-details#api=patient-information
-  baseURL: https://api.openservices.cambio.se/api/open/patient
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Patients
-  - Demographics
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-patient-information-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=patient-information
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-patient-information-overlay.yaml
-  x-status: deprecated
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-patient-information-v2
-  name: Patient information (v2)
-  description: 'Intended Use: The intended use for reading data with this API is in first hand that the
-    API is applied for direct access and should not be used to transfer data between caregivers. If it
-    should be used for ''''data copying'''' between care providers, patient consent must be handled outside
-    the API. The parameters AccessZoneUnit represent the PDL Care Unit (Vårdenhet) and headCareProviderUnit
-    represents PDL Care provider (Vårdgivare) and can be used to evaluate PDL. Specific Rules and Limitations:
-    The consumer of the API is responsible for making sure data retrieved is filtered in compliance with
-    laws and regulations prior to presenting it to any end-users. Message Description: Demographic patient
-    information about a given patient.'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=patient-information-v2
-  baseURL: https://api.openservices.cambio.se/api/open/patient
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Patients
-  - Demographics
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-patient-information-v2-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=patient-information-v2
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-patient-information-v2-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-payment-notice
-  name: Payment notice
-  description: 'Intended Use: The intended use of this API is to register the payment for a given appointment
-    for the given patient. Specific Rules and Limitations: Rule: The only status that can be set is PAID.
-    One may not use any other status in this API. This API accept only CARD and INVOICE as payment type.
-    Limitation: Before register payment contact should registered for arrival and need to properly setup
-    self-service to handle the payment. Message Description : The message sent includes the contact, payment
-    status and which payment method was used. Note: There is a header parameter as a patient but it is
-    not a mandatory one possible to register payment without this header parameter. Rules table: | Type
-    | Information ||------ | ----------- ||Rule:| The only status that can be set is PAID. One may not
-    use any other status in this API. This API accepts only CARD and INVOICE as payment type. |Limitati'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=payment-notice
-  baseURL: https://api.openservices.cambio.se/api/open/paymentnotice
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Billing
-  - Payments
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-payment-notice-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=payment-notice
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-payment-notice-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-referral-requests
-  name: Referral requests
-  description: Referral requests API in Cambio Open Services (COS), the B2B open API programme for the
-    Cambio COSMIC electronic health record. Part of Cambio Open Services (COS), the business-to-business
-    open API programme that lets third-party applications read and write data in the Cambio COSMIC electronic
-    health record. Access is gated by an Azure API Management subscription key plus an OAuth 2.0 access
-    token.
-  humanURL: https://developer.openservices.cambio.se/api-details#api=referral-requests
-  baseURL: https://api.openservices.cambio.se/api/open/referrals
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Referrals
-  - Service Requests
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-referral-requests-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=referral-requests
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-referral-requests-overlay.yaml
-- aid: cambio-healthcare-systems:cambio-healthcare-systems-video-meetings
-  name: Video meetings
-  description: 'Note: Deprecated - Will be removed in COSMIC 4.1.0 Booked appointments supporting remote
-    participation through video. Part of Cambio Open Services (COS), the business-to-business open API
-    programme that lets third-party applications read and write data in the Cambio COSMIC electronic health
-    record. Access is gated by an Azure API Management subscription key plus an OAuth 2.0 access token.'
-  humanURL: https://developer.openservices.cambio.se/api-details#api=video-meetings
-  baseURL: https://api.openservices.cambio.se/open/api/videomeetings
-  tags:
-  - Healthcare
-  - Electronic Health Records
-  - Cambio Open Services
-  - Video Meetings
-  - Telehealth
-  properties:
-  - type: OpenAPI
-    url: openapi/cambio-healthcare-systems-video-meetings-openapi.json
-  - type: Documentation
-    url: https://developer.openservices.cambio.se/api-details#api=video-meetings
-  - type: Overlay
-    url: overlays/cambio-healthcare-systems-video-meetings-overlay.yaml
 - aid: cambio-healthcare-systems:cambio-healthcare-systems-fhir-r4
   name: Cambio Open Services FHIR R4 API
-  description: HL7 FHIR R4 (4.0.1) server exposing Cambio COSMIC clinical data through 24 FHIR resource
-    types — Patient, Practitioner, Organization, Encounter, Condition, Observation, MedicationRequest,
-    MedicationDispense, DiagnosticReport, Appointment, CarePlan, Consent, Immunization, Invoice, Location,
-    Questionnaire, QuestionnaireResponse, ServiceRequest, Task and more — with Cambio-specific FHIR profiles
-    published as an Implementation Guide. Built on HAPI FHIR and secured with SMART-on-FHIR style OAuth
-    2.0 scopes.
+  description: >-
+    HL7 FHIR R4 (4.0.1) server exposing Cambio COSMIC clinical data through 24 FHIR resource types — Patient,
+    Practitioner, Organization, Encounter, Condition, Observation, MedicationRequest, MedicationDispense,
+    DiagnosticReport, Appointment, CarePlan, Consent, Immunization, Invoice, Location, Questionnaire,
+    QuestionnaireResponse, ServiceRequest, Task and more — with Cambio-specific FHIR profiles published
+    as an Implementation Guide. Built on HAPI FHIR and secured with SMART-on-FHIR style OAuth 2.0 scopes.
   humanURL: https://fhir.openservices.cambio.se/site/index.html
   baseURL: https://api.openservices.cambio.se/fhir
   tags:
@@ -521,12 +58,292 @@ apis:
     url: https://fhir.openservices.cambio.se/site/index.html
   - type: APIReference
     url: https://fhir.openservices.cambio.se/site/artifacts.html
+- aid: cambio-healthcare-systems:cambio-healthcare-systems-booked-appointments-api
+  name: Cambio Healthcare Systems Booked Appointments API
+  description: >-
+    The Booked Appointments API from Cambio Healthcare Systems — 1 operation(s) for booked appointments.
+  humanURL: https://developer.openservices.cambio.se/api-details#api=attention-signal
+  baseURL: https://api.openservices.cambio.se/api/open/attentionsignals
+  tags:
+  - Booked Appointments
+  properties:
+  - type: OpenAPI
+    url: openapi/cambio-healthcare-systems-booked-appointments-api-openapi.yml
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=attention-signal
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=authorizer-openid-connect
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=booked-appointments
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=care-contacts
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=care-contacts-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=diagnosis
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=diagnosis-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=fhir-r4-public-profiles
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=journal-notes
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=journal-notes-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=patient-information
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=patient-information-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=payment-notice
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=referral-requests
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=video-meetings
+- aid: cambio-healthcare-systems:cambio-healthcare-systems-default-api
+  name: Cambio Healthcare Systems * API
+  description: The * API from Cambio Healthcare Systems — 1 operation(s) for *.
+  humanURL: https://developer.openservices.cambio.se/api-details#api=attention-signal
+  baseURL: https://api.openservices.cambio.se/api/open/attentionsignals
+  tags:
+  - '*'
+  properties:
+  - type: OpenAPI
+    url: openapi/cambio-healthcare-systems-default-api-openapi.yml
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=attention-signal
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=authorizer-openid-connect
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=booked-appointments
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=care-contacts
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=care-contacts-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=diagnosis
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=diagnosis-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=fhir-r4-public-profiles
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=journal-notes
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=journal-notes-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=patient-information
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=patient-information-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=payment-notice
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=referral-requests
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=video-meetings
+- aid: cambio-healthcare-systems:cambio-healthcare-systems-payment-notice-api
+  name: Cambio Healthcare Systems Payment Notice API
+  description: >-
+    The Payment Notice API from Cambio Healthcare Systems — 1 operation(s) for payment notice.
+  humanURL: https://developer.openservices.cambio.se/api-details#api=attention-signal
+  baseURL: https://api.openservices.cambio.se/api/open/attentionsignals
+  tags:
+  - Payment Notice
+  properties:
+  - type: OpenAPI
+    url: openapi/cambio-healthcare-systems-payment-notice-api-openapi.yml
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=attention-signal
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=authorizer-openid-connect
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=booked-appointments
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=care-contacts
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=care-contacts-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=diagnosis
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=diagnosis-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=fhir-r4-public-profiles
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=journal-notes
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=journal-notes-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=patient-information
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=patient-information-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=payment-notice
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=referral-requests
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=video-meetings
+- aid: cambio-healthcare-systems:cambio-healthcare-systems-protocol-api
+  name: Cambio Healthcare Systems Protocol API
+  description: The Protocol API from Cambio Healthcare Systems — 2 operation(s) for protocol.
+  humanURL: https://developer.openservices.cambio.se/api-details#api=attention-signal
+  baseURL: https://api.openservices.cambio.se/api/open/attentionsignals
+  tags:
+  - Protocol
+  properties:
+  - type: OpenAPI
+    url: openapi/cambio-healthcare-systems-protocol-api-openapi.yml
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=attention-signal
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=authorizer-openid-connect
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=booked-appointments
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=care-contacts
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=care-contacts-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=diagnosis
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=diagnosis-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=fhir-r4-public-profiles
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=journal-notes
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=journal-notes-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=patient-information
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=patient-information-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=payment-notice
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=referral-requests
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=video-meetings
+- aid: cambio-healthcare-systems:cambio-healthcare-systems-well-known-api
+  name: Cambio Healthcare Systems .well Known API
+  description: The .well Known API from Cambio Healthcare Systems — 1 operation(s) for .well known.
+  humanURL: https://developer.openservices.cambio.se/api-details#api=attention-signal
+  baseURL: https://api.openservices.cambio.se/api/open/attentionsignals
+  tags:
+  - .well Known
+  properties:
+  - type: OpenAPI
+    url: openapi/cambio-healthcare-systems-well-known-api-openapi.yml
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=attention-signal
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=authorizer-openid-connect
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=booked-appointments
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=care-contacts
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=care-contacts-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=chemistry-lab-results-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=diagnosis
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=diagnosis-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=fhir-r4-public-profiles
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=journal-notes
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=journal-notes-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=medication-prescriptions-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=patient-information
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=patient-information-v2
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=payment-notice
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=referral-requests
+  - type: Documentation
+    url: https://developer.openservices.cambio.se/api-details#api=video-meetings
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-attention-signal-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-authorizer-openid-connect-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-booked-appointments-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-care-contacts-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-care-contacts-v2-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-chemistry-lab-results-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-chemistry-lab-results-v2-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-diagnosis-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-diagnosis-v2-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-fhir-r4-public-profiles-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-journal-notes-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-journal-notes-v2-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-medication-prescriptions-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-medication-prescriptions-v2-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-patient-information-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-patient-information-v2-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-payment-notice-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-referral-requests-overlay.yaml
+- type: Overlay
+  url: overlays/cambio-healthcare-systems-video-meetings-overlay.yaml
 - type: DomainSecurity
   url: security/cambio-healthcare-systems-domain-security.yml
 - type: Authentication
