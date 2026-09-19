@@ -2,15 +2,16 @@
 kin_checks:
   slug: cambio-healthcare-systems
   schema_version: 0.22.0
-  scored_at: '2026-09-15'
-  run_ts: 2026-09-15T230249
-  note: Actionable checks only (missed + partial). earned/na are every other check
-    in rubric/scoring-0.22.0.yml; counts below let you verify that.
+  scored_at: '2026-09-17'
+  run_ts: 2026-09-17T233623
+  note: Actionable checks (missed + partial) in `checks`, plus the ids that did not
+    apply in `na`. Everything else in rubric/scoring-0.22.0.yml was earned; counts
+    below let you verify that.
   counts:
     total: 136
     earned: 52
-    partial: 9
-    missed: 56
+    partial: 10
+    missed: 55
     na: 19
   checks:
   - id: well_known_published
@@ -19,22 +20,19 @@ kin_checks:
     status: missed
   - id: openapi_3_2
     status: missed
-    detail: 0 of 19 openapi documents pass
+    detail: 0 of 5 openapi documents pass
   - id: openapi_3_1
     status: missed
-    detail: 0 of 19 openapi documents pass
+    detail: 0 of 5 openapi documents pass
   - id: info_complete
     status: missed
-    detail: 0 of 19 openapi documents pass
-  - id: operations_tagged
-    status: missed
-    detail: 0 of 19 openapi documents pass
+    detail: 0 of 5 openapi documents pass
   - id: credentials_not_in_query
     status: missed
-    detail: 0 of 19 openapi documents pass
+    detail: 0 of 5 openapi documents pass
   - id: webhooks_or_callbacks
     status: missed
-    detail: 0 of 19 openapi documents pass
+    detail: 0 of 5 openapi documents pass
   - id: asyncapi_present
     status: missed
   - id: json_schema_present
@@ -133,19 +131,19 @@ kin_checks:
     status: missed
   - id: operations_description_coverage
     status: partial
-    earned: 5.68
-    detail: 18 of 19 openapi documents pass
+    earned: 3.6
+    detail: 3 of 5 openapi documents pass
   - id: error_responses_documented
     status: partial
-    earned: 3.16
-    detail: 15 of 19 openapi documents pass
+    earned: 1.6
+    detail: 2 of 5 openapi documents pass
   - id: examples_present
     status: partial
-    earned: 3.16
+    earned: 1.6
   - id: components_reuse
     status: partial
-    earned: 2.53
-    detail: 16 of 19 openapi documents pass
+    earned: 0.6
+    detail: 1 of 5 openapi documents pass
   - id: github_org_present
     status: partial
     earned: 1.0
@@ -157,6 +155,10 @@ kin_checks:
     status: partial
     earned: 9.0
     detail: 'grade: served'
+  - id: openapi_examples
+    status: partial
+    earned: 3.5
+    detail: 'grade: partial'
   - id: rate_limit_signal
     status: partial
     earned: 3.5
@@ -165,3 +167,23 @@ kin_checks:
     status: partial
     earned: 1.25
     detail: 'authorship: derived'
+  na:
+  - asyncapi_3_x
+  - channels_defined
+  - contract_self_operated
+  - graphql_descriptions
+  - graphql_sdl_present
+  - graphql_type_depth
+  - inbound_contract_published
+  - messages_with_schema
+  - os_code_of_conduct
+  - os_contribution_guide
+  - os_releases
+  - os_security_policy
+  - reg_camara_conformance
+  - reg_entitlement_terms
+  - reg_fapi_profile
+  - reg_pci_sca
+  - reg_write_surface
+  - security_schemes
+  - server_bindings

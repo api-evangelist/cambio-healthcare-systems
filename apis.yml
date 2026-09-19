@@ -26,6 +26,22 @@ tags:
 - Interoperability
 - Health IT
 - Sweden
+- Nordic
+- Patient Data
+- Medical Records
+- openEHR
+- SMART on FHIR
+- Company
+tags_raw:
+- Healthcare
+- Electronic Health Records
+- EHR
+- Clinical Decision Support
+- FHIR
+- HL7
+- Interoperability
+- Health IT
+- Sweden
 - Nordics
 - Patient Data
 - Medical Records
@@ -112,7 +128,8 @@ apis:
   description: The * API from Cambio Healthcare Systems — 1 operation(s) for *.
   humanURL: https://developer.openservices.cambio.se/api-details#api=attention-signal
   baseURL: https://api.openservices.cambio.se/api/open/attentionsignals
-  tags:
+  tags: []
+  tags_raw:
   - '*'
   properties:
   - type: OpenAPI
