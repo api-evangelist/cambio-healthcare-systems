@@ -1,0 +1,435 @@
+openapi: 3.2.0
+info:
+  title: Booked Appointments API
+  description: 'Intended Use
+
+    Booked appointments of all types for a patient.'
+  version: '1.0'
+servers:
+- url: https://api.openservices.cambio.se/api/open/appointments
+security:
+- {}
+- apiKeyHeader: []
+- apiKeyQuery: []
+tags:
+- name: Booked Appointments
+paths:
+  /:
+    get:
+      operationId: get-bookings
+      summary: Get booked appointments
+      description: 'Gets all booked appointments for the given patient. The result can be filtered by using a time interval.
+
+
+        OAuth scope for access : user/Appointment.read or patient/Appointment.read'
+      responses:
+        '200':
+          description: Request succeeded for the given patient.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppointmentResponse'
+              examples:
+                default:
+                  value:
+                  - Booking:
+                    - ContactId: string
+                      StartTime: string
+                      PerformingUnit:
+                        Name: string
+                        Id: string
+                        Address:
+                          StreetAddress: string
+                          CareOfAddress: string
+                          PostalCode: string
+                          City: string
+                          Country: string
+                          Type:
+                            Id: string
+                            Name: string
+                        HSAId: string
+                      CareGiver: string
+                      PatientInformation: string
+                      PaymentDetails:
+                        Price: 0
+                        Reduction: 0
+                        ReductionReason: string
+                      TypedStartDateTime: string
+                      Any:
+                      - {}
+                    RegisteredBooking:
+                    - BookingId: string
+                      StartTime: string
+                      PerformingUnit:
+                        Name: string
+                        Id: string
+                        Address:
+                          StreetAddress: string
+                          CareOfAddress: string
+                          PostalCode: string
+                          City: string
+                          Country: string
+                          Type:
+                            Id: string
+                            Name: string
+                        HSAId: string
+                      CareGiver: string
+                      PatientInformation: string
+                      TypedStartDateTime: string
+                      Any:
+                      - {}
+                    Patient:
+                      Name: string
+                      PersonNumbers:
+                      - Number: string
+                        Type:
+                          Id: string
+                          Name: string
+                      Addresses:
+                      - StreetAddress: string
+                        CareOfAddress: string
+                        PostalCode: string
+                        City: string
+                        Country: string
+                        Type:
+                          Id: string
+                          Name: string
+                      PhoneNumbers:
+                      - Number: string
+                        Type:
+                          Id: string
+                          Name: string
+                    ResultCode: OK
+                    Comment: string
+                    Any:
+                    - {}
+        '401':
+          description: Invalid access token. The client must request a new token from the authorization server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                default:
+                  value:
+                    statusCode: 401
+                    message: Invalid access token.
+        '403':
+          description: Insufficient OAuth2 scope for access.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                default:
+                  value:
+                    statusCode: 403
+                    message: Insufficient scope.
+        '429':
+          description: Too many requests in a given amount of time.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                default:
+                  value:
+                    statusCode: 429
+                    message: Rate limit is exceeded. Try again in 5 seconds.
+      parameters:
+      - name: fromDateTime
+        in: query
+        description: 'Time interval start, using date format: 1970-01-01T01:00:00'
+        schema:
+          type: string
+      - name: toDateTime
+        in: query
+        description: 'Time interval end, using date format: 1970-01-01T01:00:00'
+        schema:
+          type: string
+      - name: patient
+        in: header
+        description: The patient number when acting as a care giver or partner.
+        schema:
+          type: string
+      tags:
+      - Booked Appointments
+    put:
+      operationId: update-appointment
+      summary: Update booked appointment
+      description: 'Update a booked appointment. The only valid update using this API is to change the status of the appointment to ''arrived''.
+
+
+        OAuth scope for access : user/Appointment.write or patient/Appointment.write'
+      responses:
+        '200':
+          description: Request succeeded for the given appointment.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetArrivalResponseType'
+              examples:
+                default:
+                  value:
+                    ResultCode: OK
+                    Comment: string
+                    Any:
+                    - {}
+        '401':
+          description: Invalid access token. The client must request a new token from the authorization server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                default:
+                  value:
+                    statusCode: 401
+                    message: Invalid access token.
+        '403':
+          description: Insufficient OAuth2 scope for access.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                default:
+                  value:
+                    statusCode: 403
+                    message: Insufficient scope.
+        '429':
+          description: Too many requests in a given amount of time.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                default:
+                  value:
+                    statusCode: 429
+                    message: Rate limit is exceeded. Try again in 5 seconds.
+      parameters:
+      - name: id
+        in: query
+        description: Id of the booked appointment to be updated. The same id is called ContactId in the get booked appointments API.
+        schema:
+          type: string
+      - name: patient
+        in: header
+        description: The patient number when acting as a care giver or partner.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Booking'
+            examples:
+              default:
+                value:
+                  status: arrived
+      tags:
+      - Booked Appointments
+components:
+  schemas:
+    UnitType:
+      properties:
+        Name:
+          type: string
+        Id:
+          type: string
+        Address:
+          $ref: '#/components/schemas/AddressType'
+        HSAId:
+          type: string
+    Type:
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+    RegisteredBookingType:
+      description: A single registered booking
+      properties:
+        BookingId:
+          description: Unique id of the booking
+          type: string
+        StartTime:
+          description: Planned start time
+          type: string
+          format: 1970-01-01 00:00
+        PerformingUnit:
+          description: Care unit that will be performing the service
+          $ref: '#/components/schemas/UnitType'
+        CareGiver:
+          description: Care giver responsible for the booking
+          type: string
+        PatientInformation:
+          description: Information to present to the patient when he/she arrives
+          type: string
+        TypedStartDateTime:
+          type: string
+          format: '1970-01-01T00:00:00Z'
+        Any:
+          type: array
+          items:
+            type: object
+    RegisteredBookings:
+      type: array
+      items:
+        $ref: '#/components/schemas/RegisteredBookingType'
+    BookingType:
+      description: One planned appointment
+      properties:
+        ContactId:
+          type: string
+        StartTime:
+          type: string
+        PerformingUnit:
+          $ref: '#/components/schemas/UnitType'
+        CareGiver:
+          type: string
+        PatientInformation:
+          type: string
+        PaymentDetails:
+          $ref: '#/components/schemas/PaymentDetailsType'
+        TypedStartDateTime:
+          type: string
+          format: '1970-01-01T00:00:00Z'
+        Any:
+          type: array
+          items:
+            type: object
+    PaymentDetailsType:
+      properties:
+        Price:
+          type: number
+        Reduction:
+          type: number
+        ReductionReason:
+          type: string
+    GetBookingsResponse:
+      description: Booked appointments information for a given patient.
+      type: object
+      properties:
+        Booking:
+          $ref: '#/components/schemas/Bookings'
+        RegisteredBooking:
+          $ref: '#/components/schemas/RegisteredBookings'
+        Patient:
+          $ref: '#/components/schemas/Patient'
+        ResultCode:
+          type: string
+          enum:
+          - OK
+          - ERROR
+          - INFO
+        Comment:
+          type: string
+        Any:
+          type: array
+          items:
+            type: object
+    SetArrivalResponseType:
+      properties:
+        ResultCode:
+          type: string
+          enum:
+          - OK
+          - ERROR
+          - INFO
+        Comment:
+          type: string
+        Any:
+          type: array
+          items:
+            type: object
+    AddressType:
+      properties:
+        StreetAddress:
+          type: string
+        CareOfAddress:
+          type: string
+        PostalCode:
+          type: string
+        City:
+          type: string
+        Country:
+          type: string
+        Type:
+          $ref: '#/components/schemas/Type'
+    PersonNumberType:
+      properties:
+        Number:
+          type: string
+        Type:
+          $ref: '#/components/schemas/Type'
+    Bookings:
+      description: All planned appointments.
+      type: array
+      items:
+        $ref: '#/components/schemas/BookingType'
+    AppointmentResponse:
+      description: List of booked appointments.
+      type: array
+      items:
+        $ref: '#/components/schemas/GetBookingsResponse'
+    PhoneNumberType:
+      properties:
+        Number:
+          type: string
+        Type:
+          $ref: '#/components/schemas/Type'
+    ErrorResponse:
+      description: Generic error response for all systems and applications errors.
+      properties:
+        error:
+          description: Error reason in text.
+          type: string
+        path:
+          description: Path to requested resource.
+          type: string
+        status:
+          description: HTTP status.
+          type: integer
+        timestamp:
+          description: Timestamp (milliseconds since epoch).
+          type: integer
+      type: object
+    Patient:
+      properties:
+        Name:
+          type: string
+        PersonNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonNumberType'
+        Addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressType'
+        PhoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberType'
+    Booking:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          description: Status of the booked appointment.
+          type: string
+          enum:
+          - arrived
+      example:
+        status: arrived
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query

@@ -1,0 +1,35 @@
+openapi: 3.2.0
+info:
+  title: Authorizer - OpenId Connect .well Known API
+  description: 'OpenId Connect API for Authorizer.
+
+    This is needed in between the developer portal and Keycloak since it seems the dev portals HTTP client can''t speak properly directly with Keycloak for some reason.'
+  version: '1.0'
+servers:
+- url: https://api.openservices.cambio.se/auth/realms/COS
+security:
+- {}
+- apiKeyHeader: []
+- apiKeyQuery: []
+tags:
+- name: .well Known
+paths:
+  /.well-known/openid-configuration:
+    get:
+      operationId: openid-configuration
+      summary: OpenId Configuration
+      responses:
+        '200':
+          description: 'null'
+      tags:
+      - .well Known
+components:
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query

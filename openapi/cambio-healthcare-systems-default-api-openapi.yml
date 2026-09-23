@@ -1,0 +1,105 @@
+openapi: 3.2.0
+info:
+  title: FHIR R4 Public Profiles * API
+  description: 'The Cambio FHIR R4 Public Profiles are available at Simplifier.
+
+    Please look in the implementation guide for available resources: https://fhir.openservices.cambio.se/site/index.html'
+  version: '1.0'
+servers:
+- url: https://api.openservices.cambio.se/api/open/fhir
+security:
+- {}
+- apiKeyHeader: []
+- apiKeyQuery: []
+tags:
+- name: '*'
+paths:
+  /*:
+    get:
+      operationId: fhir-get
+      summary: FHIR GET
+      description: '*RESOURCE*
+
+
+        Add the FHIR resource subpath as the * param (e.g. Questionnaire/_search).
+
+        Check the implementation guide for available resources https://fhir.openservices.cambio.se/site/index.html
+
+
+        *PARAMETERS*
+
+
+        Add query params as needed (e.g. code = 1.2.752.116.2.1.1|371526002,1.2.752.116.2.1.1|448826009)
+
+
+        *AUTHORIZATION*
+
+
+        In the OAuth2 section below, use client credentials to generate a valid token and then press Send.'
+      responses:
+        '200':
+          description: 'null'
+      tags:
+      - '*'
+    post:
+      operationId: fhir-post
+      summary: FHIR POST
+      description: '*RESOURCE*
+
+
+        Add the FHIR resource subpath as the * param (e.g. Questionnaire).
+
+        Check the implementation guide for available resources https://fhir.openservices.cambio.se/site/index.html
+
+
+        *PARAMETERS*
+
+
+        Add query params as needed (e.g. code = 1.2.752.116.2.1.1|371526002,1.2.752.116.2.1.1|448826009)
+
+
+        *AUTHORIZATION*
+
+
+        In the OAuth2 section below, use client credentials to generate a valid token and then press Send.'
+      responses:
+        '200':
+          description: 'null'
+      tags:
+      - '*'
+    put:
+      operationId: fhir-put
+      summary: FHIR PUT
+      description: '*RESOURCE*
+
+
+        Add the FHIR resource subpath as the * param (e.g. Questionnaire).
+
+        Check the implementation guide for available resources https://fhir.openservices.cambio.se/site/index.html
+
+
+        *PARAMETERS*
+
+
+        Add query params as needed (e.g. code = 1.2.752.116.2.1.1|371526002,1.2.752.116.2.1.1|448826009)
+
+
+        *AUTHORIZATION*
+
+
+        In the OAuth2 section below, use client credentials to generate a valid token and then press Send.'
+      responses:
+        '200':
+          description: 'null'
+      tags:
+      - '*'
+components:
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query

@@ -1,0 +1,159 @@
+openapi: 3.2.0
+info:
+  title: Payment Notice API
+  description: 'Intended Use
+
+    The intended use of this API is to register the payment for a given appointment for the given patient.'
+  version: '1.0'
+servers:
+- url: https://api.openservices.cambio.se/api/open/paymentnotice
+security:
+- {}
+- apiKeyHeader: []
+- apiKeyQuery: []
+tags:
+- name: Payment Notice
+paths:
+  /:
+    post:
+      operationId: register-payment
+      summary: Register payment
+      description: 'Register payment for a given appointment for a given patient. This API can only be used to set payment status to PAID.
+
+
+        OAuth scope for access : user/PaymentNotice.write
+
+        ,'
+      responses:
+        '200':
+          description: Request succeeded for the given patient.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentNoticeResponse'
+              examples:
+                default:
+                  value:
+                  - ResultCode: OK
+                    Comment: string
+                    Any:
+                    - {}
+        '401':
+          description: Invalid access token. The client must request a new token from the authorization server.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                default:
+                  value:
+                    statusCode: 401
+                    message: Invalid access token.
+        '403':
+          description: Insufficient OAuth2 scope for access.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                default:
+                  value:
+                    statusCode: 403
+                    message: Insufficient scope.
+        '429':
+          description: Too many requests in a given amount of time.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                default:
+                  value:
+                    statusCode: 429
+                    message: Rate limit is exceeded. Try again in 5 seconds.
+      parameters:
+      - name: patient
+        in: header
+        description: The patient number when acting as a care giver or partner.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Paymentnotice'
+            examples:
+              default:
+                value:
+                  status: PAID
+                  contactId: string
+                  paymentType: CARD
+      tags:
+      - Payment Notice
+components:
+  schemas:
+    ErrorResponse:
+      description: Generic error response for all systems and applications errors.
+      properties:
+        error:
+          description: Error reason in text.
+          type: string
+        path:
+          description: Path to requested resource.
+          type: string
+        status:
+          description: HTTP status.
+          type: integer
+        timestamp:
+          description: Timestamp (milliseconds since epoch).
+          type: integer
+      type: object
+    SetPaymentResponse:
+      properties:
+        ResultCode:
+          type: string
+          enum:
+          - OK
+          - ERROR
+          - INFO
+        Comment:
+          type: string
+        Any:
+          type: array
+          items:
+            type: object
+    PaymentNoticeResponse:
+      description: List of payments
+      type: array
+      items:
+        $ref: '#/components/schemas/SetPaymentResponse'
+    Paymentnotice:
+      type: object
+      required:
+      - contactId
+      - status
+      - paymentType
+      properties:
+        status:
+          description: Status of the payment
+          type: string
+          enum:
+          - PAID
+        contactId:
+          description: Id of the appointment that should be set as paid.
+          type: string
+        paymentType:
+          description: Type of payment
+          type: string
+          enum:
+          - CARD
+          - INVOICE
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
