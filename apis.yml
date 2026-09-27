@@ -9,6 +9,22 @@ description: Cambio Healthcare Systems is a Swedish health-IT company founded in
   server with SMART-on-FHIR style scopes, and a synthetic-data sandbox. COSMIC and its clinical decision
   support are CE-marked and MDR-certified (notified body BSI-2797), and the company holds ISO 9001, 13485,
   14001, 20000 and 27001 certifications.
+deliveryModel:
+  model: saas
+  license_evidence:
+    not_product:
+    - cambiohealthcare/cp-nordic-hackathon-2025
+  open_source: unknown
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: low
+  source:
+  - openapi
+  - pricing
+  - repository-not-product
+  generated: '2026-09-25'
+  method: derived
 image: https://www.cambiogroup.com/wp-content/uploads/2021/03/cropped-Cambio-C-560x560px-270x270.png
 url: https://raw.githubusercontent.com/api-evangelist/cambio-healthcare-systems/refs/heads/main/apis.yml
 x-type: company
