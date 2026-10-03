@@ -92,20 +92,6 @@ paths:
       - Payment Notice
 components:
   schemas:
-    SetPaymentResponse:
-      properties:
-        ResultCode:
-          type: string
-          enum:
-          - OK
-          - ERROR
-          - INFO
-        Comment:
-          type: string
-        Any:
-          type: array
-          items:
-            type: object
     Paymentnotice:
       type: object
       required:
@@ -127,6 +113,25 @@ components:
           enum:
           - CARD
           - INVOICE
+    SetPaymentResponse:
+      properties:
+        ResultCode:
+          type: string
+          enum:
+          - OK
+          - ERROR
+          - INFO
+        Comment:
+          type: string
+        Any:
+          type: array
+          items:
+            type: object
+    PaymentNoticeResponse:
+      description: List of payments
+      type: array
+      items:
+        $ref: '#/components/schemas/SetPaymentResponse'
     ErrorResponse:
       description: Generic error response for all systems and applications errors.
       properties:
@@ -143,11 +148,6 @@ components:
           description: Timestamp (milliseconds since epoch).
           type: integer
       type: object
-    PaymentNoticeResponse:
-      description: List of payments
-      type: array
-      items:
-        $ref: '#/components/schemas/SetPaymentResponse'
   securitySchemes:
     apiKeyHeader:
       type: apiKey
