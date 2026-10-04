@@ -232,126 +232,6 @@ paths:
       - Booked Appointments
 components:
   schemas:
-    PersonNumberType:
-      properties:
-        Number:
-          type: string
-        Type:
-          $ref: '#/components/schemas/Type'
-    RegisteredBookings:
-      type: array
-      items:
-        $ref: '#/components/schemas/RegisteredBookingType'
-    AddressType:
-      properties:
-        StreetAddress:
-          type: string
-        CareOfAddress:
-          type: string
-        PostalCode:
-          type: string
-        City:
-          type: string
-        Country:
-          type: string
-        Type:
-          $ref: '#/components/schemas/Type'
-    Bookings:
-      description: All planned appointments.
-      type: array
-      items:
-        $ref: '#/components/schemas/BookingType'
-    Patient:
-      properties:
-        Name:
-          type: string
-        PersonNumbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonNumberType'
-        Addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/AddressType'
-        PhoneNumbers:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneNumberType'
-    Booking:
-      type: object
-      required:
-      - status
-      properties:
-        status:
-          description: Status of the booked appointment.
-          type: string
-          enum:
-          - arrived
-      example:
-        status: arrived
-    Type:
-      properties:
-        Id:
-          type: string
-        Name:
-          type: string
-    GetBookingsResponse:
-      description: Booked appointments information for a given patient.
-      type: object
-      properties:
-        Booking:
-          $ref: '#/components/schemas/Bookings'
-        RegisteredBooking:
-          $ref: '#/components/schemas/RegisteredBookings'
-        Patient:
-          $ref: '#/components/schemas/Patient'
-        ResultCode:
-          type: string
-          enum:
-          - OK
-          - ERROR
-          - INFO
-        Comment:
-          type: string
-        Any:
-          type: array
-          items:
-            type: object
-    SetArrivalResponseType:
-      properties:
-        ResultCode:
-          type: string
-          enum:
-          - OK
-          - ERROR
-          - INFO
-        Comment:
-          type: string
-        Any:
-          type: array
-          items:
-            type: object
-    ErrorResponse:
-      description: Generic error response for all systems and applications errors.
-      properties:
-        error:
-          description: Error reason in text.
-          type: string
-        path:
-          description: Path to requested resource.
-          type: string
-        status:
-          description: HTTP status.
-          type: integer
-        timestamp:
-          description: Timestamp (milliseconds since epoch).
-          type: integer
-      type: object
-    AppointmentResponse:
-      description: List of booked appointments.
-      type: array
-      items:
-        $ref: '#/components/schemas/GetBookingsResponse'
     BookingType:
       description: One planned appointment
       properties:
@@ -374,30 +254,6 @@ components:
           type: array
           items:
             type: object
-    PhoneNumberType:
-      properties:
-        Number:
-          type: string
-        Type:
-          $ref: '#/components/schemas/Type'
-    UnitType:
-      properties:
-        Name:
-          type: string
-        Id:
-          type: string
-        Address:
-          $ref: '#/components/schemas/AddressType'
-        HSAId:
-          type: string
-    PaymentDetailsType:
-      properties:
-        Price:
-          type: number
-        Reduction:
-          type: number
-        ReductionReason:
-          type: string
     RegisteredBookingType:
       description: A single registered booking
       properties:
@@ -424,6 +280,150 @@ components:
           type: array
           items:
             type: object
+    ErrorResponse:
+      description: Generic error response for all systems and applications errors.
+      properties:
+        error:
+          description: Error reason in text.
+          type: string
+        path:
+          description: Path to requested resource.
+          type: string
+        status:
+          description: HTTP status.
+          type: integer
+        timestamp:
+          description: Timestamp (milliseconds since epoch).
+          type: integer
+      type: object
+    SetArrivalResponseType:
+      properties:
+        ResultCode:
+          type: string
+          enum:
+          - OK
+          - ERROR
+          - INFO
+        Comment:
+          type: string
+        Any:
+          type: array
+          items:
+            type: object
+    PhoneNumberType:
+      properties:
+        Number:
+          type: string
+        Type:
+          $ref: '#/components/schemas/Type'
+    Bookings:
+      description: All planned appointments.
+      type: array
+      items:
+        $ref: '#/components/schemas/BookingType'
+    AddressType:
+      properties:
+        StreetAddress:
+          type: string
+        CareOfAddress:
+          type: string
+        PostalCode:
+          type: string
+        City:
+          type: string
+        Country:
+          type: string
+        Type:
+          $ref: '#/components/schemas/Type'
+    RegisteredBookings:
+      type: array
+      items:
+        $ref: '#/components/schemas/RegisteredBookingType'
+    Type:
+      properties:
+        Id:
+          type: string
+        Name:
+          type: string
+    UnitType:
+      properties:
+        Name:
+          type: string
+        Id:
+          type: string
+        Address:
+          $ref: '#/components/schemas/AddressType'
+        HSAId:
+          type: string
+    Patient:
+      properties:
+        Name:
+          type: string
+        PersonNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonNumberType'
+        Addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressType'
+        PhoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberType'
+    AppointmentResponse:
+      description: List of booked appointments.
+      type: array
+      items:
+        $ref: '#/components/schemas/GetBookingsResponse'
+    PaymentDetailsType:
+      properties:
+        Price:
+          type: number
+        Reduction:
+          type: number
+        ReductionReason:
+          type: string
+    Booking:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          description: Status of the booked appointment.
+          type: string
+          enum:
+          - arrived
+      example:
+        status: arrived
+    GetBookingsResponse:
+      description: Booked appointments information for a given patient.
+      type: object
+      properties:
+        Booking:
+          $ref: '#/components/schemas/Bookings'
+        RegisteredBooking:
+          $ref: '#/components/schemas/RegisteredBookings'
+        Patient:
+          $ref: '#/components/schemas/Patient'
+        ResultCode:
+          type: string
+          enum:
+          - OK
+          - ERROR
+          - INFO
+        Comment:
+          type: string
+        Any:
+          type: array
+          items:
+            type: object
+    PersonNumberType:
+      properties:
+        Number:
+          type: string
+        Type:
+          $ref: '#/components/schemas/Type'
   securitySchemes:
     apiKeyHeader:
       type: apiKey

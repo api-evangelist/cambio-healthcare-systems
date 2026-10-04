@@ -92,6 +92,11 @@ paths:
       - Payment Notice
 components:
   schemas:
+    PaymentNoticeResponse:
+      description: List of payments
+      type: array
+      items:
+        $ref: '#/components/schemas/SetPaymentResponse'
     Paymentnotice:
       type: object
       required:
@@ -127,11 +132,6 @@ components:
           type: array
           items:
             type: object
-    PaymentNoticeResponse:
-      description: List of payments
-      type: array
-      items:
-        $ref: '#/components/schemas/SetPaymentResponse'
     ErrorResponse:
       description: Generic error response for all systems and applications errors.
       properties:
