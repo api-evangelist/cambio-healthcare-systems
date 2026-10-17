@@ -92,6 +92,22 @@ paths:
       - Payment Notice
 components:
   schemas:
+    ErrorResponse:
+      description: Generic error response for all systems and applications errors.
+      properties:
+        error:
+          description: Error reason in text.
+          type: string
+        path:
+          description: Path to requested resource.
+          type: string
+        status:
+          description: HTTP status.
+          type: integer
+        timestamp:
+          description: Timestamp (milliseconds since epoch).
+          type: integer
+      type: object
     PaymentNoticeResponse:
       description: List of payments
       type: array
@@ -132,22 +148,6 @@ components:
           type: array
           items:
             type: object
-    ErrorResponse:
-      description: Generic error response for all systems and applications errors.
-      properties:
-        error:
-          description: Error reason in text.
-          type: string
-        path:
-          description: Path to requested resource.
-          type: string
-        status:
-          description: HTTP status.
-          type: integer
-        timestamp:
-          description: Timestamp (milliseconds since epoch).
-          type: integer
-      type: object
   securitySchemes:
     apiKeyHeader:
       type: apiKey
