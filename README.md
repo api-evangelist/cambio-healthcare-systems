@@ -64,5 +64,149 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Cambio Healthcare Systems is a company surfaced via the API Evangelist harvest backlog (source: swedish-healthcare) and added to the network as a stub for full-pipeline profiling.
-- https://www.cambiogroup.com/
+Cambio Healthcare Systems is a Swedish health-IT company founded in 1993 in Linkoping and headquartered in Stockholm, best known for Cambio COSMIC, an electronic health record and clinical decision support platform used across Swedish regions, Denmark and the United Kingdom by well over 100,000 clinical users. Cambio runs a public developer programme, Cambio Open Services (COS), which publishes 19 REST APIs and an HL7 FHIR R4 server on Azure API Management at api.openservices.cambio.se, together with a published FHIR Implementation Guide of COSMIC-specific profiles, a Keycloak OpenID Connect authorization server with SMART-on-FHIR style scopes, and a synthetic-data sandbox. COSMIC and its clinical decision support are CE-marked and MDR-certified (notified body BSI-2797), and the company holds ISO 9001, 13485, 14001, 20000 and 27001 certifications.
+
+**Areas:** Healthcare · Electronic Health Records · Clinical Decision Support · FHIR · HL7 · Interoperability · Health IT · Sweden · Nordic · Patient Data · Medical Records · openEHR
+
+## Cambio Healthcare Systems on APIs.io
+
+Everything profiled for Cambio Healthcare Systems is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/cambio-healthcare-systems/](https://apis.io/providers/cambio-healthcare-systems/)** — or go straight to one of the APIs or properties below.
+
+### APIs (6)
+
+- [Cambio Open Services FHIR R4 API](https://apis.io/apis/cambio-healthcare-systems/cambio-healthcare-systems-fhir-r4/) — HL7 FHIR R4 (4.0.1) server exposing Cambio COSMIC clinical data through 24 FHIR resource types — Patient, Practitioner, Organization, Encounter, Condition,…
+- [Cambio Healthcare Systems Booked Appointments API](https://apis.io/apis/cambio-healthcare-systems/cambio-healthcare-systems-booked-appointments-api/) — The Booked Appointments API from Cambio Healthcare Systems — 1 operation(s) for booked appointments.
+- [Cambio Healthcare Systems * API](https://apis.io/apis/cambio-healthcare-systems/cambio-healthcare-systems-default-api/) — The * API from Cambio Healthcare Systems — 1 operation(s) for *.
+- [Cambio Healthcare Systems Payment Notice API](https://apis.io/apis/cambio-healthcare-systems/cambio-healthcare-systems-payment-notice-api/) — The Payment Notice API from Cambio Healthcare Systems — 1 operation(s) for payment notice.
+- [Cambio Healthcare Systems Protocol API](https://apis.io/apis/cambio-healthcare-systems/cambio-healthcare-systems-protocol-api/) — The Protocol API from Cambio Healthcare Systems — 2 operation(s) for protocol.
+- [Cambio Healthcare Systems .well Known API](https://apis.io/apis/cambio-healthcare-systems/cambio-healthcare-systems-well-known-api/) — The .well Known API from Cambio Healthcare Systems — 1 operation(s) for .well known.
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [cambio-healthcare-systems-mcp.yml](https://apis.io/servers/cambio-healthcare-systems/cambio-healthcare-systems-mcp-yml/)
+
+#### Overlays (19)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Cambio Healthcare Systems Attention Signal Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-attention-signal-overlay/)
+- [Cambio Healthcare Systems Authorizer Openid Connect Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-authorizer-openid-connect-overlay/)
+- [Cambio Healthcare Systems Booked Appointments Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-booked-appointments-overlay/)
+- [Cambio Healthcare Systems Care Contacts Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-care-contacts-overlay/)
+- [Cambio Healthcare Systems Care Contacts V2 Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-care-contacts-v2-overlay/)
+- [Cambio Healthcare Systems Chemistry Lab Results Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-chemistry-lab-results-overlay/)
+- [Cambio Healthcare Systems Chemistry Lab Results V2 Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-chemistry-lab-results-v2-overlay/)
+- [Cambio Healthcare Systems Diagnosis Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-diagnosis-overlay/)
+- [Cambio Healthcare Systems Diagnosis V2 Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-diagnosis-v2-overlay/)
+- [Cambio Healthcare Systems Fhir R4 Public Profiles Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-fhir-r4-public-profiles-overlay/)
+- [Cambio Healthcare Systems Journal Notes Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-journal-notes-overlay/)
+- [Cambio Healthcare Systems Journal Notes V2 Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-journal-notes-v2-overlay/)
+- [Cambio Healthcare Systems Medication Prescriptions Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-medication-prescriptions-overlay/)
+- [Cambio Healthcare Systems Medication Prescriptions V2 Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-medication-prescriptions-v2-overlay/)
+- [Cambio Healthcare Systems Patient Information Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-patient-information-overlay/)
+- [Cambio Healthcare Systems Patient Information V2 Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-patient-information-v2-overlay/)
+- [Cambio Healthcare Systems Payment Notice Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-payment-notice-overlay/)
+- [Cambio Healthcare Systems Referral Requests Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-referral-requests-overlay/)
+- [Cambio Healthcare Systems Video Meetings Overlay](https://apis.io/overlays/cambio-healthcare-systems/cambio-healthcare-systems-video-meetings-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Cambio Healthcare Systems Authentication](https://apis.io/security/cambio-healthcare-systems/cambio-healthcare-systems-authentication/)
+- [Cambio Healthcare Systems Domain Security](https://apis.io/security/cambio-healthcare-systems/cambio-healthcare-systems-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Cambio Healthcare Systems Scopes](https://apis.io/scopes/cambio-healthcare-systems/cambio-healthcare-systems-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Cambio Healthcare Systems Plans Pricing](https://apis.io/plans/cambio-healthcare-systems/cambio-healthcare-systems-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Cambio Healthcare Systems Rate Limits](https://apis.io/rate-limits/cambio-healthcare-systems/cambio-healthcare-systems-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.cambiogroup.com/)
+- [Documentation](https://developer.openservices.cambio.se/getting-started)
+- [Getting started](https://developer.openservices.cambio.se/getting-started)
+- [API reference](https://developer.openservices.cambio.se/apis)
+- [Sign up](https://developer.openservices.cambio.se/signup)
+- [Support](https://developer.openservices.cambio.se/help)
+- [Changelog](https://developer.openservices.cambio.se/api-changelog)
+- [Blog](https://www.cambiogroup.com/newsandevents/)
+- [Compliance](https://www.cambiogroup.com/compliance-eng/)
+- [Privacy policy](https://www.cambiogroup.com/about-us/privacy-policy/)
+- [GitHub](https://github.com/CambioHealthcare)
+
+## API Evangelist rating
+
+**Kin Score 50.0** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 78.6 |
+| Contract quality | 52.8 |
+| Contract governance | 18.2 |
+| Operational transparency | 26.3 |
+| Developer ergonomics | 66.1 |
+| Access clarity | 31.6 |
+
+**Agent readiness 39.6** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 42.2** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/cambio-healthcare-systems/](https://apis.io/providers/cambio-healthcare-systems/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Cambio Healthcare Systems: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/cambio-healthcare-systems/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
